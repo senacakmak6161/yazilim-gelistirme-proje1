@@ -81,7 +81,7 @@ test.describe('US-10 Görev durumlarını koruma', () => {
   test.describe('kayıt bozuksa', () => {
     test.use({ rawTaskStorage: '{bozuk-json' });
 
-    test('uygulama hatasız açılır ve hiçbir görev tamamlanmış sayılmaz',
+    test('kayıt bozuksa uygulama hatasız açılır ve hiçbir görev tamamlanmış sayılmaz',
       {
         tag: ['@US-10', '@AC-10.5', '@P2'],
         annotation: { type: 'varsayım', description: 'A4: okunamayan kayıt hatasız yok sayılır' },
@@ -96,7 +96,7 @@ test.describe('US-10 Görev durumlarını koruma', () => {
   test.describe('kayıtta artık var olmayan bir görev varsa', () => {
     test.use({ rawTaskStorage: taskStorage.encode(['t1', 't999']) });
 
-    test('bilinmeyen görev yok sayılır, geçerli kayıt geri yüklenir',
+    test('kayıttaki bilinmeyen görev yok sayılır, geçerli kayıt geri yüklenir',
       {
         tag: ['@US-10', '@AC-10.5', '@P2'],
         annotation: { type: 'varsayım', description: 'A4: veride olmayan görev kimlikleri yok sayılır' },

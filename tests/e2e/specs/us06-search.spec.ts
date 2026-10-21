@@ -5,18 +5,21 @@ import { loadCourse, titleOf, titlesOf } from '../support/data';
 const course = loadCourse('course.default.json');
 const allTitles = course.tasks.map((t) => t.title);
 
+const K5 = { type: 'karar', description: 'K5: tr-TR kurallı, harfe duyarsız arama' };
+const A2 = { type: 'varsayım', description: 'A2: arama başlık ve açıklamada yapılır' };
+
 const matchingCases = [
-  { query: 'grid', ids: ['t5'], why: 'başlıkta büyük/küçük harf farkı' },
-  { query: 'tema', ids: ['t6', 't9'], why: 'açıklamada eşleşme' },
-  { query: 'IŞIK', ids: ['t6'], why: 'Türkçe büyük harf I/ı (K5)' },
-  { query: 'ilk', ids: ['t1'], why: 'Türkçe büyük harf İ/i (K5)' },
-  { query: '  grid  ', ids: ['t5'], why: 'baştaki ve sondaki boşluk (K5)' },
-] as const;
+  { query: 'grid', ids: ['t5'], why: 'başlıkta büyük/küçük harf farkı', basis: [K5] },
+  { query: 'tema', ids: ['t6', 't9'], why: 'açıklamada eşleşme', basis: [A2] },
+  { query: 'IŞIK', ids: ['t6'], why: 'Türkçe büyük harf I/ı', basis: [K5] },
+  { query: 'ilk', ids: ['t1'], why: 'Türkçe büyük harf İ/i', basis: [K5] },
+  { query: '  grid  ', ids: ['t5'], why: 'baştaki ve sondaki boşluk', basis: [K5] },
+];
 
 const nonMatchingCases = [
-  { query: 'Ilk', why: 'I küçük harfte ı olur, İlk ile eşleşmez (K5)' },
-  { query: 'isik', why: 'ı/ş harfleri i/s ile eşleşmez (K5)' },
-] as const;
+  { query: 'Ilk', why: 'I küçük harfte ı olur, İlk ile eşleşmez' },
+  { query: 'isik', why: 'ı/ş harfleri i/s ile eşleşmez' },
+];
 
 test.describe('US-06 Görevlerde arama yapma', () => {
   test('görevleri aramak için bir metin alanı vardır',
@@ -31,10 +34,7 @@ test.describe('US-06 Görevlerde arama yapma', () => {
 
   for (const c of matchingCases) {
     test(`"${c.query}" araması eşleşen görevleri gösterir (${c.why})`,
-      {
-        tag: ['@US-06', '@AC-06.2', '@P2'],
-        annotation: { type: 'karar', description: 'K5: tr-TR kurallı, harfe duyarsız arama' },
-      },
+      { tag: ['@US-06', '@AC-06.2', '@P2'], annotation: c.basis },
       async ({ dashboard }) => {
         await dashboard.search(c.query);
 
@@ -44,10 +44,7 @@ test.describe('US-06 Görevlerde arama yapma', () => {
 
   for (const c of nonMatchingCases) {
     test(`"${c.query}" araması hiçbir görevle eşleşmez (${c.why})`,
-      {
-        tag: ['@US-06', '@AC-06.2', '@P2'],
-        annotation: { type: 'karar', description: 'K5: tr-TR kurallı, harfe duyarsız arama' },
-      },
+      { tag: ['@US-06', '@AC-06.2', '@P2'], annotation: [K5] },
       async ({ dashboard }) => {
         await dashboard.search(c.query);
 
@@ -66,6 +63,23 @@ test.describe('US-06 Görevlerde arama yapma', () => {
 
       await test.step('"grid" aranır', async () => {
         await dashboard.search('grid');
+        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['t5']));
+      });
+    });
+
+  test('harf harf yazarken sonuçlar her tuşta daralır',
+    {
+      tag: ['@US-06', '@AC-06.3', '@P2'],
+      annotation: [A2],
+    },
+    async ({ dashboard }) => {
+      await test.step('"gr" yazılır', async () => {
+        await dashboard.typeInSearch('gr');
+        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['t1', 't5']));
+      });
+
+      await test.step('"id" eklenir', async () => {
+        await dashboard.typeInSearch('id');
         await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['t5']));
       });
     });

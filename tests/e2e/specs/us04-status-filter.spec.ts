@@ -94,7 +94,7 @@ test.describe('US-04 Görevleri durumlarına göre filtreleme', () => {
   test.describe('tüm görevler tamamlanmışken', () => {
     test.use({ seededCompleted: course.tasks.map((t) => t.id) });
 
-    test('devam eden filtresinde bilgilendirme gösterilir',
+    test('tüm görevler tamamlanmışken devam eden filtresinde bilgilendirme gösterilir',
       { tag: ['@US-04', '@AC-04.5', '@P2'] },
       async ({ dashboard }) => {
         await dashboard.setStatusFilter(STATUS.pending);

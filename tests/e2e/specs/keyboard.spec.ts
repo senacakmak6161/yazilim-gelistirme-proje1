@@ -1,8 +1,16 @@
 import { test, expect } from '../fixtures';
+import type { DashboardPage } from '../pages/DashboardPage';
 import { STATUS, fmt } from '../support/contract';
 import { loadCourse, titleOf } from '../support/data';
 
 const course = loadCourse('course.default.json');
+
+const focusTargets = [
+  { name: 'hafta kartı', pick: (d: DashboardPage) => d.weekCard(1) },
+  { name: 'hafta filtresi', pick: (d: DashboardPage) => d.weekSelect },
+  { name: 'arama kutusu', pick: (d: DashboardPage) => d.searchBox },
+  { name: 'tema düğmesi', pick: (d: DashboardPage) => d.themeToggle },
+] as const;
 
 test.describe('Klavye ile kullanım', () => {
   test.skip(({ isMobile }) => isMobile, 'Dokunmatik cihaz profillerinde fiziksel klavye varsayılmaz');
@@ -84,4 +92,18 @@ test.describe('Klavye ile kullanım', () => {
 
       await expect(dashboard.themeToggle).toHaveAttribute('aria-pressed', 'true');
     });
+
+  for (const target of focusTargets) {
+    test(`${target.name} klavyeyle odaklanınca odak göstergesi görünür`,
+      { tag: ['@NFR-3', '@P2'] },
+      async ({ dashboard }) => {
+        const element = target.pick(dashboard);
+        const unfocused = await dashboard.focusStyle(element);
+
+        await dashboard.tabTo(element);
+        await expect(element).toBeFocused();
+
+        await expect.poll(() => dashboard.focusStyle(element)).not.toBe(unfocused);
+      });
+  }
 });

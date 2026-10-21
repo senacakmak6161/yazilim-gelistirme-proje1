@@ -92,7 +92,8 @@ tests/
 | `rawTaskStorage` | Ham localStorage değeri (bozuk kayıt testleri) |
 | `courseDataFailures` | İçerik isteğinin ilk kaç kez 500 döneceği |
 | `mockCourseData` | `false` ise uygulamanın kendi verisi kullanılır |
-| `allowPageErrors` | Konsol hatası beklenen testlerde `true` (gerekçe `annotation` ile yazılır) |
+| `allowConsoleErrors` | Konsol hatası beklenen testlerde `true`; yakalanmamış JS hatası yine testi düşürür (gerekçe `annotation` ile yazılır) |
+| `allowPageErrors` | Tüm sayfa hatası denetimini kapatır; yalnızca zorunlu durumlarda ve gerekçesiyle |
 
 ## Elle kontroller
 

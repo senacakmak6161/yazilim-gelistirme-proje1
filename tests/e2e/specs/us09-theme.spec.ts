@@ -83,7 +83,7 @@ test.describe('US-09 Tema değiştirme', () => {
   test.describe('karanlık tema kayıtlıyken', () => {
     test.use({ seededTheme: THEMES.dark });
 
-    test('uygulama kayıtlı temayla açılır',
+    test('karanlık tema kayıtlıysa uygulama karanlık temayla açılır',
       {
         tag: ['@US-09', '@AC-09.5', '@P3'],
         annotation: { type: 'karar', description: 'D3: tema tercihi korunur' },

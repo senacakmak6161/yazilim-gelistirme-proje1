@@ -1,0 +1,37 @@
+{
+  "course": { "title": "Yazılım Geliştirme" },
+  "weeks": [
+    {
+      "id": "w1",
+      "number": 1,
+      "title": "Kullanılabilirlik ve erişilebilirlik ilkelerine uygun, duyarlı arayüz tasarımına giriş",
+      "description": "Farklı ekran boyutlarında okunabilirliği korunan, klavyeyle ve dokunarak kullanılabilen arayüzlerin temel ilkeleri ve örnek uygulamaları",
+      "goals": [
+        "Erişilebilirlik yönergelerindeki kontrast, odak görünürlüğü ve klavye erişimi gereksinimlerini örneklerle açıklayabilmek",
+        "Duyarlı yerleşimde esnek ızgara, göreli birimler ve medya sorgularını birlikte kullanarak taşmayan sayfalar tasarlayabilmek"
+      ]
+    },
+    {
+      "id": "w2",
+      "number": 2,
+      "title": "Sunucuyla iletişim",
+      "description": "İstek ve yanıt",
+      "goals": ["Yanıt durumlarını yorumlamak"]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "weekId": "w1",
+      "title": "Değerlendirme ölçütlerini karşılayan, ekran okuyucularla uyumlu ve klavyeyle eksiksiz kullanılabilen kayıt formunu hazırla",
+      "description": "Alanların etiketlerle ilişkilendirilmesi, hata mesajlarının duyurulması ve odak sırasının mantıklı olması gerekir"
+    },
+    { "id": "t2", "weekId": "w1", "title": "Kontrast oranlarını ölç", "description": "İki tema için" },
+    {
+      "id": "t3",
+      "weekId": "w2",
+      "title": "Sunucudan gelen başarısız yanıtları kullanıcıya anlaşılır biçimde gösteren bilgilendirme mesajlarını tasarla",
+      "description": "Yeniden deneme seçeneği ve yükleniyor durumu dahil"
+    }
+  ]
+}

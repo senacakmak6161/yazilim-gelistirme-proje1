@@ -68,5 +68,6 @@ export const LIMITS = {
   responseBudgetMs: 300,
   minReadableFontPx: 12,
   minTextContrast: 4.5,
+  phoneMaxWidthPx: 480,
   axeTags: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'],
 } as const;

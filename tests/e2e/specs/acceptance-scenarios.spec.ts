@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures';
-import { STATUS, fmt } from '../support/contract';
+import { LIMITS, STATUS, fmt } from '../support/contract';
 import { relativeLuminance } from '../support/color';
 import { loadCourse, titleOf, titlesOf } from '../support/data';
 
@@ -139,33 +139,39 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
       });
     });
 
-  test('T7 Mobil görünüm: dar ekranda liste, arama ve görev tamamlama çalışır, içerik üst üste binmez',
-    { tag: ['@T7', '@US-08', '@P3'] },
-    async ({ dashboard, isMobile }) => {
-      test.skip(!isMobile, 'Senaryo dar ekranlı mobil cihaz ön koşulu gerektirir');
-      const title = titleOf(course, 't5');
+  test.describe('dar ekranlı mobil cihazda', () => {
+    test.skip(
+      ({ isMobile, viewport }) => !isMobile || (viewport?.width ?? Number.POSITIVE_INFINITY) > LIMITS.phoneMaxWidthPx,
+      'Senaryonun ön koşulu dar ekranlı mobil cihazdır; telefon profillerinde çalışır',
+    );
 
-      await test.step('İşlem: kullanıcı listeyi açar', async () => {
-        await expect(dashboard.taskItems).toHaveCount(10);
-      });
+    test('T7 Mobil görünüm: dar ekranda liste, arama ve görev tamamlama çalışır, içerik üst üste binmez',
+      { tag: ['@T7', '@US-08', '@P3'] },
+      async ({ dashboard }) => {
+        const title = titleOf(course, 't5');
 
-      await test.step('İşlem: kullanıcı arama yapar', async () => {
-        await dashboard.search('grid');
-        await expect(dashboard.taskTitles).toHaveText([title]);
-      });
+        await test.step('İşlem: kullanıcı listeyi açar', async () => {
+          await expect(dashboard.taskItems).toHaveCount(10);
+        });
 
-      await test.step('İşlem: kullanıcı görev tamamlar', async () => {
-        await dashboard.tapTask(title);
-        await expect(dashboard.taskCheckbox(title)).toBeChecked();
-      });
+        await test.step('İşlem: kullanıcı arama yapar', async () => {
+          await dashboard.search('grid');
+          await expect(dashboard.taskTitles).toHaveText([title]);
+        });
 
-      await test.step('Beklenen: içerikler üst üste binmez, yatay kaydırma gerekmez', async () => {
-        await dashboard.clearSearch();
-        await expect(dashboard.taskItems).toHaveCount(10);
-        await expect.poll(() => dashboard.overlappingElements()).toEqual([]);
-        await expect.poll(() => dashboard.hasHorizontalOverflow()).toBe(false);
+        await test.step('İşlem: kullanıcı görev tamamlar', async () => {
+          await dashboard.tapTask(title);
+          await expect(dashboard.taskCheckbox(title)).toBeChecked();
+        });
+
+        await test.step('Beklenen: içerikler üst üste binmez, yatay kaydırma gerekmez', async () => {
+          await dashboard.clearSearch();
+          await expect(dashboard.taskItems).toHaveCount(10);
+          await expect.poll(() => dashboard.overlappingElements()).toEqual([]);
+          await expect.poll(() => dashboard.hasHorizontalOverflow()).toBe(false);
+        });
       });
-    });
+  });
 
   test.describe('tamamlanmış görevler varken', () => {
     test.use({ seededCompleted: ['t1', 't5'] });

@@ -29,10 +29,10 @@ Kapsam dışı: uygulamanın kaynak kodu, sunucu tarafı, gerçek cihaz testi, e
 | Teknik | Kullanıldığı yer |
 |---|---|
 | Denklik sınıfları | Hedef sayısına göre haftalar (2, 3, 0 hedef), tamamlanmış/tamamlanmamış görevler |
-| Sınır değer analizi | %0, %100, 0 görev, 320 px ekran genişliği, 1/3 ve 2/3 yuvarlama |
+| Sınır değer analizi | %0, %100, 0 görev, 320 px ekran genişliği, 1/3 ve 2/3 yuvarlama, uzun Türkçe metinler, 100 görev / 10 hafta |
 | Durum geçişi | Hafta değişimi, işaretle/geri al, filtre → tümü, tema aç/kapa, yenileme |
 | Karar tablosu | Filtre + hafta + arama birleşimi (K3) |
-| Hata tahmini | Bayat içerik, sıraya göre eşleme, Türkçe I/İ, bozuk kayıt, veri yükleme hatası |
+| Hata tahmini | Bayat içerik, sıraya göre eşleme, Hafta 1 / Hafta 10 karışması, Türkçe I/İ, bozuk kayıt, veri yükleme hatası, eksik viewport ayarı, kaldırılmış odak çizgisi |
 
 Beklenen değerler test içinde elle yazılır; arama, filtre, yüzde ve yuvarlama sonuçları testte yeniden hesaplanmaz.
 
@@ -56,7 +56,7 @@ Yerel ayar `tr-TR`, saat dilimi `Europe/Istanbul`, renk şeması `light`. Erişi
 | `us01` … `us10` | Kullanıcı hikâyesi başına kabul kriterleri |
 | `acceptance-scenarios` | PDF Tablo 3 (T1–T8), ön koşul → işlem → beklenen adımlarıyla |
 | `accessibility` | WCAG 2.1 AA (axe-core) |
-| `keyboard` | Klavye ile kullanım (NFR-3) |
+| `keyboard` | Klavye ile kullanım ve görünür odak göstergesi (NFR-3) |
 | `performance` | 300 ms tepki bütçesi, 100 görevlik veri (NFR-4) |
 | `resilience` | Veri yükleme hatası, sahipsiz görev, boş ders |
 | `smoke` | Uygulamanın kendi verisiyle açılması (NFR-6) |
@@ -78,7 +78,7 @@ Yerel ayar `tr-TR`, saat dilimi `Europe/Istanbul`, renk şeması `light`. Erişi
 
 | Risk | Etki | Önlem |
 |---|---|---|
-| Testler hiç gerçek uygulamaya karşı çalışmadı | Yanlış pozitif/negatif | İlk entegrasyonda her kritik test için beklenen değeri bozarak doğru sebeple düştüğü kontrol edilir |
+| Testler gerçek uygulamaya karşı henüz çalışmadı | Yanlış pozitif/negatif | Test kodu sözleşmeye uyan geçici bir sayfayla 6 projede çalıştırıldı; 17 kasıtlı hatanın tamamı ilgili testlerce yakalandı, 3 tekrarda kararsız test çıkmadı (22.10.2026). İlk entegrasyonda kritik testler beklenen değer bozularak yeniden doğrulanır |
 | Sözleşme uygulanmazsa toplu kırmızı | Gürültülü ilk koşu | Sözleşme geliştiriciyle önceden paylaşılır |
 | Onay bekleyen varsayımlar değişebilir | Test güncellemesi | Varsayımlar kodla etiketli (`annotation`), etkilenen testler listeli |
 | Süre ölçümü makineye duyarlı | Kararsız NFR-4 | Tek motor, yumuşak doğrulama (`expect.soft`) |
@@ -88,7 +88,7 @@ Yerel ayar `tr-TR`, saat dilimi `Europe/Istanbul`, renk şeması `light`. Erişi
 
 - **NFR-5** (kodun anlaşılır ve tekrarsız olması): E2E testleri kodu görmez; kod incelemesi ve ESLint ile değerlendirilir.
 - **DS-1 … DS-4**: "Anlaşılır" öznel bir ölçüttür. Kim, ne zaman, neye bakarak karar verdiği `manual-results.json`'a yazılır.
-- Gerçek cihaz davranışı, ekran okuyucu deneyimi, uzun Türkçe başlıklarda taşma: her faz sonunda 15 dakikalık keşif testi (Ek B).
+- Gerçek cihaz davranışı, ekran okuyucu deneyimi, görsel tasarım kalitesi: her faz sonunda 15 dakikalık keşif testi (Ek B).
 
 ## 10. Raporlama
 
@@ -123,5 +123,6 @@ Tekrar      : Her seferinde | Ara sıra (x/10)
 - [ ] Yakınlaştırma %200'de yerleşim
 - [ ] Koyu temada tüm durum mesajlarının okunabilirliği
 - [ ] Ağ yavaşken (DevTools "Slow 3G") ilk yükleme ve hata mesajı
+- [ ] Ders verisinde `<`, `>`, `&` ve tırnak içeren başlıkların düz metin olarak gösterilmesi
 - [ ] Tarayıcı geri/ileri ve yenileme sonrası durum
 - [ ] Bulgular Ek A şablonuyla kaydedildi

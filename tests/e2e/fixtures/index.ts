@@ -11,6 +11,7 @@ type Options = {
   seededTheme: Theme | null;            // Test başında kayıtlı tema
   rawTaskStorage: string | null;        // Bozuk/eski veri testleri için ham localStorage değeri
   allowPageErrors: boolean;             // Hata beklenen testlerde (ör. veri yüklenemedi) true
+  allowConsoleErrors: boolean;
   mockCourseData: boolean;
   courseDataFailures: number;
 };
@@ -29,13 +30,14 @@ export const test = base.extend<Options & Fixtures>({
   seededTheme: [null, { option: true }],
   rawTaskStorage: [null, { option: true }],
   allowPageErrors: [false, { option: true }],
+  allowConsoleErrors: [false, { option: true }],
   mockCourseData: [true, { option: true }],
   courseDataFailures: [0, { option: true }],
 
   // OTOMATİK fixture: her testte kendiliğinden çalışır.
   // Ekranda her şey doğru görünse bile arka planda patlayan JS kodu bir hatadır.
   pageErrors: [
-    async ({ page, allowPageErrors }, use) => {
+    async ({ page, allowPageErrors, allowConsoleErrors }, use) => {
       const errors: string[] = [];
       page.on('pageerror', (err) => errors.push(`pageerror: ${err.message}`));
       page.on('console', (msg) => {
@@ -48,7 +50,8 @@ export const test = base.extend<Options & Fixtures>({
 
       // Test bittikten sonra kontrol: beklenmeyen hata varsa test başarısız olur.
       if (!allowPageErrors) {
-        expect(errors, 'Sayfada beklenmeyen JavaScript hatası').toEqual([]);
+        const unexpected = allowConsoleErrors ? errors.filter((e) => e.startsWith('pageerror:')) : errors;
+        expect(unexpected, 'Sayfada beklenmeyen JavaScript hatası').toEqual([]);
       }
     },
     { auto: true },

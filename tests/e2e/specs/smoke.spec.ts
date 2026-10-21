@@ -9,9 +9,10 @@ test.describe('Duman testi (uygulamanın kendi verisiyle)', () => {
       annotation: { type: 'karar', description: 'D5: CI temiz kurulum + @NFR-6 duman testi' },
     },
     async ({ dashboard }) => {
-      await expect(dashboard.loadError).toBeHidden();
       await expect(dashboard.weekCards.first()).toBeVisible();
+      await expect(dashboard.taskItems.first()).toBeVisible();
       await expect(dashboard.progressBar).toBeVisible();
       await expect(dashboard.searchBox).toBeVisible();
+      await expect(dashboard.loadError).toBeHidden();
     });
 });

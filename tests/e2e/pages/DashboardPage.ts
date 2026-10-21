@@ -80,12 +80,12 @@ export class DashboardPage {
     await this.page.goto('/');
     // .or(): iki durumdan biri gerçekleşince devam eder.
     // Veri yüklenemedi testinde hafta kartı hiç gelmeyeceği için bu gerekli.
-    await expect(this.weekCards.first().or(this.loadError)).toBeVisible();
+    await expect(this.weekCards.or(this.loadError).first()).toBeVisible();
   }
 
   async reload() {
     await this.page.reload();
-    await expect(this.weekCards.first().or(this.loadError)).toBeVisible();
+    await expect(this.weekCards.or(this.loadError).first()).toBeVisible();
   }
 
   // ---------- Haftalar ----------
@@ -109,7 +109,7 @@ export class DashboardPage {
   async clippedGoalTexts(): Promise<string[]> {
     return this.goalItems.evaluateAll((items) =>
       items
-        .filter((el) => el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight)
+        .filter((el) => el.scrollWidth - el.clientWidth > 1 || el.scrollHeight - el.clientHeight > 1)
         .map((el) => el.textContent?.trim() ?? ''),
     );
   }
@@ -158,7 +158,8 @@ export class DashboardPage {
       Object.fromEntries(
         items.map((li) => [
           li.getAttribute('data-task-id') ?? '?',
-          (li.querySelector('input[type="checkbox"]') as HTMLInputElement | null)?.checked ?? false,
+          (li.querySelector('input[type="checkbox"]') as HTMLInputElement | null)?.checked ??
+            li.querySelector('[role="checkbox"]')?.getAttribute('aria-checked') === 'true',
         ]),
       ),
     );
@@ -186,6 +187,10 @@ export class DashboardPage {
     await this.searchBox.fill('');
   }
 
+  async typeInSearch(text: string) {
+    await this.searchBox.pressSequentially(text);
+  }
+
   // ---------- İlerleme ----------
 
   async progressFillRatio(): Promise<number> {
@@ -202,16 +207,14 @@ export class DashboardPage {
   }
 
   async pageColors(): Promise<{ background: string; text: string }> {
-    return this.page.evaluate(() => {
-      const transparent = (value: string) => value === 'transparent' || /rgba\(.*,\s*0\)$/.test(value);
-      const body = getComputedStyle(document.body);
-      const root = getComputedStyle(document.documentElement);
-      const background = !transparent(body.backgroundColor)
-        ? body.backgroundColor
-        : !transparent(root.backgroundColor)
-          ? root.backgroundColor
-          : 'rgb(255, 255, 255)';
-      return { background, text: body.color };
+    return this.taskTitles.first().evaluate((sample) => {
+      const transparent = (value: string) => value === 'transparent' || /rgba\([^)]*,\s*0\)$/.test(value);
+      let background = '';
+      for (let node: Element | null = sample; node && !background; node = node.parentElement) {
+        const color = getComputedStyle(node).backgroundColor;
+        if (!transparent(color)) background = color;
+      }
+      return { background: background || 'rgb(255, 255, 255)', text: getComputedStyle(sample).color };
     });
   }
 
@@ -219,6 +222,14 @@ export class DashboardPage {
 
   async resize(width: number, height: number) {
     await this.page.setViewportSize({ width, height });
+  }
+
+  async layoutViewportWidth(): Promise<number> {
+    return this.page.evaluate(() => document.documentElement.clientWidth);
+  }
+
+  viewportWidth(): number {
+    return this.page.viewportSize()?.width ?? 0;
   }
 
   async hasHorizontalOverflow(): Promise<boolean> {
@@ -242,9 +253,23 @@ export class DashboardPage {
 
   async smallestFontSizePx(): Promise<number> {
     const sizes: number[] = [];
-    for (const locator of [this.weekCards, this.goalItems, this.taskTitles, this.progressText]) {
+    for (const root of [this.weekCards, this.goalsPanel, this.taskItems, this.progressText]) {
       sizes.push(
-        ...(await locator.evaluateAll((els) => els.map((el) => parseFloat(getComputedStyle(el).fontSize)))),
+        ...(await root.evaluateAll((elements) => {
+          const found: number[] = [];
+          for (const element of elements) {
+            const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+            for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+              const parent = node.parentElement;
+              if (!parent || !node.textContent?.trim()) continue;
+              const style = getComputedStyle(parent);
+              const rect = parent.getBoundingClientRect();
+              if (style.display === 'none' || style.visibility === 'hidden' || rect.width <= 1 || rect.height <= 1) continue;
+              found.push(parseFloat(style.fontSize));
+            }
+          }
+          return found;
+        })),
       );
     }
     return sizes.length === 0 ? Number.NaN : Math.min(...sizes);
@@ -261,10 +286,31 @@ export class DashboardPage {
   }
 
   async tabTo(target: Locator, maxPresses = 60) {
+    await target.waitFor();
+    const engine = this.page.context().browser()?.browserType().name();
+    const tabKey = engine === 'webkit' && process.platform === 'darwin' ? 'Alt+Tab' : 'Tab';
     for (let i = 0; i < maxPresses; i += 1) {
-      await this.page.keyboard.press('Tab');
+      await this.page.keyboard.press(tabKey);
       if (await target.evaluate((el) => el === document.activeElement)) return;
     }
+  }
+
+  async focusStyle(target: Locator): Promise<string> {
+    return target.evaluate((el) => {
+      const style = getComputedStyle(el);
+      return [
+        style.outlineStyle,
+        style.outlineWidth,
+        style.outlineColor,
+        style.boxShadow,
+        style.borderColor,
+        style.backgroundColor,
+      ].join(' | ');
+    });
+  }
+
+  async retryLoading() {
+    await this.retryButton.click();
   }
 
   // ---------- Performans ----------

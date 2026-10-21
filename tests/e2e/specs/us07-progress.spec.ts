@@ -16,7 +16,7 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
   test.describe('üç görev tamamlanmışken', () => {
     test.use({ seededCompleted: ['t1', 't2', 't3'] });
 
-    test('tamamlanan ve toplam görev sayısı gösterilir',
+    test('üç görev tamamlanmışken tamamlanan ve toplam görev sayısı 3 / 10 gösterilir',
       { tag: ['@US-07', '@AC-07.1', '@P1'] },
       async ({ dashboard }) => {
         await expect(dashboard.progressText).toHaveText(fmt.progressText(3, 10));
@@ -26,7 +26,7 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
   test.describe('10 görevden 6\'sı tamamlanmışken (PDF örneği)', () => {
     test.use({ seededCompleted: ['t1', 't2', 't3', 't4', 't5', 't6'] });
 
-    test('ilerleme yüzdesi %60 olarak hesaplanır',
+    test('10 görevden 6\'sı tamamlanmışken ilerleme yüzdesi %60 olarak hesaplanır',
       { tag: ['@US-07', '@AC-07.2', '@P1'] },
       async ({ dashboard }) => {
         await expect(dashboard.progressText).toHaveText(fmt.progressText(6, 10));
@@ -55,7 +55,7 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
   test.describe('tüm görevler tamamlanmışken', () => {
     test.use({ seededCompleted: course.tasks.map((t) => t.id) });
 
-    test('ilerleme %100 gösterilir',
+    test('tüm görevler tamamlanınca ilerleme %100 gösterilir',
       { tag: ['@US-07', '@AC-07.2', '@P1'] },
       async ({ dashboard }) => {
         await expect(dashboard.progressText).toHaveText(fmt.progressText(10, 10));
@@ -153,7 +153,10 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
     test.use({ courseData: loadCourse('course.zero-tasks.json') });
 
     test('toplam görev sıfırken hesaplama hatası oluşmaz',
-      { tag: ['@US-07', '@AC-07.6', '@P1'] },
+      {
+        tag: ['@US-07', '@AC-07.6', '@P1'],
+        annotation: { type: 'varsayım', description: 'A10: görev yokken ilerleme "0 / 0" ve %0 gösterir' },
+      },
       async ({ dashboard }) => {
         await expect(dashboard.progressText).toHaveText(fmt.progressText(0, 0));
         await expect(dashboard.progressPercent).toHaveText(fmt.progressPercent(0));

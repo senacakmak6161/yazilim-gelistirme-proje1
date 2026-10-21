@@ -47,7 +47,7 @@ Bir ad veya metin değişecekse önce test ekibiyle konuşulur; değişiklik yal
 
 | Anahtar | Değer |
 |---|---|
-| `edp.taskState.v1` | `{"version":1,"completed":["t1","t5"]}` — tamamlanan görev kimlikleri. Tüm işaretler kaldırılınca anahtar silinmez, boş liste yazılır. |
+| `edp.taskState.v1` | `{"version":1,"completed":["t1","t5"]}` — tamamlanan görev kimlikleri |
 | `edp.theme.v1` | `light` veya `dark` |
 
 Okunamayan değer veya veride olmayan görev kimliği uygulamayı hataya düşürmez; yok sayılır.
@@ -55,5 +55,7 @@ Okunamayan değer veya veride olmayan görev kimliği uygulamayı hataya düşü
 ## 5. Genel
 
 - Sayfa yüklenirken ve kullanım sırasında konsolda hata (`console.error`, yakalanmamış istisna) oluşmaz. Testler bunu otomatik denetler.
-- Etkileşimli öğeler klavyeyle (Tab, Enter, Boşluk, ok tuşları) kullanılabilir.
+- Etkileşimli öğeler klavyeyle (Tab, Enter, Boşluk, ok tuşları) kullanılabilir ve odaklandığında görünür bir odak göstergesi taşır. Tarayıcının varsayılan odak çizgisi kaldırılırsa yerine başka bir gösterge konur.
+- Sayfada `<meta name="viewport" content="width=device-width, initial-scale=1">` bulunur; mobilde sayfa cihaz genişliğinde yerleşir.
+- Görev yokken ilerleme `0 / 0 görev tamamlandı` ve `%0` gösterir.
 - Uygulama `npm run dev` ile, varsayılan `http://localhost:5173` adresinde açılır. Farklıysa `APP_CMD` / `BASE_URL` ile bildirilir.

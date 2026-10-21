@@ -70,3 +70,26 @@ test.describe('US-01 Haftalık ders içeriklerini görüntüleme', () => {
       await expect(dashboard.goalItems).toHaveCount(0);
     });
 });
+
+test.describe('US-01 Çok haftalı derste hafta seçimi', () => {
+  const manyWeeks = loadCourse('course.many.json');
+  test.use({ courseData: manyWeeks });
+
+  test('Hafta 1 ile Hafta 10 seçimleri birbirine karışmaz',
+    { tag: ['@US-01', '@AC-01.5', '@AC-01.3', '@P1'] },
+    async ({ dashboard }) => {
+      await test.step('Hafta 1 seçilir', async () => {
+        await dashboard.selectWeekCard(1);
+        await expect(dashboard.goalsHeading).toHaveText(fmt.goalsHeading(1));
+        await expect(dashboard.goalItems).toHaveText(weekByNumber(manyWeeks, 1).goals);
+        await expect(dashboard.taskTitles).toHaveText(tasksOfWeek(manyWeeks, 'w1').map((t) => t.title));
+      });
+
+      await test.step('Hafta 10 seçilir', async () => {
+        await dashboard.selectWeekCard(10);
+        await expect(dashboard.goalsHeading).toHaveText(fmt.goalsHeading(10));
+        await expect(dashboard.goalItems).toHaveText(weekByNumber(manyWeeks, 10).goals);
+        await expect(dashboard.taskTitles).toHaveText(tasksOfWeek(manyWeeks, 'w10').map((t) => t.title));
+      });
+    });
+});

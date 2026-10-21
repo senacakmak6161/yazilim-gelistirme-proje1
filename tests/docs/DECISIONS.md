@@ -27,7 +27,7 @@ Testler bu varsayımlarla yazıldı. Ekip farklı karar verirse ilgili testler g
 |---|---|---|
 | D7 | Mobil okunabilirlik için en küçük yazı boyutu 12 px (Lighthouse "legible font sizes" ölçütü) | AC-08.2 |
 | A1 | Açılışta tüm görevler listelenir; durum filtresi "Tümü", hafta filtresi "Tüm haftalar" seçilidir | US-03, US-04, US-05, US-06 |
-| A2 | Arama görev başlığı ve açıklamasında yapılır | AC-06.2, T4 |
+| A2 | Arama görev başlığı ve açıklamasında yapılır | AC-06.2, AC-06.3, T4 |
 | A3 | "Devam eden" filtresindeyken tamamlanan görev listeden hemen çıkar | AC-04.3 |
 | A4 | Okunamayan kayıt ve veride olmayan görev kimlikleri hatasız yok sayılır | AC-10.5 |
 | A5 | Hafta kartı seçimi görev listesini o haftaya süzer | AC-01.4, AC-01.5 |
@@ -35,6 +35,7 @@ Testler bu varsayımlarla yazıldı. Ekip farklı karar verirse ilgili testler g
 | A7 | Veri yüklenemezse `role="alert"` mesajı ve "Tekrar dene" düğmesi gösterilir | AC-01.1 (dayanıklılık) |
 | A8 | Var olmayan haftaya bağlı görev hiçbir hafta filtresinde görünmez | AC-05.2 (dayanıklılık) |
 | A9 | Durum seçenekleri Tümü → Devam eden → Tamamlanan sırasıyla tek bir radyo grubundadır | AC-04.1, klavye |
+| A10 | Görev yokken ilerleme "0 / 0 görev tamamlandı" ve %0 gösterir | AC-07.6 |
 
 ## Geliştiriciye iletilecek maddeler
 
