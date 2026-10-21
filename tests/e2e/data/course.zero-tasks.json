@@ -1,0 +1,46 @@
+{
+  "course": {
+    "title": "Yazılım Geliştirme"
+  },
+  "weeks": [
+    {
+      "id": "w1",
+      "number": 1,
+      "title": "HTML Temelleri",
+      "description": "Semantik etiketler ve sayfa yapısı",
+      "goals": [
+        "Semantik HTML etiketlerini doğru kullanmak",
+        "Erişilebilir form öğeleri oluşturmak"
+      ]
+    },
+    {
+      "id": "w2",
+      "number": 2,
+      "title": "CSS ile Yerleşim",
+      "description": "Flexbox ve Grid",
+      "goals": [
+        "Flexbox ile tek boyutlu yerleşim kurmak",
+        "Grid ile duyarlı sayfa tasarlamak"
+      ]
+    },
+    {
+      "id": "w3",
+      "number": 3,
+      "title": "JavaScript ve DOM",
+      "description": "Olaylar ve DOM işlemleri",
+      "goals": [
+        "DOM öğelerini seçmek ve güncellemek",
+        "Olay dinleyicileri yazmak",
+        "localStorage ile veri saklamak"
+      ]
+    },
+    {
+      "id": "w4",
+      "number": 4,
+      "title": "Proje Haftası",
+      "description": "İçerik henüz eklenmedi",
+      "goals": []
+    }
+  ],
+  "tasks": []
+}

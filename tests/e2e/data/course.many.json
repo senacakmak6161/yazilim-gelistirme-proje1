@@ -1,0 +1,709 @@
+{
+  "course": {
+    "title": "Yazılım Geliştirme"
+  },
+  "weeks": [
+    {
+      "id": "w1",
+      "number": 1,
+      "title": "Konu 1",
+      "description": "Hafta 1 açıklaması",
+      "goals": [
+        "Hedef 1.1",
+        "Hedef 1.2"
+      ]
+    },
+    {
+      "id": "w2",
+      "number": 2,
+      "title": "Konu 2",
+      "description": "Hafta 2 açıklaması",
+      "goals": [
+        "Hedef 2.1",
+        "Hedef 2.2"
+      ]
+    },
+    {
+      "id": "w3",
+      "number": 3,
+      "title": "Konu 3",
+      "description": "Hafta 3 açıklaması",
+      "goals": [
+        "Hedef 3.1",
+        "Hedef 3.2"
+      ]
+    },
+    {
+      "id": "w4",
+      "number": 4,
+      "title": "Konu 4",
+      "description": "Hafta 4 açıklaması",
+      "goals": [
+        "Hedef 4.1",
+        "Hedef 4.2"
+      ]
+    },
+    {
+      "id": "w5",
+      "number": 5,
+      "title": "Konu 5",
+      "description": "Hafta 5 açıklaması",
+      "goals": [
+        "Hedef 5.1",
+        "Hedef 5.2"
+      ]
+    },
+    {
+      "id": "w6",
+      "number": 6,
+      "title": "Konu 6",
+      "description": "Hafta 6 açıklaması",
+      "goals": [
+        "Hedef 6.1",
+        "Hedef 6.2"
+      ]
+    },
+    {
+      "id": "w7",
+      "number": 7,
+      "title": "Konu 7",
+      "description": "Hafta 7 açıklaması",
+      "goals": [
+        "Hedef 7.1",
+        "Hedef 7.2"
+      ]
+    },
+    {
+      "id": "w8",
+      "number": 8,
+      "title": "Konu 8",
+      "description": "Hafta 8 açıklaması",
+      "goals": [
+        "Hedef 8.1",
+        "Hedef 8.2"
+      ]
+    },
+    {
+      "id": "w9",
+      "number": 9,
+      "title": "Konu 9",
+      "description": "Hafta 9 açıklaması",
+      "goals": [
+        "Hedef 9.1",
+        "Hedef 9.2"
+      ]
+    },
+    {
+      "id": "w10",
+      "number": 10,
+      "title": "Konu 10",
+      "description": "Hafta 10 açıklaması",
+      "goals": [
+        "Hedef 10.1",
+        "Hedef 10.2"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "weekId": "w1",
+      "title": "Görev 1.1",
+      "description": "Hafta 1 görev 1 açıklaması"
+    },
+    {
+      "id": "t2",
+      "weekId": "w1",
+      "title": "Görev 1.2",
+      "description": "Hafta 1 görev 2 açıklaması"
+    },
+    {
+      "id": "t3",
+      "weekId": "w1",
+      "title": "Görev 1.3",
+      "description": "Hafta 1 görev 3 açıklaması"
+    },
+    {
+      "id": "t4",
+      "weekId": "w1",
+      "title": "Görev 1.4",
+      "description": "Hafta 1 görev 4 açıklaması"
+    },
+    {
+      "id": "t5",
+      "weekId": "w1",
+      "title": "Görev 1.5",
+      "description": "Hafta 1 görev 5 açıklaması"
+    },
+    {
+      "id": "t6",
+      "weekId": "w1",
+      "title": "Görev 1.6",
+      "description": "Hafta 1 görev 6 açıklaması"
+    },
+    {
+      "id": "t7",
+      "weekId": "w1",
+      "title": "Görev 1.7",
+      "description": "Hafta 1 görev 7 açıklaması"
+    },
+    {
+      "id": "t8",
+      "weekId": "w1",
+      "title": "Görev 1.8",
+      "description": "Hafta 1 görev 8 açıklaması"
+    },
+    {
+      "id": "t9",
+      "weekId": "w1",
+      "title": "Görev 1.9",
+      "description": "Hafta 1 görev 9 açıklaması"
+    },
+    {
+      "id": "t10",
+      "weekId": "w1",
+      "title": "Görev 1.10",
+      "description": "Hafta 1 görev 10 açıklaması"
+    },
+    {
+      "id": "t11",
+      "weekId": "w2",
+      "title": "Görev 2.1",
+      "description": "Hafta 2 görev 1 açıklaması"
+    },
+    {
+      "id": "t12",
+      "weekId": "w2",
+      "title": "Görev 2.2",
+      "description": "Hafta 2 görev 2 açıklaması"
+    },
+    {
+      "id": "t13",
+      "weekId": "w2",
+      "title": "Görev 2.3",
+      "description": "Hafta 2 görev 3 açıklaması"
+    },
+    {
+      "id": "t14",
+      "weekId": "w2",
+      "title": "Görev 2.4",
+      "description": "Hafta 2 görev 4 açıklaması"
+    },
+    {
+      "id": "t15",
+      "weekId": "w2",
+      "title": "Görev 2.5",
+      "description": "Hafta 2 görev 5 açıklaması"
+    },
+    {
+      "id": "t16",
+      "weekId": "w2",
+      "title": "Görev 2.6",
+      "description": "Hafta 2 görev 6 açıklaması"
+    },
+    {
+      "id": "t17",
+      "weekId": "w2",
+      "title": "Görev 2.7",
+      "description": "Hafta 2 görev 7 açıklaması"
+    },
+    {
+      "id": "t18",
+      "weekId": "w2",
+      "title": "Görev 2.8",
+      "description": "Hafta 2 görev 8 açıklaması"
+    },
+    {
+      "id": "t19",
+      "weekId": "w2",
+      "title": "Görev 2.9",
+      "description": "Hafta 2 görev 9 açıklaması"
+    },
+    {
+      "id": "t20",
+      "weekId": "w2",
+      "title": "Görev 2.10",
+      "description": "Hafta 2 görev 10 açıklaması"
+    },
+    {
+      "id": "t21",
+      "weekId": "w3",
+      "title": "Görev 3.1",
+      "description": "Hafta 3 görev 1 açıklaması"
+    },
+    {
+      "id": "t22",
+      "weekId": "w3",
+      "title": "Görev 3.2",
+      "description": "Hafta 3 görev 2 açıklaması"
+    },
+    {
+      "id": "t23",
+      "weekId": "w3",
+      "title": "Görev 3.3",
+      "description": "Hafta 3 görev 3 açıklaması"
+    },
+    {
+      "id": "t24",
+      "weekId": "w3",
+      "title": "Görev 3.4",
+      "description": "Hafta 3 görev 4 açıklaması"
+    },
+    {
+      "id": "t25",
+      "weekId": "w3",
+      "title": "Görev 3.5",
+      "description": "Hafta 3 görev 5 açıklaması"
+    },
+    {
+      "id": "t26",
+      "weekId": "w3",
+      "title": "Görev 3.6",
+      "description": "Hafta 3 görev 6 açıklaması"
+    },
+    {
+      "id": "t27",
+      "weekId": "w3",
+      "title": "Görev 3.7",
+      "description": "Hafta 3 görev 7 açıklaması"
+    },
+    {
+      "id": "t28",
+      "weekId": "w3",
+      "title": "Görev 3.8",
+      "description": "Hafta 3 görev 8 açıklaması"
+    },
+    {
+      "id": "t29",
+      "weekId": "w3",
+      "title": "Görev 3.9",
+      "description": "Hafta 3 görev 9 açıklaması"
+    },
+    {
+      "id": "t30",
+      "weekId": "w3",
+      "title": "Görev 3.10",
+      "description": "Hafta 3 görev 10 açıklaması"
+    },
+    {
+      "id": "t31",
+      "weekId": "w4",
+      "title": "Görev 4.1",
+      "description": "Hafta 4 görev 1 açıklaması"
+    },
+    {
+      "id": "t32",
+      "weekId": "w4",
+      "title": "Görev 4.2",
+      "description": "Hafta 4 görev 2 açıklaması"
+    },
+    {
+      "id": "t33",
+      "weekId": "w4",
+      "title": "Görev 4.3",
+      "description": "Hafta 4 görev 3 açıklaması"
+    },
+    {
+      "id": "t34",
+      "weekId": "w4",
+      "title": "Görev 4.4",
+      "description": "Hafta 4 görev 4 açıklaması"
+    },
+    {
+      "id": "t35",
+      "weekId": "w4",
+      "title": "Görev 4.5",
+      "description": "Hafta 4 görev 5 açıklaması"
+    },
+    {
+      "id": "t36",
+      "weekId": "w4",
+      "title": "Görev 4.6",
+      "description": "Hafta 4 görev 6 açıklaması"
+    },
+    {
+      "id": "t37",
+      "weekId": "w4",
+      "title": "Görev 4.7",
+      "description": "Hafta 4 görev 7 açıklaması"
+    },
+    {
+      "id": "t38",
+      "weekId": "w4",
+      "title": "Görev 4.8",
+      "description": "Hafta 4 görev 8 açıklaması"
+    },
+    {
+      "id": "t39",
+      "weekId": "w4",
+      "title": "Görev 4.9",
+      "description": "Hafta 4 görev 9 açıklaması"
+    },
+    {
+      "id": "t40",
+      "weekId": "w4",
+      "title": "Görev 4.10",
+      "description": "Hafta 4 görev 10 açıklaması"
+    },
+    {
+      "id": "t41",
+      "weekId": "w5",
+      "title": "Görev 5.1",
+      "description": "Hafta 5 görev 1 açıklaması"
+    },
+    {
+      "id": "t42",
+      "weekId": "w5",
+      "title": "Görev 5.2",
+      "description": "Hafta 5 görev 2 açıklaması"
+    },
+    {
+      "id": "t43",
+      "weekId": "w5",
+      "title": "Görev 5.3",
+      "description": "Hafta 5 görev 3 açıklaması"
+    },
+    {
+      "id": "t44",
+      "weekId": "w5",
+      "title": "Görev 5.4",
+      "description": "Hafta 5 görev 4 açıklaması"
+    },
+    {
+      "id": "t45",
+      "weekId": "w5",
+      "title": "Görev 5.5",
+      "description": "Hafta 5 görev 5 açıklaması"
+    },
+    {
+      "id": "t46",
+      "weekId": "w5",
+      "title": "Görev 5.6",
+      "description": "Hafta 5 görev 6 açıklaması"
+    },
+    {
+      "id": "t47",
+      "weekId": "w5",
+      "title": "Görev 5.7",
+      "description": "Hafta 5 görev 7 açıklaması"
+    },
+    {
+      "id": "t48",
+      "weekId": "w5",
+      "title": "Görev 5.8",
+      "description": "Hafta 5 görev 8 açıklaması"
+    },
+    {
+      "id": "t49",
+      "weekId": "w5",
+      "title": "Görev 5.9",
+      "description": "Hafta 5 görev 9 açıklaması"
+    },
+    {
+      "id": "t50",
+      "weekId": "w5",
+      "title": "Görev 5.10",
+      "description": "Hafta 5 görev 10 açıklaması"
+    },
+    {
+      "id": "t51",
+      "weekId": "w6",
+      "title": "Görev 6.1",
+      "description": "Hafta 6 görev 1 açıklaması"
+    },
+    {
+      "id": "t52",
+      "weekId": "w6",
+      "title": "Görev 6.2",
+      "description": "Hafta 6 görev 2 açıklaması"
+    },
+    {
+      "id": "t53",
+      "weekId": "w6",
+      "title": "Görev 6.3",
+      "description": "Hafta 6 görev 3 açıklaması"
+    },
+    {
+      "id": "t54",
+      "weekId": "w6",
+      "title": "Görev 6.4",
+      "description": "Hafta 6 görev 4 açıklaması"
+    },
+    {
+      "id": "t55",
+      "weekId": "w6",
+      "title": "Görev 6.5",
+      "description": "Hafta 6 görev 5 açıklaması"
+    },
+    {
+      "id": "t56",
+      "weekId": "w6",
+      "title": "Görev 6.6",
+      "description": "Hafta 6 görev 6 açıklaması"
+    },
+    {
+      "id": "t57",
+      "weekId": "w6",
+      "title": "Görev 6.7",
+      "description": "Hafta 6 görev 7 açıklaması"
+    },
+    {
+      "id": "t58",
+      "weekId": "w6",
+      "title": "Görev 6.8",
+      "description": "Hafta 6 görev 8 açıklaması"
+    },
+    {
+      "id": "t59",
+      "weekId": "w6",
+      "title": "Görev 6.9",
+      "description": "Hafta 6 görev 9 açıklaması"
+    },
+    {
+      "id": "t60",
+      "weekId": "w6",
+      "title": "Görev 6.10",
+      "description": "Hafta 6 görev 10 açıklaması"
+    },
+    {
+      "id": "t61",
+      "weekId": "w7",
+      "title": "Görev 7.1",
+      "description": "Hafta 7 görev 1 açıklaması"
+    },
+    {
+      "id": "t62",
+      "weekId": "w7",
+      "title": "Görev 7.2",
+      "description": "Hafta 7 görev 2 açıklaması"
+    },
+    {
+      "id": "t63",
+      "weekId": "w7",
+      "title": "Görev 7.3",
+      "description": "Hafta 7 görev 3 açıklaması"
+    },
+    {
+      "id": "t64",
+      "weekId": "w7",
+      "title": "Görev 7.4",
+      "description": "Hafta 7 görev 4 açıklaması"
+    },
+    {
+      "id": "t65",
+      "weekId": "w7",
+      "title": "Görev 7.5",
+      "description": "Hafta 7 görev 5 açıklaması"
+    },
+    {
+      "id": "t66",
+      "weekId": "w7",
+      "title": "Görev 7.6",
+      "description": "Hafta 7 görev 6 açıklaması"
+    },
+    {
+      "id": "t67",
+      "weekId": "w7",
+      "title": "Görev 7.7",
+      "description": "Hafta 7 görev 7 açıklaması"
+    },
+    {
+      "id": "t68",
+      "weekId": "w7",
+      "title": "Görev 7.8",
+      "description": "Hafta 7 görev 8 açıklaması"
+    },
+    {
+      "id": "t69",
+      "weekId": "w7",
+      "title": "Görev 7.9",
+      "description": "Hafta 7 görev 9 açıklaması"
+    },
+    {
+      "id": "t70",
+      "weekId": "w7",
+      "title": "Görev 7.10",
+      "description": "Hafta 7 görev 10 açıklaması"
+    },
+    {
+      "id": "t71",
+      "weekId": "w8",
+      "title": "Görev 8.1",
+      "description": "Hafta 8 görev 1 açıklaması"
+    },
+    {
+      "id": "t72",
+      "weekId": "w8",
+      "title": "Görev 8.2",
+      "description": "Hafta 8 görev 2 açıklaması"
+    },
+    {
+      "id": "t73",
+      "weekId": "w8",
+      "title": "Görev 8.3",
+      "description": "Hafta 8 görev 3 açıklaması"
+    },
+    {
+      "id": "t74",
+      "weekId": "w8",
+      "title": "Görev 8.4",
+      "description": "Hafta 8 görev 4 açıklaması"
+    },
+    {
+      "id": "t75",
+      "weekId": "w8",
+      "title": "Görev 8.5",
+      "description": "Hafta 8 görev 5 açıklaması"
+    },
+    {
+      "id": "t76",
+      "weekId": "w8",
+      "title": "Görev 8.6",
+      "description": "Hafta 8 görev 6 açıklaması"
+    },
+    {
+      "id": "t77",
+      "weekId": "w8",
+      "title": "Görev 8.7",
+      "description": "Hafta 8 görev 7 açıklaması"
+    },
+    {
+      "id": "t78",
+      "weekId": "w8",
+      "title": "Görev 8.8",
+      "description": "Hafta 8 görev 8 açıklaması"
+    },
+    {
+      "id": "t79",
+      "weekId": "w8",
+      "title": "Görev 8.9",
+      "description": "Hafta 8 görev 9 açıklaması"
+    },
+    {
+      "id": "t80",
+      "weekId": "w8",
+      "title": "Görev 8.10",
+      "description": "Hafta 8 görev 10 açıklaması"
+    },
+    {
+      "id": "t81",
+      "weekId": "w9",
+      "title": "Görev 9.1",
+      "description": "Hafta 9 görev 1 açıklaması"
+    },
+    {
+      "id": "t82",
+      "weekId": "w9",
+      "title": "Görev 9.2",
+      "description": "Hafta 9 görev 2 açıklaması"
+    },
+    {
+      "id": "t83",
+      "weekId": "w9",
+      "title": "Görev 9.3",
+      "description": "Hafta 9 görev 3 açıklaması"
+    },
+    {
+      "id": "t84",
+      "weekId": "w9",
+      "title": "Görev 9.4",
+      "description": "Hafta 9 görev 4 açıklaması"
+    },
+    {
+      "id": "t85",
+      "weekId": "w9",
+      "title": "Görev 9.5",
+      "description": "Hafta 9 görev 5 açıklaması"
+    },
+    {
+      "id": "t86",
+      "weekId": "w9",
+      "title": "Görev 9.6",
+      "description": "Hafta 9 görev 6 açıklaması"
+    },
+    {
+      "id": "t87",
+      "weekId": "w9",
+      "title": "Görev 9.7",
+      "description": "Hafta 9 görev 7 açıklaması"
+    },
+    {
+      "id": "t88",
+      "weekId": "w9",
+      "title": "Görev 9.8",
+      "description": "Hafta 9 görev 8 açıklaması"
+    },
+    {
+      "id": "t89",
+      "weekId": "w9",
+      "title": "Görev 9.9",
+      "description": "Hafta 9 görev 9 açıklaması"
+    },
+    {
+      "id": "t90",
+      "weekId": "w9",
+      "title": "Görev 9.10",
+      "description": "Hafta 9 görev 10 açıklaması"
+    },
+    {
+      "id": "t91",
+      "weekId": "w10",
+      "title": "Görev 10.1",
+      "description": "Hafta 10 görev 1 açıklaması"
+    },
+    {
+      "id": "t92",
+      "weekId": "w10",
+      "title": "Görev 10.2",
+      "description": "Hafta 10 görev 2 açıklaması"
+    },
+    {
+      "id": "t93",
+      "weekId": "w10",
+      "title": "Görev 10.3",
+      "description": "Hafta 10 görev 3 açıklaması"
+    },
+    {
+      "id": "t94",
+      "weekId": "w10",
+      "title": "Görev 10.4",
+      "description": "Hafta 10 görev 4 açıklaması"
+    },
+    {
+      "id": "t95",
+      "weekId": "w10",
+      "title": "Görev 10.5",
+      "description": "Hafta 10 görev 5 açıklaması"
+    },
+    {
+      "id": "t96",
+      "weekId": "w10",
+      "title": "Görev 10.6",
+      "description": "Hafta 10 görev 6 açıklaması"
+    },
+    {
+      "id": "t97",
+      "weekId": "w10",
+      "title": "Görev 10.7",
+      "description": "Hafta 10 görev 7 açıklaması"
+    },
+    {
+      "id": "t98",
+      "weekId": "w10",
+      "title": "Görev 10.8",
+      "description": "Hafta 10 görev 8 açıklaması"
+    },
+    {
+      "id": "t99",
+      "weekId": "w10",
+      "title": "Görev 10.9",
+      "description": "Hafta 10 görev 9 açıklaması"
+    },
+    {
+      "id": "t100",
+      "weekId": "w10",
+      "title": "Görev 10.10",
+      "description": "Hafta 10 görev 10 açıklaması"
+    }
+  ]
+}

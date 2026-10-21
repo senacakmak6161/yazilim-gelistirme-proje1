@@ -1,0 +1,511 @@
+{
+  "_aciklama": "PDF'ten çıkarılan ana gereksinim listesi. Rapor bu listeden başlar; testi olmayan madde 'Test edilmedi' görünür. yontem: otomatik | elle | kapsam-disi",
+  "kaynak": "Proje 1 – Etkileşimli Ders Deneyimi Panosu: Kullanıcı İhtiyaç Analizi ve Kabul Kriterleri (Ekim 2026)",
+  "gruplar": [
+    {
+      "kod": "US-01",
+      "baslik": "Haftalık ders içeriklerini görüntüleme",
+      "oncelik": "P1"
+    },
+    {
+      "kod": "US-02",
+      "baslik": "Öğrenme hedeflerini inceleme",
+      "oncelik": "P1"
+    },
+    {
+      "kod": "US-03",
+      "baslik": "Görevleri tamamlandı olarak işaretleme",
+      "oncelik": "P1"
+    },
+    {
+      "kod": "US-04",
+      "baslik": "Görevleri durumlarına göre filtreleme",
+      "oncelik": "P2"
+    },
+    {
+      "kod": "US-05",
+      "baslik": "Görevleri haftaya göre filtreleme",
+      "oncelik": "P2"
+    },
+    {
+      "kod": "US-06",
+      "baslik": "Görevlerde arama yapma",
+      "oncelik": "P2"
+    },
+    {
+      "kod": "US-07",
+      "baslik": "Genel ilerlemeyi görüntüleme",
+      "oncelik": "P1"
+    },
+    {
+      "kod": "US-08",
+      "baslik": "Mobil cihazlardan erişim",
+      "oncelik": "P3"
+    },
+    {
+      "kod": "US-09",
+      "baslik": "Tema değiştirme",
+      "oncelik": "P3"
+    },
+    {
+      "kod": "US-10",
+      "baslik": "Görev durumlarını koruma",
+      "oncelik": "P2"
+    },
+    {
+      "kod": "T",
+      "baslik": "Kabul test senaryoları (Tablo 3)"
+    },
+    {
+      "kod": "NFR",
+      "baslik": "İşlevsel olmayan gereksinimler (Bölüm 8.2)"
+    },
+    {
+      "kod": "DS",
+      "baslik": "Ders sorumlusu beklentileri (Bölüm 3.2)"
+    }
+  ],
+  "gereksinimler": [
+    {
+      "kod": "AC-01.1",
+      "grup": "US-01",
+      "yontem": "otomatik",
+      "metin": "Uygulama açıldığında haftalık ders kartları görüntülenmelidir."
+    },
+    {
+      "kod": "AC-01.2",
+      "grup": "US-01",
+      "yontem": "otomatik",
+      "metin": "Her ders kartında hafta numarası, başlık ve açıklama bulunmalıdır."
+    },
+    {
+      "kod": "AC-01.3",
+      "grup": "US-01",
+      "yontem": "otomatik",
+      "metin": "Öğrenci bir haftayı seçtiğinde o haftaya ait içeriklere erişebilmelidir."
+    },
+    {
+      "kod": "AC-01.4",
+      "grup": "US-01",
+      "yontem": "otomatik",
+      "metin": "Seçilen haftanın öğrenme hedefleri ve görevleri doğru gösterilmelidir."
+    },
+    {
+      "kod": "AC-01.5",
+      "grup": "US-01",
+      "yontem": "otomatik",
+      "metin": "Başka bir haftanın içerikleri yanlışlıkla seçilen haftanın altında gösterilmemelidir."
+    },
+    {
+      "kod": "AC-01.6",
+      "grup": "US-01",
+      "yontem": "otomatik",
+      "metin": "İçerik bulunmayan bir hafta için uygun bir bilgilendirme gösterilmelidir."
+    },
+    {
+      "kod": "AC-02.1",
+      "grup": "US-02",
+      "yontem": "otomatik",
+      "metin": "Her haftaya ait öğrenme hedefleri anlaşılır biçimde görüntülenmelidir."
+    },
+    {
+      "kod": "AC-02.2",
+      "grup": "US-02",
+      "yontem": "otomatik",
+      "metin": "Öğrenci bir haftayı açtığında o haftanın hedeflerini görebilmelidir."
+    },
+    {
+      "kod": "AC-02.3",
+      "grup": "US-02",
+      "yontem": "otomatik",
+      "metin": "Öğrenme hedefleri, ait oldukları hafta ile doğru şekilde eşleştirilmelidir."
+    },
+    {
+      "kod": "AC-02.4",
+      "grup": "US-02",
+      "yontem": "otomatik",
+      "metin": "Hedef metinleri ekranda okunabilir biçimde sunulmalıdır."
+    },
+    {
+      "kod": "AC-03.1",
+      "grup": "US-03",
+      "yontem": "otomatik",
+      "metin": "Her görev için tamamlanma durumunu değiştirebilecek bir kontrol bulunmalıdır."
+    },
+    {
+      "kod": "AC-03.2",
+      "grup": "US-03",
+      "yontem": "otomatik",
+      "metin": "Kontrol işaretlendiğinde görev tamamlandı durumuna geçmelidir."
+    },
+    {
+      "kod": "AC-03.3",
+      "grup": "US-03",
+      "yontem": "otomatik",
+      "metin": "Tamamlanan görev görsel olarak ayırt edilebilmelidir."
+    },
+    {
+      "kod": "AC-03.4",
+      "grup": "US-03",
+      "yontem": "otomatik",
+      "metin": "İşaret kaldırıldığında görev yeniden tamamlanmamış duruma dönmelidir."
+    },
+    {
+      "kod": "AC-03.5",
+      "grup": "US-03",
+      "yontem": "otomatik",
+      "metin": "Bir görevin durumu değiştirilirken diğer görevlerin durumları değişmemelidir."
+    },
+    {
+      "kod": "AC-03.6",
+      "grup": "US-03",
+      "yontem": "otomatik",
+      "metin": "Görev durumu değiştiğinde ilerleme göstergesi güncellenmelidir."
+    },
+    {
+      "kod": "AC-04.1",
+      "grup": "US-04",
+      "yontem": "otomatik",
+      "metin": "Kullanıcı tüm görevleri, tamamlanan görevleri veya devam eden görevleri seçebilmelidir."
+    },
+    {
+      "kod": "AC-04.2",
+      "grup": "US-04",
+      "yontem": "otomatik",
+      "metin": "Tamamlanan görevler filtresinde yalnızca tamamlanmış görevler görünmelidir."
+    },
+    {
+      "kod": "AC-04.3",
+      "grup": "US-04",
+      "yontem": "otomatik",
+      "metin": "Devam eden görevler filtresinde yalnızca tamamlanmamış görevler görünmelidir."
+    },
+    {
+      "kod": "AC-04.4",
+      "grup": "US-04",
+      "yontem": "otomatik",
+      "metin": "Tüm görevler seçildiğinde filtre nedeniyle gizlenen görevler yeniden gösterilmelidir."
+    },
+    {
+      "kod": "AC-04.5",
+      "grup": "US-04",
+      "yontem": "otomatik",
+      "metin": "Eşleşen görev yoksa kullanıcıya uygun bir bilgilendirme mesajı gösterilmelidir."
+    },
+    {
+      "kod": "AC-04.6",
+      "grup": "US-04",
+      "yontem": "otomatik",
+      "metin": "Filtreleme, görevlerin gerçek tamamlanma durumlarını değiştirmemelidir."
+    },
+    {
+      "kod": "AC-05.1",
+      "grup": "US-05",
+      "yontem": "otomatik",
+      "metin": "Kullanıcı bir hafta seçerek o haftaya ait görevleri görüntüleyebilmelidir."
+    },
+    {
+      "kod": "AC-05.2",
+      "grup": "US-05",
+      "yontem": "otomatik",
+      "metin": "Gösterilen görevler seçilen haftayla doğru şekilde eşleşmelidir."
+    },
+    {
+      "kod": "AC-05.3",
+      "grup": "US-05",
+      "yontem": "otomatik",
+      "metin": "Tüm haftalar seçeneği varsa seçildiğinde haftaya bağlı filtre kaldırılmalıdır."
+    },
+    {
+      "kod": "AC-05.4",
+      "grup": "US-05",
+      "yontem": "otomatik",
+      "metin": "Seçilen haftada görev yoksa uygun bir boş durum mesajı gösterilmelidir."
+    },
+    {
+      "kod": "AC-06.1",
+      "grup": "US-06",
+      "yontem": "otomatik",
+      "metin": "Kullanıcı görevleri arayabileceği bir metin alanına sahip olmalıdır."
+    },
+    {
+      "kod": "AC-06.2",
+      "grup": "US-06",
+      "yontem": "otomatik",
+      "metin": "Girilen anahtar kelimeyle eşleşen görevler görüntülenmelidir."
+    },
+    {
+      "kod": "AC-06.3",
+      "grup": "US-06",
+      "yontem": "otomatik",
+      "metin": "Arama sonuçları, arama metni değiştikçe güncellenmelidir."
+    },
+    {
+      "kod": "AC-06.4",
+      "grup": "US-06",
+      "yontem": "otomatik",
+      "metin": "Eşleşen görev yoksa kullanıcıya anlaşılır bir mesaj gösterilmelidir."
+    },
+    {
+      "kod": "AC-06.5",
+      "grup": "US-06",
+      "yontem": "otomatik",
+      "metin": "Arama alanı temizlendiğinde arama nedeniyle gizlenen görevler yeniden gösterilmelidir."
+    },
+    {
+      "kod": "AC-06.6",
+      "grup": "US-06",
+      "yontem": "otomatik",
+      "metin": "Arama işlemi görevlerin tamamlanma durumlarını değiştirmemelidir."
+    },
+    {
+      "kod": "AC-07.1",
+      "grup": "US-07",
+      "yontem": "otomatik",
+      "metin": "Tamamlanan görev sayısı ve toplam görev sayısı görüntülenmelidir."
+    },
+    {
+      "kod": "AC-07.2",
+      "grup": "US-07",
+      "yontem": "otomatik",
+      "metin": "İlerleme yüzdesi doğru hesaplanmalıdır."
+    },
+    {
+      "kod": "AC-07.3",
+      "grup": "US-07",
+      "yontem": "otomatik",
+      "metin": "Yeni bir görev tamamlandığında ilerleme göstergesi güncellenmelidir."
+    },
+    {
+      "kod": "AC-07.4",
+      "grup": "US-07",
+      "yontem": "otomatik",
+      "metin": "Tamamlanan bir görev geri alındığında ilerleme oranı yeniden hesaplanmalıdır."
+    },
+    {
+      "kod": "AC-07.5",
+      "grup": "US-07",
+      "yontem": "otomatik",
+      "metin": "Sayısal gösterge ile görsel ilerleme çubuğu birbiriyle tutarlı olmalıdır."
+    },
+    {
+      "kod": "AC-07.6",
+      "grup": "US-07",
+      "yontem": "otomatik",
+      "metin": "Toplam görev sayısı sıfır olduğunda hesaplama hatası oluşmamalıdır."
+    },
+    {
+      "kod": "AC-08.1",
+      "grup": "US-08",
+      "yontem": "otomatik",
+      "metin": "Uygulama telefon, tablet ve masaüstü ekranlarında kullanılabilir olmalıdır."
+    },
+    {
+      "kod": "AC-08.2",
+      "grup": "US-08",
+      "yontem": "otomatik",
+      "metin": "Mobil ekranda yazılar okunabilir olmalıdır."
+    },
+    {
+      "kod": "AC-08.3",
+      "grup": "US-08",
+      "yontem": "otomatik",
+      "metin": "Görev işaretleme, arama ve filtreleme özellikleri mobil cihazlarda çalışmalıdır."
+    },
+    {
+      "kod": "AC-08.4",
+      "grup": "US-08",
+      "yontem": "otomatik",
+      "metin": "Temel içeriklere erişmek için gereksiz yatay kaydırma gerekmemelidir."
+    },
+    {
+      "kod": "AC-08.5",
+      "grup": "US-08",
+      "yontem": "otomatik",
+      "metin": "Kartlar, metinler ve butonlar birbirlerinin üzerine binmemelidir."
+    },
+    {
+      "kod": "AC-08.6",
+      "grup": "US-08",
+      "yontem": "otomatik",
+      "metin": "Ekran boyutu değiştiğinde arayüzün kullanılabilirliği korunmalıdır."
+    },
+    {
+      "kod": "AC-09.1",
+      "grup": "US-09",
+      "yontem": "otomatik",
+      "metin": "Kullanıcı sunulan tema seçenekleri arasında geçiş yapabilmelidir."
+    },
+    {
+      "kod": "AC-09.2",
+      "grup": "US-09",
+      "yontem": "otomatik",
+      "metin": "Tema değiştirildiğinde arayüzün renkleri seçilen temaya uygun değişmelidir."
+    },
+    {
+      "kod": "AC-09.3",
+      "grup": "US-09",
+      "yontem": "otomatik",
+      "metin": "Metinler ve temel kontroller her iki temada da okunabilir olmalıdır."
+    },
+    {
+      "kod": "AC-09.4",
+      "grup": "US-09",
+      "yontem": "otomatik",
+      "metin": "Tema değiştirilmesi görev durumlarını değiştirmemelidir."
+    },
+    {
+      "kod": "AC-09.5",
+      "grup": "US-09",
+      "yontem": "otomatik",
+      "metin": "Tema tercihinin korunması hedefleniyorsa tercih sayfa yenilendiğinde saklanmalıdır.",
+      "not": "Koşul sağlanmış kabul edildi: tema tercihi sayfa yenilendiğinde korunur (karar D3, 2026-10-21)."
+    },
+    {
+      "kod": "AC-10.1",
+      "grup": "US-10",
+      "yontem": "otomatik",
+      "metin": "Bir görev tamamlandı olarak işaretlendiğinde bu durum kaydedilmelidir."
+    },
+    {
+      "kod": "AC-10.2",
+      "grup": "US-10",
+      "yontem": "otomatik",
+      "metin": "Sayfa yenilendiğinde kaydedilen görev durumu geri yüklenmelidir."
+    },
+    {
+      "kod": "AC-10.3",
+      "grup": "US-10",
+      "yontem": "otomatik",
+      "metin": "Birden fazla görev için yapılan işaretlemeler ayrı ayrı korunmalıdır."
+    },
+    {
+      "kod": "AC-10.4",
+      "grup": "US-10",
+      "yontem": "otomatik",
+      "metin": "Sayfa yenilendiğinde ilerleme göstergesi kaydedilen görev durumlarıyla tutarlı olmalıdır."
+    },
+    {
+      "kod": "AC-10.5",
+      "grup": "US-10",
+      "yontem": "otomatik",
+      "metin": "Kalıcı veri saklama kullanılıyorsa kaydedilmiş veriler okunabilir ve doğru biçimde geri yüklenmelidir.",
+      "not": "Koşul sağlanmış kabul edildi: kalıcı saklama localStorage ile yapılır (PDF §6.6; karar D3, 2026-10-21)."
+    },
+    {
+      "kod": "T1",
+      "grup": "T",
+      "yontem": "otomatik",
+      "metin": "Görev tamamlama: görev tamamlandı gösterilir, ilerleme güncellenir."
+    },
+    {
+      "kod": "T2",
+      "grup": "T",
+      "yontem": "otomatik",
+      "metin": "Görev durumunu geri alma: görev tamamlanmamış duruma döner, ilerleme güncellenir."
+    },
+    {
+      "kod": "T3",
+      "grup": "T",
+      "yontem": "otomatik",
+      "metin": "Görev filtreleme: devam eden filtresinde yalnızca tamamlanmamış görevler gösterilir."
+    },
+    {
+      "kod": "T4",
+      "grup": "T",
+      "yontem": "otomatik",
+      "metin": "Görev arama: eşleşen görevler görüntülenir, eşleşmeyenler sonuçlarda yer almaz."
+    },
+    {
+      "kod": "T5",
+      "grup": "T",
+      "yontem": "otomatik",
+      "metin": "İlerleme hesaplama: 10 görevden 4'ü tamamken bir görev daha tamamlanınca 5 ve %50 gösterilir; sayısal değer ve görsel gösterge aynı ilerlemeyi ifade eder."
+    },
+    {
+      "kod": "T6",
+      "grup": "T",
+      "yontem": "otomatik",
+      "metin": "Sayfa yenileme: kaydedilen görev durumları korunur, liste ve ilerleme tutarlıdır."
+    },
+    {
+      "kod": "T7",
+      "grup": "T",
+      "yontem": "otomatik",
+      "metin": "Mobil görünüm: dar ekranda liste, arama ve görev tamamlama çalışır, içerikler üst üste binmez."
+    },
+    {
+      "kod": "T8",
+      "grup": "T",
+      "yontem": "otomatik",
+      "metin": "Tema değiştirme: arayüz seçilen temaya geçer, görev durumları değişmez."
+    },
+    {
+      "kod": "NFR-1",
+      "grup": "NFR",
+      "yontem": "otomatik",
+      "metin": "Mobil, tablet ve masaüstü ekranlarda kullanılabilir olmak."
+    },
+    {
+      "kod": "NFR-2",
+      "grup": "NFR",
+      "yontem": "otomatik",
+      "metin": "Metinlerde yeterli okunabilirlik ve renk kontrastı sağlamak."
+    },
+    {
+      "kod": "NFR-3",
+      "grup": "NFR",
+      "yontem": "otomatik",
+      "metin": "Temel kontrolleri klavyeyle kullanılabilir hâle getirmek."
+    },
+    {
+      "kod": "NFR-4",
+      "grup": "NFR",
+      "yontem": "otomatik",
+      "metin": "Arayüzün tutarlı ve hızlı tepki vermesini sağlamak.",
+      "not": "Eşik 300 ms, yalnızca chromium projesinde ölçülür (karar D4, 2026-10-21)."
+    },
+    {
+      "kod": "NFR-5",
+      "grup": "NFR",
+      "yontem": "kapsam-disi",
+      "metin": "Kodun anlaşılır ve gereksiz tekrarlardan arındırılmış olması.",
+      "not": "E2E test kodu görmez; kod incelemesi ve ESLint ile doğrulanır."
+    },
+    {
+      "kod": "NFR-6",
+      "grup": "NFR",
+      "yontem": "otomatik",
+      "metin": "Projenin README talimatlarıyla temiz ortamda çalıştırılabilmesi.",
+      "not": "CI temiz kurulumdan sonra @NFR-6 etiketli smoke testi çalıştırır (karar D5, 2026-10-21)."
+    },
+    {
+      "kod": "DS-1",
+      "grup": "DS",
+      "yontem": "elle",
+      "metin": "Haftalık ders akışının anlaşılır sunulması.",
+      "not": "\"Anlaşılır\" öznel bir ölçüttür; elle kullanılabilirlik kontrolüyle değerlendirilir."
+    },
+    {
+      "kod": "DS-2",
+      "grup": "DS",
+      "yontem": "elle",
+      "metin": "Ders başlıkları ve öğrenme hedeflerinin açıkça gösterilmesi.",
+      "not": "\"Anlaşılır\" öznel bir ölçüttür; elle kullanılabilirlik kontrolüyle değerlendirilir."
+    },
+    {
+      "kod": "DS-3",
+      "grup": "DS",
+      "yontem": "elle",
+      "metin": "Öğrencilerin yapması gereken görevleri kolayca görebilmesi.",
+      "not": "\"Anlaşılır\" öznel bir ölçüttür; elle kullanılabilirlik kontrolüyle değerlendirilir."
+    },
+    {
+      "kod": "DS-4",
+      "grup": "DS",
+      "yontem": "elle",
+      "metin": "Ders içerikleri ile görevler arasındaki ilişkinin anlaşılır olması.",
+      "not": "\"Anlaşılır\" öznel bir ölçüttür; elle kullanılabilirlik kontrolüyle değerlendirilir."
+    }
+  ]
+}

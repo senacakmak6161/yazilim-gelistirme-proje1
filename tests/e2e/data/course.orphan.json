@@ -1,0 +1,113 @@
+{
+  "course": {
+    "title": "Yazılım Geliştirme"
+  },
+  "weeks": [
+    {
+      "id": "w1",
+      "number": 1,
+      "title": "HTML Temelleri",
+      "description": "Semantik etiketler ve sayfa yapısı",
+      "goals": [
+        "Semantik HTML etiketlerini doğru kullanmak",
+        "Erişilebilir form öğeleri oluşturmak"
+      ]
+    },
+    {
+      "id": "w2",
+      "number": 2,
+      "title": "CSS ile Yerleşim",
+      "description": "Flexbox ve Grid",
+      "goals": [
+        "Flexbox ile tek boyutlu yerleşim kurmak",
+        "Grid ile duyarlı sayfa tasarlamak"
+      ]
+    },
+    {
+      "id": "w3",
+      "number": 3,
+      "title": "JavaScript ve DOM",
+      "description": "Olaylar ve DOM işlemleri",
+      "goals": [
+        "DOM öğelerini seçmek ve güncellemek",
+        "Olay dinleyicileri yazmak",
+        "localStorage ile veri saklamak"
+      ]
+    },
+    {
+      "id": "w4",
+      "number": 4,
+      "title": "Proje Haftası",
+      "description": "İçerik henüz eklenmedi",
+      "goals": []
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "weekId": "w1",
+      "title": "İlk HTML sayfasını oluştur",
+      "description": "Başlık, paragraf ve bağlantı içeren bir sayfa"
+    },
+    {
+      "id": "t2",
+      "weekId": "w1",
+      "title": "Semantik etiketlerle makale yaz",
+      "description": "article ve section etiketlerini kullan"
+    },
+    {
+      "id": "t3",
+      "weekId": "w1",
+      "title": "İletişim formu hazırla",
+      "description": "label ile ilişkilendirilmiş alanlar"
+    },
+    {
+      "id": "t4",
+      "weekId": "w2",
+      "title": "Flexbox ile menü tasarla",
+      "description": "Yatay gezinme menüsü"
+    },
+    {
+      "id": "t5",
+      "weekId": "w2",
+      "title": "Grid ile galeri oluştur",
+      "description": "Duyarlı resim ızgarası"
+    },
+    {
+      "id": "t6",
+      "weekId": "w2",
+      "title": "Işık ve karanlık renk paleti seç",
+      "description": "Tema için CSS değişkenleri"
+    },
+    {
+      "id": "t7",
+      "weekId": "w3",
+      "title": "Buton tıklama olayını yakala",
+      "description": "addEventListener kullan"
+    },
+    {
+      "id": "t8",
+      "weekId": "w3",
+      "title": "Görev listesini DOM ile çiz",
+      "description": "Görevleri dinamik olarak listele"
+    },
+    {
+      "id": "t9",
+      "weekId": "w3",
+      "title": "localStorage ile tercih kaydet",
+      "description": "Tema tercihini sakla"
+    },
+    {
+      "id": "t10",
+      "weekId": "w3",
+      "title": "Arama kutusu ekle",
+      "description": "Anlık filtreleme yap"
+    },
+    {
+      "id": "t99",
+      "weekId": "w99",
+      "title": "Sahipsiz görev",
+      "description": "Var olmayan haftaya bağlı"
+    }
+  ]
+}

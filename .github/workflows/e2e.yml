@@ -1,0 +1,98 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: tests
+
+jobs:
+  quality:
+    name: Typecheck, lint, test list
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: tests/package-lock.json
+      - run: npm ci
+      - run: npm run verify
+
+  e2e:
+    name: Acceptance tests
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check application
+        id: app
+        working-directory: .
+        run: |
+          if [ -f package.json ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Uygulama henüz yok (repo kökünde package.json bulunamadı); kabul testleri atlandı."
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.app.outputs.present == 'true'
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            tests/package-lock.json
+
+      - name: Install application
+        if: steps.app.outputs.present == 'true'
+        working-directory: .
+        run: npm ci
+
+      - name: Install test dependencies
+        if: steps.app.outputs.present == 'true'
+        run: |
+          npm ci
+          npx playwright install --with-deps
+
+      - name: Run acceptance tests
+        if: steps.app.outputs.present == 'true'
+        run: npx playwright test
+        env:
+          APP_DIR: ..
+
+      - name: Traceability gate
+        if: steps.app.outputs.present == 'true' && !cancelled()
+        run: npm run traceability:strict
+
+      - uses: actions/upload-artifact@v4
+        if: steps.app.outputs.present == 'true' && !cancelled()
+        with:
+          name: playwright-report
+          path: tests/playwright-report/
+          retention-days: 14
+
+      - uses: actions/upload-artifact@v4
+        if: steps.app.outputs.present == 'true' && !cancelled()
+        with:
+          name: traceability
+          path: |
+            tests/docs/TRACEABILITY.md
+            tests/test-results/junit.xml
+          retention-days: 14
