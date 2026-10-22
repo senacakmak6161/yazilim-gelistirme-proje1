@@ -27,6 +27,7 @@ Yazılım Geliştirme dersi · Proje 1 · **Grup 2**
 - [Ekran görüntüleri](#ekran-görüntüleri)
 - [Teknoloji yığını](#teknoloji-yığını)
 - [Mimari](#mimari)
+- [Akış diyagramları](#akış-diyagramları)
 - [Veri modeli](#veri-modeli)
 - [Kurulum](#kurulum)
 - [Kullanım](#kullanım)
@@ -240,6 +241,100 @@ yazilim-gelistirme-proje1/
 ├── index.html
 ├── vite.config.js
 └── package.json
+```
+
+---
+
+## Akış diyagramları
+
+### Kullanıcı akışı
+
+Uygulamanın açılışından itibaren kullanıcının izleyebileceği tüm yollar. Her ana işlev,
+kullanıcıyı merkezî seçim noktasına geri döndürür; böylece işlevler birbirini kesmeden
+ardışık olarak kullanılabilir.
+
+```mermaid
+flowchart TD
+    A([Uygulama açılır]) --> B[localStorage okunur:<br/>tema tercihi + görev durumları]
+    B --> C[Haftalık ders kartları listelenir<br/>ilerleme göstergesi hesaplanır]
+    C --> D{Kullanıcı ne yapmak<br/>istiyor?}
+
+    D -->|Haftayı incele| E[Hafta kartı seçilir]
+    E --> F[Öğrenme hedefleri ve<br/>o haftanın görevleri gösterilir]
+    F --> D
+
+    D -->|Görev işaretle| G[Görevin kutusu tıklanır]
+    G --> H[Görev durumu değiştirilir]
+    H --> I[İlerleme yeniden hesaplanır]
+    I --> J[(localStorage'a yazılır)]
+    J --> D
+
+    D -->|Filtrele| K[Durum veya hafta<br/>filtresi seçilir]
+    K --> L{Eşleşen görev<br/>var mı?}
+    L -->|Evet| M[Filtrelenmiş liste gösterilir]
+    L -->|Hayır| N[Boş durum mesajı gösterilir]
+    M --> D
+    N --> D
+
+    D -->|Ara| O[Anahtar kelime girilir]
+    O --> L
+
+    D -->|Temayı değiştir| P[Tema değiştirilir<br/>arayüz renkleri güncellenir]
+    P --> J
+
+    D -->|Çık| Q([Oturum sonlanır<br/>veriler korunur])
+```
+
+### Görev durumu akışı
+
+Bir görevin yaşam döngüsü. Durum değişikliği her zaman iki yan etki üretir: ilerleme
+göstergesinin güncellenmesi ve durumun kalıcı olarak saklanması.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Tamamlanmadı: Görev yüklenir
+    Tamamlanmadı --> Tamamlandı: Kutu işaretlenir
+    Tamamlandı --> Tamamlanmadı: İşaret kaldırılır
+
+    note right of Tamamlandı
+        İlerleme göstergesi güncellenir
+        Durum localStorage'a yazılır
+    end note
+
+    note right of Tamamlanmadı
+        İlerleme göstergesi güncellenir
+        Durum localStorage'a yazılır
+    end note
+```
+
+### Veri kalıcılığı akışı
+
+Sayfa yenilendiğinde kullanıcı durumunun nasıl geri yüklendiği. Bozuk veya eksik kayıt
+durumunda uygulama çökmez, varsayılan değerlere döner.
+
+```mermaid
+sequenceDiagram
+    actor K as Kullanıcı
+    participant U as Uygulama
+    participant S as localStorage
+    participant D as courses.json
+
+    K->>U: Sayfayı açar / yeniler
+    U->>D: Ders içeriklerini oku
+    D-->>U: Haftalar, hedefler, görevler
+    U->>S: Kayıtlı durumları oku
+    alt Kayıt geçerli
+        S-->>U: Görev durumları + tema
+    else Kayıt yok veya bozuk
+        S-->>U: Veri yok
+        U->>U: Varsayılan değerlere dön
+    end
+    U-->>K: Pano görüntülenir
+
+    K->>U: Görevi tamamlandı işaretler
+    U->>U: Durumu güncelle, ilerlemeyi hesapla
+    U->>S: Yeni durumu yaz
+    U-->>K: Güncel liste ve ilerleme
 ```
 
 ---
@@ -532,16 +627,16 @@ main                    ← her zaman çalışır durumda; doğrudan push yapıl
 
 ### Commit mesajı kuralı
 
-Commit mesajları yapılan değişikliği açıklar; İngilizce ve emir kipinde yazılır.
+Commit mesajları Türkçe yazılır ve yapılan değişikliği net biçimde açıklar.
 
 ```bash
 # ✅ İyi
-git commit -m "add week-based task filtering"
-git commit -m "fix progress bar not updating on task undo"
-git commit -m "update user documentation with search section"
+git commit -m "görevleri haftaya göre filtreleme özelliğini ekledim"
+git commit -m "görev geri alınınca ilerleme çubuğunun güncellenmemesi sorununu düzelttim"
+git commit -m "kullanıcı dokümanına arama bölümünü ekledim"
 
 # ❌ Kaçınılması gereken
-git commit -m "update"
+git commit -m "güncelleme"
 git commit -m "final"
 git commit -m "son hali"
 ```
@@ -549,10 +644,12 @@ git commit -m "son hali"
 İlgili issue'ya bağlamak için mesaja referans eklenir — bu, katkının issue ile ilişkisini görünür kılar:
 
 ```bash
-git commit -m "add progress bar component
-
-Closes #7"
+git commit -m "ilerleme çubuğu bileşenini ekledim" -m "Closes #7"
 ```
+
+> `Closes #7` bir GitHub anahtar kelimesidir, Türkçe karşılığı çalışmaz; bu satır
+> İngilizce kalır. Jira bağlandıktan sonra mesajın başına issue anahtarı da eklenir:
+> `git commit -m "YGP1-14 ilerleme çubuğu bileşenini ekledim"`
 
 ### Pull request akışı
 
