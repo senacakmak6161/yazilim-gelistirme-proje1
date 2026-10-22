@@ -1,11 +1,10 @@
 import { test, expect } from '../fixtures';
 import { MESSAGES, STATUS, fmt } from '../support/contract';
-import { loadCourse, titleOf, titlesOf } from '../support/data';
+import { allTasks, allTitles, completionMap, loadCourse, titleOf, titlesOf } from '../support/data';
 
 const course = loadCourse('course.default.json');
-const allTitles = course.tasks.map((t) => t.title);
-const completedIds = ['t1', 't5', 't9'];
-const pendingIds = ['t2', 't3', 't4', 't6', 't7', 't8', 't10'];
+const completedIds = ['w1-t1', 'w2-t2', 'w3-t3'];
+const pendingIds = ['w1-t2', 'w1-t3', 'w2-t1', 'w2-t3', 'w3-t1', 'w3-t2', 'w3-t4'];
 
 test.describe('US-04 Görevleri durumlarına göre filtreleme', () => {
   test('tüm, tamamlanan ve devam eden görev seçenekleri seçilebilir',
@@ -45,10 +44,10 @@ test.describe('US-04 Görevleri durumlarına göre filtreleme', () => {
         await dashboard.setStatusFilter(STATUS.pending);
         await expect(dashboard.taskTitles).toHaveText(titlesOf(course, pendingIds));
 
-        await dashboard.toggleTask(titleOf(course, 't2'));
+        await dashboard.toggleTask(titleOf(course, 'w1-t2'));
 
         await expect(dashboard.taskTitles).toHaveText(
-          titlesOf(course, ['t3', 't4', 't6', 't7', 't8', 't10']),
+          titlesOf(course, ['w1-t3', 'w2-t1', 'w2-t3', 'w3-t1', 'w3-t2', 'w3-t4']),
         );
       });
 
@@ -60,7 +59,7 @@ test.describe('US-04 Görevleri durumlarına göre filtreleme', () => {
 
         await dashboard.setStatusFilter(STATUS.all);
 
-        await expect(dashboard.taskTitles).toHaveText(allTitles);
+        await expect(dashboard.taskTitles).toHaveText(allTitles(course));
       });
 
     test('filtre değiştirmek görevlerin gerçek tamamlanma durumunu değiştirmez',
@@ -71,14 +70,11 @@ test.describe('US-04 Görevleri durumlarına göre filtreleme', () => {
         await dashboard.setStatusFilter(STATUS.completed);
         await expect(dashboard.taskTitles).toHaveText(titlesOf(course, completedIds));
         await dashboard.setStatusFilter(STATUS.all);
-        await expect(dashboard.taskTitles).toHaveText(allTitles);
+        await expect(dashboard.taskTitles).toHaveText(allTitles(course));
 
-        await expect.poll(() => dashboard.checkedStates()).toEqual({
-          t1: true, t2: false, t3: false, t4: false, t5: true,
-          t6: false, t7: false, t8: false, t9: true, t10: false,
-        });
+        await expect.poll(() => dashboard.checkedStates()).toEqual(completionMap(course, ['w1-t1', 'w2-t2', 'w3-t3']));
         await expect(dashboard.progressText).toHaveText(fmt.progressText(3, 10));
-        await expect.poll(async () => (await dashboard.storedCompletedIds()).sort()).toEqual(['t1', 't5', 't9']);
+        await expect.poll(async () => (await dashboard.storedCompletedIds()).sort()).toEqual(['w1-t1', 'w2-t2', 'w3-t3']);
       });
   });
 
@@ -92,7 +88,7 @@ test.describe('US-04 Görevleri durumlarına göre filtreleme', () => {
     });
 
   test.describe('tüm görevler tamamlanmışken', () => {
-    test.use({ seededCompleted: course.tasks.map((t) => t.id) });
+    test.use({ seededCompleted: allTasks(course).map((t) => t.id) });
 
     test('tüm görevler tamamlanmışken devam eden filtresinde bilgilendirme gösterilir',
       { tag: ['@US-04', '@AC-04.5', '@P2'] },

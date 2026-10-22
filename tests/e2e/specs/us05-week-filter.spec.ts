@@ -1,11 +1,10 @@
 import { test, expect } from '../fixtures';
 import { LABELS, MESSAGES, STATUS, fmt } from '../support/contract';
-import { loadCourse, tasksOfWeek, titlesOf, weekByNumber } from '../support/data';
+import { allTitles, loadCourse, tasksOfWeek, titlesOf, weekByNumber } from '../support/data';
 
 const course = loadCourse('course.default.json');
-const allTitles = course.tasks.map((t) => t.title);
 const weekOption = (weekNo: number) => fmt.weekOption(weekNo, weekByNumber(course, weekNo).title);
-const weeksWithTasks = course.weeks.filter((w) => tasksOfWeek(course, w.id).length > 0);
+const weeksWithTasks = course.weeks.filter((w) => tasksOfWeek(course, w.weekNumber).length > 0);
 
 test.describe('US-05 Görevleri haftaya göre filtreleme', () => {
   test('hafta filtresi tüm haftalar ve her hafta için seçenek sunar',
@@ -13,7 +12,7 @@ test.describe('US-05 Görevleri haftaya göre filtreleme', () => {
     async ({ dashboard }) => {
       await expect(dashboard.weekOptions).toHaveText([
         LABELS.allWeeks,
-        ...course.weeks.map((w) => fmt.weekOption(w.number, w.title)),
+        ...course.weeks.map((w) => fmt.weekOption(w.weekNumber, w.title)),
       ]);
     });
 
@@ -22,16 +21,16 @@ test.describe('US-05 Görevleri haftaya göre filtreleme', () => {
     async ({ dashboard }) => {
       await dashboard.selectWeekFilter(weekOption(2));
 
-      await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['t4', 't5', 't6']));
+      await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['w2-t1', 'w2-t2', 'w2-t3']));
     });
 
   for (const week of weeksWithTasks) {
-    test(`Hafta ${week.number} seçilince yalnızca o haftanın görevleri gösterilir`,
+    test(`Hafta ${week.weekNumber} seçilince yalnızca o haftanın görevleri gösterilir`,
       { tag: ['@US-05', '@AC-05.2', '@P2'] },
       async ({ dashboard }) => {
-        await dashboard.selectWeekFilter(weekOption(week.number));
+        await dashboard.selectWeekFilter(weekOption(week.weekNumber));
 
-        await expect(dashboard.taskTitles).toHaveText(tasksOfWeek(course, week.id).map((t) => t.title));
+        await expect(dashboard.taskTitles).toHaveText(tasksOfWeek(course, week.weekNumber).map((t) => t.title));
       });
   }
 
@@ -39,11 +38,11 @@ test.describe('US-05 Görevleri haftaya göre filtreleme', () => {
     { tag: ['@US-05', '@AC-05.3', '@P2'] },
     async ({ dashboard }) => {
       await dashboard.selectWeekFilter(weekOption(2));
-      await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['t4', 't5', 't6']));
+      await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['w2-t1', 'w2-t2', 'w2-t3']));
 
       await dashboard.selectWeekFilter(LABELS.allWeeks);
 
-      await expect(dashboard.taskTitles).toHaveText(allTitles);
+      await expect(dashboard.taskTitles).toHaveText(allTitles(course));
     });
 
   test('görevi olmayan hafta seçilince boş durum mesajı gösterilir',
@@ -57,7 +56,7 @@ test.describe('US-05 Görevleri haftaya göre filtreleme', () => {
 });
 
 test.describe('US-05 Hafta filtresi diğer ölçütlerle birlikte (karar K3)', () => {
-  test.use({ seededCompleted: ['t4', 't9'] });
+  test.use({ seededCompleted: ['w2-t1', 'w3-t3'] });
 
   test('hafta ve durum filtresi birlikte uygulanır',
     {
@@ -68,7 +67,7 @@ test.describe('US-05 Hafta filtresi diğer ölçütlerle birlikte (karar K3)', (
       await dashboard.selectWeekFilter(weekOption(2));
       await dashboard.setStatusFilter(STATUS.pending);
 
-      await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['t5', 't6']));
+      await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['w2-t2', 'w2-t3']));
     });
 
   test('hafta filtresi ve arama birlikte uygulanır',
@@ -80,7 +79,7 @@ test.describe('US-05 Hafta filtresi diğer ölçütlerle birlikte (karar K3)', (
       await dashboard.selectWeekFilter(weekOption(3));
       await dashboard.search('kaydet');
 
-      await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['t9']));
+      await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['w3-t3']));
     });
 
   test('hafta filtresi ve arama birlikte hiçbir görevle eşleşmezse bilgilendirme gösterilir',

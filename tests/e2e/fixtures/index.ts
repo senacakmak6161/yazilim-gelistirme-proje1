@@ -1,7 +1,9 @@
 import { test as base, expect } from '@playwright/test';
 import { DashboardPage } from '../pages/DashboardPage';
-import { COURSE_DATA_URL, STORAGE_KEYS, taskStorage, type Theme } from '../support/contract';
-import { loadCourse, type Course } from '../support/data';
+import { COURSE_DATA_URL, STORAGE_KEYS, taskStorage, themeStorage, type Theme } from '../support/contract';
+import { courseModuleSource, loadCourse, type Course } from '../support/data';
+
+type StorageKey = keyof typeof STORAGE_KEYS;
 
 // Seçenekler: test.use({...}) ile describe veya dosya bazında değiştirilir.
 // Sunumdaki "Ön koşul" sütunu birebir bu seçeneklere karşılık gelir.
@@ -9,11 +11,10 @@ type Options = {
   courseData: Course;                   // Uygulamaya verilecek içerik
   seededCompleted: string[];            // Test başında tamamlanmış sayılacak görev id'leri
   seededTheme: Theme | null;            // Test başında kayıtlı tema
-  rawTaskStorage: string | null;        // Bozuk/eski veri testleri için ham localStorage değeri
-  allowPageErrors: boolean;             // Hata beklenen testlerde (ör. veri yüklenemedi) true
+  rawStorage: Partial<Record<StorageKey, string>>;
+  allowPageErrors: boolean;             // Hata beklenen testlerde true
   allowConsoleErrors: boolean;
   mockCourseData: boolean;
-  courseDataFailures: number;
 };
 
 type Fixtures = {
@@ -28,11 +29,10 @@ export const test = base.extend<Options & Fixtures>({
   courseData: [loadCourse('course.default.json'), { option: true }],
   seededCompleted: [[], { option: true }],
   seededTheme: [null, { option: true }],
-  rawTaskStorage: [null, { option: true }],
+  rawStorage: [{}, { option: true }],
   allowPageErrors: [false, { option: true }],
   allowConsoleErrors: [false, { option: true }],
   mockCourseData: [true, { option: true }],
-  courseDataFailures: [0, { option: true }],
 
   // OTOMATİK fixture: her testte kendiliğinden çalışır.
   // Ekranda her şey doğru görünse bile arka planda patlayan JS kodu bir hatadır.
@@ -58,16 +58,16 @@ export const test = base.extend<Options & Fixtures>({
   ],
 
   dashboard: async (
-    { page, courseData, seededCompleted, seededTheme, rawTaskStorage, mockCourseData, courseDataFailures },
+    { page, courseData, seededCompleted, seededTheme, rawStorage, mockCourseData },
     use,
   ) => {
     // 1) İçerik isteğini yakala ve test verisini döndür (gerçek dosyaya gidilmez).
     if (mockCourseData) {
-      let remainingFailures = courseDataFailures;
       await page.route(COURSE_DATA_URL, async (route) => {
-        if (remainingFailures > 0) {
-          remainingFailures -= 1;
-          await route.fulfill({ status: 500, body: 'Internal Server Error' });
+        const request = route.request();
+        const isModule = request.resourceType() === 'script' || new URL(request.url()).searchParams.has('import');
+        if (isModule) {
+          await route.fulfill({ contentType: 'text/javascript; charset=utf-8', body: courseModuleSource(courseData) });
           return;
         }
         await route.fulfill({ json: courseData });
@@ -76,12 +76,11 @@ export const test = base.extend<Options & Fixtures>({
 
     // 2) localStorage'ı ön koşula göre hazırla.
     const initial: Record<string, string> = {};
-    if (rawTaskStorage !== null) {
-      initial[STORAGE_KEYS.tasks] = rawTaskStorage;
-    } else if (seededCompleted.length > 0) {
-      initial[STORAGE_KEYS.tasks] = taskStorage.encode(seededCompleted);
+    if (seededCompleted.length > 0) initial[STORAGE_KEYS.tasks] = taskStorage.encode(seededCompleted);
+    if (seededTheme) initial[STORAGE_KEYS.theme] = themeStorage.encode(seededTheme);
+    for (const [key, value] of Object.entries(rawStorage) as [StorageKey, string][]) {
+      initial[STORAGE_KEYS[key]] = value;
     }
-    if (seededTheme) initial[STORAGE_KEYS.theme] = seededTheme;
 
     if (Object.keys(initial).length > 0) {
       // DİKKAT: addInitScript, reload DAHİL her sayfa yüklemesinde yeniden çalışır.

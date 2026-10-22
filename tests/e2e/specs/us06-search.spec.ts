@@ -1,19 +1,18 @@
 import { test, expect } from '../fixtures';
 import { MESSAGES, STATUS, fmt } from '../support/contract';
-import { loadCourse, titleOf, titlesOf } from '../support/data';
+import { allTitles, completionMap, loadCourse, titleOf, titlesOf } from '../support/data';
 
 const course = loadCourse('course.default.json');
-const allTitles = course.tasks.map((t) => t.title);
 
 const K5 = { type: 'karar', description: 'K5: tr-TR kurallı, harfe duyarsız arama' };
-const A2 = { type: 'varsayım', description: 'A2: arama başlık ve açıklamada yapılır' };
+const A2 = { type: 'kaynak', description: 'A2 (README): arama başlık ve açıklamada yapılır' };
 
 const matchingCases = [
-  { query: 'grid', ids: ['t5'], why: 'başlıkta büyük/küçük harf farkı', basis: [K5] },
-  { query: 'tema', ids: ['t6', 't9'], why: 'açıklamada eşleşme', basis: [A2] },
-  { query: 'IŞIK', ids: ['t6'], why: 'Türkçe büyük harf I/ı', basis: [K5] },
-  { query: 'ilk', ids: ['t1'], why: 'Türkçe büyük harf İ/i', basis: [K5] },
-  { query: '  grid  ', ids: ['t5'], why: 'baştaki ve sondaki boşluk', basis: [K5] },
+  { query: 'grid', ids: ['w2-t2'], why: 'başlıkta büyük/küçük harf farkı', basis: [K5] },
+  { query: 'tema', ids: ['w2-t3', 'w3-t3'], why: 'açıklamada eşleşme', basis: [A2] },
+  { query: 'IŞIK', ids: ['w2-t3'], why: 'Türkçe büyük harf I/ı', basis: [K5] },
+  { query: 'ilk', ids: ['w1-t1'], why: 'Türkçe büyük harf İ/i', basis: [K5] },
+  { query: '  grid  ', ids: ['w2-t2'], why: 'baştaki ve sondaki boşluk', basis: [K5] },
 ];
 
 const nonMatchingCases = [
@@ -58,12 +57,12 @@ test.describe('US-06 Görevlerde arama yapma', () => {
     async ({ dashboard }) => {
       await test.step('"tema" aranır', async () => {
         await dashboard.search('tema');
-        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['t6', 't9']));
+        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['w2-t3', 'w3-t3']));
       });
 
       await test.step('"grid" aranır', async () => {
         await dashboard.search('grid');
-        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['t5']));
+        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['w2-t2']));
       });
     });
 
@@ -75,12 +74,12 @@ test.describe('US-06 Görevlerde arama yapma', () => {
     async ({ dashboard }) => {
       await test.step('"gr" yazılır', async () => {
         await dashboard.typeInSearch('gr');
-        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['t1', 't5']));
+        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['w1-t1', 'w2-t2']));
       });
 
       await test.step('"id" eklenir', async () => {
         await dashboard.typeInSearch('id');
-        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['t5']));
+        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['w2-t2']));
       });
     });
 
@@ -97,29 +96,26 @@ test.describe('US-06 Görevlerde arama yapma', () => {
     { tag: ['@US-06', '@AC-06.5', '@P2'] },
     async ({ dashboard }) => {
       await dashboard.search('grid');
-      await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['t5']));
+      await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['w2-t2']));
 
       await dashboard.clearSearch();
 
-      await expect(dashboard.taskTitles).toHaveText(allTitles);
+      await expect(dashboard.taskTitles).toHaveText(allTitles(course));
     });
 
   test.describe('tamamlanmış görev varken', () => {
-    test.use({ seededCompleted: ['t5'] });
+    test.use({ seededCompleted: ['w2-t2'] });
 
     test('arama yapmak görevlerin tamamlanma durumunu değiştirmez',
       { tag: ['@US-06', '@AC-06.6', '@P2'] },
       async ({ dashboard }) => {
         await dashboard.search('grid');
-        await expect(dashboard.taskCheckbox(titleOf(course, 't5'))).toBeChecked();
+        await expect(dashboard.taskCheckbox(titleOf(course, 'w2-t2'))).toBeChecked();
 
         await dashboard.clearSearch();
-        await expect(dashboard.taskTitles).toHaveText(allTitles);
+        await expect(dashboard.taskTitles).toHaveText(allTitles(course));
 
-        await expect.poll(() => dashboard.checkedStates()).toEqual({
-          t1: false, t2: false, t3: false, t4: false, t5: true,
-          t6: false, t7: false, t8: false, t9: false, t10: false,
-        });
+        await expect.poll(() => dashboard.checkedStates()).toEqual(completionMap(course, ['w2-t2']));
         await expect(dashboard.progressText).toHaveText(fmt.progressText(1, 10));
       });
 
@@ -127,15 +123,15 @@ test.describe('US-06 Görevlerde arama yapma', () => {
       { tag: ['@US-06', '@AC-06.6', '@P2'] },
       async ({ dashboard }) => {
         await dashboard.search('tema');
-        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['t6', 't9']));
-        await dashboard.toggleTask(titleOf(course, 't6'));
-        await expect(dashboard.taskCheckbox(titleOf(course, 't6'))).toBeChecked();
+        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['w2-t3', 'w3-t3']));
+        await dashboard.toggleTask(titleOf(course, 'w2-t3'));
+        await expect(dashboard.taskCheckbox(titleOf(course, 'w2-t3'))).toBeChecked();
 
         await dashboard.clearSearch();
 
-        await expect(dashboard.taskTitles).toHaveText(allTitles);
-        await expect(dashboard.taskCheckbox(titleOf(course, 't6'))).toBeChecked();
-        await expect(dashboard.taskCheckbox(titleOf(course, 't9'))).not.toBeChecked();
+        await expect(dashboard.taskTitles).toHaveText(allTitles(course));
+        await expect(dashboard.taskCheckbox(titleOf(course, 'w2-t3'))).toBeChecked();
+        await expect(dashboard.taskCheckbox(titleOf(course, 'w3-t3'))).not.toBeChecked();
         await expect(dashboard.progressText).toHaveText(fmt.progressText(2, 10));
       });
 
@@ -148,7 +144,7 @@ test.describe('US-06 Görevlerde arama yapma', () => {
         await dashboard.setStatusFilter(STATUS.completed);
         await dashboard.search('grid');
 
-        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['t5']));
+        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['w2-t2']));
       });
   });
 });

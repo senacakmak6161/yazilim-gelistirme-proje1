@@ -13,6 +13,5 @@ test.describe('Duman testi (uygulamanın kendi verisiyle)', () => {
       await expect(dashboard.taskItems.first()).toBeVisible();
       await expect(dashboard.progressBar).toBeVisible();
       await expect(dashboard.searchBox).toBeVisible();
-      await expect(dashboard.loadError).toBeHidden();
     });
 });

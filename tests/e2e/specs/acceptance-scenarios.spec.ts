@@ -1,16 +1,15 @@
 import { test, expect } from '../fixtures';
 import { LIMITS, STATUS, fmt } from '../support/contract';
 import { relativeLuminance } from '../support/color';
-import { loadCourse, titleOf, titlesOf } from '../support/data';
+import { completionMap, loadCourse, titleOf, titlesOf } from '../support/data';
 
 const course = loadCourse('course.default.json');
-const noneCompleted = Object.fromEntries(course.tasks.map((t) => [t.id, false]));
 
 test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
   test('T1 Görev tamamlama: görev tamamlandı gösterilir ve ilerleme güncellenir',
     { tag: ['@T1', '@US-03', '@P1'] },
     async ({ dashboard }) => {
-      const title = titleOf(course, 't1');
+      const title = titleOf(course, 'w1-t1');
 
       await test.step('Ön koşul: listede tamamlanmamış bir görev bulunur', async () => {
         await expect(dashboard.taskCheckbox(title)).not.toBeChecked();
@@ -29,12 +28,12 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
     });
 
   test.describe('tamamlanmış bir görevle', () => {
-    test.use({ seededCompleted: ['t1'] });
+    test.use({ seededCompleted: ['w1-t1'] });
 
     test('T2 Görev durumunu geri alma: görev tamamlanmamış duruma döner ve ilerleme güncellenir',
       { tag: ['@T2', '@US-03', '@P1'] },
       async ({ dashboard }) => {
-        const title = titleOf(course, 't1');
+        const title = titleOf(course, 'w1-t1');
 
         await test.step('Ön koşul: tamamlanmış bir görev bulunur', async () => {
           await expect(dashboard.taskCheckbox(title)).toBeChecked();
@@ -55,7 +54,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
   });
 
   test.describe('tamamlanmış ve tamamlanmamış görevlerle', () => {
-    test.use({ seededCompleted: ['t1', 't5', 't9'] });
+    test.use({ seededCompleted: ['w1-t1', 'w2-t2', 'w3-t3'] });
 
     test('T3 Görev filtreleme: devam eden filtresinde yalnızca tamamlanmamış görevler gösterilir',
       { tag: ['@T3', '@US-04', '@P2'] },
@@ -70,7 +69,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
 
         await test.step('Beklenen: yalnızca tamamlanmamış görevler gösterilir, yanlış sınıflandırma yoktur', async () => {
           await expect(dashboard.taskTitles).toHaveText(
-            titlesOf(course, ['t2', 't3', 't4', 't6', 't7', 't8', 't10']),
+            titlesOf(course, ['w1-t2', 'w1-t3', 'w2-t1', 'w2-t3', 'w3-t1', 'w3-t2', 'w3-t4']),
           );
           await expect.poll(async () => Object.values(await dashboard.checkedStates())).not.toContain(true);
         });
@@ -89,15 +88,15 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
       });
 
       await test.step('Beklenen: eşleşen görevler görüntülenir, eşleşmeyenler yer almaz', async () => {
-        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['t6', 't9']));
-        for (const id of ['t1', 't2', 't3', 't4', 't5', 't7', 't8', 't10']) {
+        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['w2-t3', 'w3-t3']));
+        for (const id of ['w1-t1', 'w1-t2', 'w1-t3', 'w2-t1', 'w2-t2', 'w3-t1', 'w3-t2', 'w3-t4']) {
           await expect(dashboard.taskCheckbox(titleOf(course, id))).toBeHidden();
         }
       });
     });
 
   test.describe('10 görevden 4\'ü tamamlanmışken', () => {
-    test.use({ seededCompleted: ['t1', 't2', 't3', 't4'] });
+    test.use({ seededCompleted: ['w1-t1', 'w1-t2', 'w1-t3', 'w2-t1'] });
 
     test('T5 İlerleme hesaplama: bir görev daha tamamlanınca 5 ve %50 gösterilir',
       { tag: ['@T5', '@US-07', '@P1'] },
@@ -107,7 +106,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
         });
 
         await test.step('İşlem: kullanıcı bir görev daha tamamlar', async () => {
-          await dashboard.toggleTask(titleOf(course, 't5'));
+          await dashboard.toggleTask(titleOf(course, 'w2-t2'));
         });
 
         await test.step('Beklenen: tamamlanan 5 olur, ilerleme %50; sayı ve çubuk aynı ilerlemeyi gösterir', async () => {
@@ -123,8 +122,8 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
     { tag: ['@T6', '@US-10', '@P2'] },
     async ({ dashboard }) => {
       await test.step('Ön koşul: bir veya daha fazla görev tamamlanmıştır', async () => {
-        await dashboard.toggleTask(titleOf(course, 't2'));
-        await dashboard.toggleTask(titleOf(course, 't7'));
+        await dashboard.toggleTask(titleOf(course, 'w1-t2'));
+        await dashboard.toggleTask(titleOf(course, 'w3-t1'));
         await expect(dashboard.progressText).toHaveText(fmt.progressText(2, 10));
         await expect.poll(async () => (await dashboard.storedCompletedIds()).length).toBe(2);
       });
@@ -135,7 +134,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
 
       await test.step('Beklenen: görev durumları korunur, liste ve ilerleme kayıtlı durumla tutarlıdır', async () => {
         await expect(dashboard.progressText).toHaveText(fmt.progressText(2, 10));
-        await expect.poll(() => dashboard.checkedStates()).toEqual({ ...noneCompleted, t2: true, t7: true });
+        await expect.poll(() => dashboard.checkedStates()).toEqual(completionMap(course, ['w1-t2', 'w3-t1']));
       });
     });
 
@@ -148,7 +147,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
     test('T7 Mobil görünüm: dar ekranda liste, arama ve görev tamamlama çalışır, içerik üst üste binmez',
       { tag: ['@T7', '@US-08', '@P3'] },
       async ({ dashboard }) => {
-        const title = titleOf(course, 't5');
+        const title = titleOf(course, 'w2-t2');
 
         await test.step('İşlem: kullanıcı listeyi açar', async () => {
           await expect(dashboard.taskItems).toHaveCount(10);
@@ -174,7 +173,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
   });
 
   test.describe('tamamlanmış görevler varken', () => {
-    test.use({ seededCompleted: ['t1', 't5'] });
+    test.use({ seededCompleted: ['w1-t1', 'w2-t2'] });
 
     test('T8 Tema değiştirme: arayüz seçilen temaya geçer, görev durumları değişmez',
       { tag: ['@T8', '@US-09', '@P3'] },

@@ -4,13 +4,14 @@
 
 // localStorage anahtarları (docs/TEST_CONTRACT.md)
 export const STORAGE_KEYS = {
-  tasks: 'edp.taskState.v1',
-  theme: 'edp.theme.v1',
+  tasks: 'ddp.taskStatus',
+  theme: 'ddp.theme',
+  filters: 'ddp.filters',
 } as const;
 
-// Uygulamanın içerik verisini çektiği adres (glob deseni).
+// Uygulamanın içerik verisini yüklediği adres (src/data/courses.json).
 // page.route bu desenle eşleşen isteği yakalayıp test verisini döndürür.
-export const COURSE_DATA_URL = '**/data/course.json';
+export const COURSE_DATA_URL = /\/data\/courses\.json(?:\?.*)?$/;
 
 // Kullanıcıya gösterilen mesajlar (docs/TEST_CONTRACT.md) — birebir eşleşmeli.
 export const MESSAGES = {
@@ -19,7 +20,6 @@ export const MESSAGES = {
   weekNoTasks: 'Bu haftaya ait görev bulunmuyor.',         // M3
   noTasks: 'Henüz görev bulunmuyor.',                      // M4
   selectWeekHint: 'Hedefleri görmek için bir hafta seçin.',
-  loadError: 'Ders içerikleri yüklenemedi.',
 } as const;
 
 // Erişilebilir adlar: getByRole(..., { name }) bunlarla eşleşir.
@@ -31,10 +31,9 @@ export const LABELS = {
   allWeeks: 'Tüm haftalar',
   statusGroup: 'Görev durumu',
   completedBadge: 'Tamamlandı',
-  retry: 'Tekrar dene',
 } as const;
 
-export const STATUS = { all: 'Tümü', pending: 'Devam eden', completed: 'Tamamlanan' } as const;
+export const STATUS = { all: 'Tümü', pending: 'Devam edenler', completed: /^Tamamlanan(lar)?$/ } as const;
 export type StatusLabel = (typeof STATUS)[keyof typeof STATUS];
 
 // Biçim kuralları. Testler beklenen metni buradan üretir;
@@ -53,15 +52,37 @@ export const THEMES = { light: 'light', dark: 'dark' } as const;
 export type Theme = (typeof THEMES)[keyof typeof THEMES];
 
 export const taskStorage = {
-  encode: (completedIds: readonly string[]) => JSON.stringify({ version: 1, completed: completedIds }),
+  encode: (completedIds: readonly string[]) =>
+    JSON.stringify(Object.fromEntries(completedIds.map((id) => [id, true]))),
   decode: (raw: string | null): string[] => {
     if (raw === null) return [];
     const parsed: unknown = JSON.parse(raw);
-    if (typeof parsed !== 'object' || parsed === null || !Array.isArray((parsed as { completed?: unknown }).completed)) {
+    if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
       throw new Error(`Beklenmeyen görev kaydı biçimi: ${raw}`);
     }
-    return (parsed as { completed: string[] }).completed;
+    return Object.entries(parsed)
+      .filter(([, done]) => done === true)
+      .map(([id]) => id);
   },
+};
+
+export const themeStorage = {
+  encode: (theme: Theme) => JSON.stringify(theme),
+  decode: (raw: string | null): string | null => {
+    if (raw === null) return null;
+    try {
+      const parsed: unknown = JSON.parse(raw);
+      return typeof parsed === 'string' ? parsed : raw;
+    } catch {
+      return raw;
+    }
+  },
+};
+
+export const SAMPLE_FILTERS = { status: 'active', week: 'all' } as const;
+
+export const filterStorage = {
+  encode: (filters: Record<string, string | number>) => JSON.stringify(filters),
 };
 
 export const LIMITS = {

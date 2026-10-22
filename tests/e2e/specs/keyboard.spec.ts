@@ -41,7 +41,7 @@ test.describe('Klavye ile kullanım', () => {
   test('görev kutusu Boşluk tuşuyla işaretlenir ve işareti kaldırılır',
     { tag: ['@NFR-3', '@US-03', '@P2'] },
     async ({ dashboard }) => {
-      const checkbox = dashboard.taskCheckbox(titleOf(course, 't1'));
+      const checkbox = dashboard.taskCheckbox(titleOf(course, 'w1-t1'));
       await dashboard.tabTo(checkbox);
       await expect(checkbox).toBeFocused();
 
@@ -79,7 +79,7 @@ test.describe('Klavye ile kullanım', () => {
 
       await dashboard.typeText('grid');
 
-      await expect(dashboard.taskTitles).toHaveText([titleOf(course, 't5')]);
+      await expect(dashboard.taskTitles).toHaveText([titleOf(course, 'w2-t2')]);
     });
 
   test('tema düğmesine Tab ile ulaşılır ve Enter ile tema değişir',

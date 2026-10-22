@@ -6,7 +6,7 @@ const course = loadCourse('course.many.json');
 const budget = LIMITS.responseBudgetMs;
 
 test.describe('Hızlı tepki (100 görevlik veriyle)', () => {
-  test.use({ courseData: course, seededCompleted: ['t1'] });
+  test.use({ courseData: course, seededCompleted: ['w1-t1'] });
   test.skip(
     ({ browserName, isMobile }) => browserName !== 'chromium' || isMobile,
     'Süre ölçümü makine ve motora duyarlıdır; karşılaştırılabilir sonuç için tek masaüstü motorunda ölçülür',
@@ -63,7 +63,7 @@ test.describe('Hızlı tepki (100 görevlik veriyle)', () => {
       const week4 = weekByNumber(course, 4);
       const elapsed = await dashboard.measureUpdateMs(
         () => dashboard.selectWeekFilter(fmt.weekOption(4, week4.title)),
-        () => expect(dashboard.taskTitles).toHaveText(tasksOfWeek(course, week4.id).map((t) => t.title)),
+        () => expect(dashboard.taskTitles).toHaveText(tasksOfWeek(course, 4).map((t) => t.title)),
       );
 
       expect.soft(elapsed, `ölçülen süre: ${Math.round(elapsed)} ms`).toBeLessThanOrEqual(budget);

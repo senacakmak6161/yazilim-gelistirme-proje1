@@ -1,13 +1,13 @@
 # Kabul Testleri (Playwright)
 
-Etkileşimli Ders Deneyimi Panosu'nun uçtan uca kabul testleri. Testler PDF'teki kabul kriterlerinden yazılmıştır; her test bir gereksinime etiketle bağlıdır ve sonuçlar izlenebilirlik raporunda gereksinim bazında görülür.
+Etkileşimli Ders Deneyimi Panosu'nun uçtan uca kabul testleri. Testler PDF'teki kabul kriterlerinden ve proje README'sindeki veri modelinden yazılmıştır; her test bir gereksinime etiketle bağlıdır ve sonuçlar izlenebilirlik raporunda gereksinim bazında görülür.
 
 Test planı: [docs/TEST_PLAN.md](docs/TEST_PLAN.md) · UI sözleşmesi: [docs/TEST_CONTRACT.md](docs/TEST_CONTRACT.md) · Kararlar: [docs/DECISIONS.md](docs/DECISIONS.md)
 
 ## Gereksinimler
 
 - Node.js 22 veya üstü
-- Uygulamanın `npm run dev` ile açılabilmesi (repo kökünde)
+- Uygulamanın `npm run dev` ile açılabilmesi (repo kökünde). Test verisi Vite geliştirme sunucusunun `src/data/courses.json` modül isteği yakalanarak verilir; `npm run preview` ile çalışmaz.
 
 ## Kurulum
 
@@ -59,7 +59,7 @@ npx playwright test --repeat-each=10 --grep @US-03   # kararsızlık kontrolü
 Her test en az şu etiketleri taşır:
 
 - `@US-xx` — kullanıcı hikâyesi (NFR testlerinde ilgili olduğunda)
-- `@AC-xx.x`, `@Tn`, `@NFR-n` — doğruladığı gereksinim
+- `@AC-xx.x`, `@Tn`, `@NFR-n`, `@VM-n` — doğruladığı gereksinim
 - `@P1` / `@P2` / `@P3` — öncelik (PDF Tablo 4)
 
 PDF dışı bir karara dayanan testler `annotation: { type: 'karar', description: 'K3: …' }` taşır. Gereksinim listesinde olmayan etiket raporda uyarı olarak görünür.
@@ -74,7 +74,7 @@ tests/
 │   ├── fixtures/     dashboard fixture'ı ve test seçenekleri
 │   ├── support/      Sözleşme, veri yükleyici, yerleşim/renk/erişilebilirlik yardımcıları
 │   └── data/         Test verisi (uygulama verisinden bağımsız)
-├── traceability/     Gereksinim listesi (72 madde) ve elle kontrol kayıtları
+├── traceability/     Gereksinim listesi (74 madde) ve elle kontrol kayıtları
 ├── scripts/          İzlenebilirlik raporu
 ├── docs/             Test planı, sözleşme, kararlar
 └── playwright.config.ts
@@ -89,8 +89,7 @@ tests/
 | `courseData` | Uygulamaya verilecek ders içeriği |
 | `seededCompleted` | Başlangıçta tamamlanmış görev kimlikleri |
 | `seededTheme` | Başlangıçta kayıtlı tema |
-| `rawTaskStorage` | Ham localStorage değeri (bozuk kayıt testleri) |
-| `courseDataFailures` | İçerik isteğinin ilk kaç kez 500 döneceği |
+| `rawStorage` | Ham localStorage değerleri, ör. `{ tasks: '{bozuk' }` (`tasks`, `theme`, `filters`) |
 | `mockCourseData` | `false` ise uygulamanın kendi verisi kullanılır |
 | `allowConsoleErrors` | Konsol hatası beklenen testlerde `true`; yakalanmamış JS hatası yine testi düşürür (gerekçe `annotation` ile yazılır) |
 | `allowPageErrors` | Tüm sayfa hatası denetimini kapatır; yalnızca zorunlu durumlarda ve gerekçesiyle |

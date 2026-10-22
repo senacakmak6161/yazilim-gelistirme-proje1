@@ -15,12 +15,12 @@ test.describe('US-01 Haftalık ders içeriklerini görüntüleme', () => {
   // VERİ GÜDÜMLÜ TEST: her hafta için ayrı bir test üretilir.
   // Biri düşerse rapordaki başlıktan hangi hafta olduğu hemen anlaşılır.
   for (const week of course.weeks) {
-    test(`Hafta ${week.number} kartında numara, başlık ve açıklama bulunur`,
+    test(`Hafta ${week.weekNumber} kartında numara, başlık ve açıklama bulunur`,
       { tag: ['@US-01', '@AC-01.2', '@P1'] },
       async ({ dashboard }) => {
-        const card = dashboard.weekCard(week.number);
+        const card = dashboard.weekCard(week.weekNumber);
         await expect(card).toBeVisible();
-        await expect(card).toContainText(fmt.weekTag(week.number));
+        await expect(card).toContainText(fmt.weekTag(week.weekNumber));
         await expect(card).toContainText(week.title);
         await expect(card).toContainText(week.description);
       });
@@ -38,8 +38,8 @@ test.describe('US-01 Haftalık ders içeriklerini görüntüleme', () => {
       await expect(dashboard.goalsHeading).toHaveText(fmt.goalsHeading(2));
 
       // toHaveText(dizi): hem SAYIYI hem SIRAYI hem METNİ tek seferde doğrular
-      await expect(dashboard.goalItems).toHaveText(week2.goals);
-      await expect(dashboard.taskTitles).toHaveText(tasksOfWeek(course, 'w2').map((t) => t.title));
+      await expect(dashboard.goalItems).toHaveText(week2.objectives);
+      await expect(dashboard.taskTitles).toHaveText(tasksOfWeek(course, 2).map((t) => t.title));
     });
 
   test('seçilen haftanın altında başka haftaların içeriği gösterilmez',
@@ -48,10 +48,10 @@ test.describe('US-01 Haftalık ders içeriklerini görüntüleme', () => {
       await dashboard.selectWeekCard(2);
       // Senkronizasyon noktası: önce seçimin uygulandığından emin ol
       await expect(dashboard.goalsHeading).toHaveText(fmt.goalsHeading(2));
-      await expect(dashboard.taskTitles).toHaveText(tasksOfWeek(course, 'w2').map((t) => t.title));
+      await expect(dashboard.taskTitles).toHaveText(tasksOfWeek(course, 2).map((t) => t.title));
 
-      const otherTasks = course.tasks.filter((t) => t.weekId !== 'w2');
-      const otherGoals = course.weeks.filter((w) => w.id !== 'w2').flatMap((w) => w.goals);
+      const otherTasks = course.weeks.filter((w) => w.weekNumber !== 2).flatMap((w) => w.tasks);
+      const otherGoals = course.weeks.filter((w) => w.weekNumber !== 2).flatMap((w) => w.objectives);
 
       // toBeHidden: eleman DOM'da hiç yoksa da, gizliyse de geçer
       for (const t of otherTasks) {
@@ -81,15 +81,15 @@ test.describe('US-01 Çok haftalı derste hafta seçimi', () => {
       await test.step('Hafta 1 seçilir', async () => {
         await dashboard.selectWeekCard(1);
         await expect(dashboard.goalsHeading).toHaveText(fmt.goalsHeading(1));
-        await expect(dashboard.goalItems).toHaveText(weekByNumber(manyWeeks, 1).goals);
-        await expect(dashboard.taskTitles).toHaveText(tasksOfWeek(manyWeeks, 'w1').map((t) => t.title));
+        await expect(dashboard.goalItems).toHaveText(weekByNumber(manyWeeks, 1).objectives);
+        await expect(dashboard.taskTitles).toHaveText(tasksOfWeek(manyWeeks, 1).map((t) => t.title));
       });
 
       await test.step('Hafta 10 seçilir', async () => {
         await dashboard.selectWeekCard(10);
         await expect(dashboard.goalsHeading).toHaveText(fmt.goalsHeading(10));
-        await expect(dashboard.goalItems).toHaveText(weekByNumber(manyWeeks, 10).goals);
-        await expect(dashboard.taskTitles).toHaveText(tasksOfWeek(manyWeeks, 'w10').map((t) => t.title));
+        await expect(dashboard.goalItems).toHaveText(weekByNumber(manyWeeks, 10).objectives);
+        await expect(dashboard.taskTitles).toHaveText(tasksOfWeek(manyWeeks, 10).map((t) => t.title));
       });
     });
 });

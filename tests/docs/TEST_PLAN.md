@@ -2,14 +2,14 @@
 
 | | |
 |---|---|
-| Sürüm | 1.0 |
+| Sürüm | 1.1 |
 | Hazırlayan | Tarık Kılıç (Test) |
 | Tarih | 22.10.2026 |
-| Kaynak | *Etkileşimli Ders Deneyimi Panosu — Kullanıcı İhtiyaç Analizi, Kullanıcı Hikâyeleri ve Kabul Kriterleri* (Ekim 2026) |
+| Kaynak | *Etkileşimli Ders Deneyimi Panosu — Kullanıcı İhtiyaç Analizi, Kullanıcı Hikâyeleri ve Kabul Kriterleri* (Ekim 2026); proje README'si (Veri modeli) |
 
 ## 1. Amaç
 
-Uygulamanın PDF'te tanımlanan 54 kabul kriterini, 8 kabul test senaryosunu ve işlevsel olmayan gereksinimleri karşıladığını otomatik ve izlenebilir biçimde doğrulamak. Testler uygulamadan önce, kabul kriterlerinden yazılır (ATDD); uygulama geldiğinde çalıştırılmaya hazırdır.
+Uygulamanın PDF'te tanımlanan 54 kabul kriterini, 8 kabul test senaryosunu, işlevsel olmayan gereksinimleri ve README veri modelindeki kalıcılık kurallarını karşıladığını otomatik ve izlenebilir biçimde doğrulamak. Testler uygulamadan önce, kabul kriterlerinden yazılır (ATDD); uygulama geldiğinde çalıştırılmaya hazırdır.
 
 ## 2. Kapsam
 
@@ -20,7 +20,8 @@ Uygulamanın PDF'te tanımlanan 54 kabul kriterini, 8 kabul test senaryosunu ve 
 | NFR-1, 2, 3, 4, 6 | 5 | Otomatik |
 | NFR-5 kod kalitesi | 1 | Kapsam dışı — kod incelemesi ve ESLint ile |
 | DS-1 … DS-4 ders sorumlusu beklentileri | 4 | Elle kullanılabilirlik kontrolü |
-| **Toplam** | **72** | |
+| VM-1, VM-2 README veri modeli (filtre tercihi) | 2 | Otomatik |
+| **Toplam** | **74** | |
 
 Kapsam dışı: uygulamanın kaynak kodu, sunucu tarafı, gerçek cihaz testi, ekran okuyucu deneyimi.
 
@@ -32,7 +33,7 @@ Kapsam dışı: uygulamanın kaynak kodu, sunucu tarafı, gerçek cihaz testi, e
 | Sınır değer analizi | %0, %100, 0 görev, 320 px ekran genişliği, 1/3 ve 2/3 yuvarlama, uzun Türkçe metinler, 100 görev / 10 hafta |
 | Durum geçişi | Hafta değişimi, işaretle/geri al, filtre → tümü, tema aç/kapa, yenileme |
 | Karar tablosu | Filtre + hafta + arama birleşimi (K3) |
-| Hata tahmini | Bayat içerik, sıraya göre eşleme, Hafta 1 / Hafta 10 karışması, Türkçe I/İ, bozuk kayıt, veri yükleme hatası, eksik viewport ayarı, kaldırılmış odak çizgisi |
+| Hata tahmini | Bayat içerik, sıraya göre eşleme, Hafta 1 / Hafta 10 karışması, Türkçe I/İ, bozuk kayıt, `false` değerli kayıt, eksik viewport ayarı, kaldırılmış odak çizgisi |
 
 Beklenen değerler test içinde elle yazılır; arama, filtre, yüzde ve yuvarlama sonuçları testte yeniden hesaplanmaz.
 
@@ -58,12 +59,13 @@ Yerel ayar `tr-TR`, saat dilimi `Europe/Istanbul`, renk şeması `light`. Erişi
 | `accessibility` | WCAG 2.1 AA (axe-core) |
 | `keyboard` | Klavye ile kullanım ve görünür odak göstergesi (NFR-3) |
 | `performance` | 300 ms tepki bütçesi, 100 görevlik veri (NFR-4) |
-| `resilience` | Veri yükleme hatası, sahipsiz görev, boş ders |
+| `resilience` | Boş ders, bozuk filtre kaydı |
+| `filter-persistence` | Filtre tercihinin yenilemede korunması (`ddp.filters`) |
 | `smoke` | Uygulamanın kendi verisiyle açılması (NFR-6) |
 
 ## 6. Giriş ölçütleri
 
-- Uygulama `npm run dev` ile açılıyor ve [TEST_CONTRACT.md](TEST_CONTRACT.md) uygulanmış.
+- Uygulama `npm run dev` ile açılıyor, ders içeriği `src/data/courses.json` dosyasından `import` ile alınıyor ve [TEST_CONTRACT.md](TEST_CONTRACT.md) uygulanmış.
 - `npm run verify` (tip, lint, test listesi) temiz.
 - Onay bekleyen varsayımlar ([DECISIONS.md](DECISIONS.md)) ekiple gözden geçirilmiş.
 
@@ -78,7 +80,7 @@ Yerel ayar `tr-TR`, saat dilimi `Europe/Istanbul`, renk şeması `light`. Erişi
 
 | Risk | Etki | Önlem |
 |---|---|---|
-| Testler gerçek uygulamaya karşı henüz çalışmadı | Yanlış pozitif/negatif | Test kodu sözleşmeye uyan geçici bir sayfayla 6 projede çalıştırıldı; 17 kasıtlı hatanın tamamı ilgili testlerce yakalandı, 3 tekrarda kararsız test çıkmadı (22.10.2026). İlk entegrasyonda kritik testler beklenen değer bozularak yeniden doğrulanır |
+| Testler gerçek uygulamaya karşı henüz çalışmadı | Yanlış pozitif/negatif | Test kodu sözleşmeye uyan geçici bir sayfayla 6 projede çalıştırıldı; 17 kasıtlı hatanın tamamı ilgili testlerce yakalandı, 3 tekrarda kararsız test çıkmadı (22.10.2026). README veri modeline geçişten sonra README'ye uyan geçici bir Vite + React uygulamasıyla 6 projede yeniden çalıştırıldı; 2 tekrarda tümü geçti, kararsız test çıkmadı (22.10.2026). İlk entegrasyonda kritik testler beklenen değer bozularak yeniden doğrulanır |
 | Sözleşme uygulanmazsa toplu kırmızı | Gürültülü ilk koşu | Sözleşme geliştiriciyle önceden paylaşılır |
 | Onay bekleyen varsayımlar değişebilir | Test güncellemesi | Varsayımlar kodla etiketli (`annotation`), etkilenen testler listeli |
 | Süre ölçümü makineye duyarlı | Kararsız NFR-4 | Tek motor, yumuşak doğrulama (`expect.soft`) |
@@ -122,7 +124,7 @@ Tekrar      : Her seferinde | Ara sıra (x/10)
 - [ ] Ekran okuyucu (VoiceOver/TalkBack) ile hafta seçimi ve görev işaretleme
 - [ ] Yakınlaştırma %200'de yerleşim
 - [ ] Koyu temada tüm durum mesajlarının okunabilirliği
-- [ ] Ağ yavaşken (DevTools "Slow 3G") ilk yükleme ve hata mesajı
+- [ ] Ağ yavaşken (DevTools "Slow 3G") ilk yükleme
 - [ ] Ders verisinde `<`, `>`, `&` ve tırnak içeren başlıkların düz metin olarak gösterilmesi
 - [ ] Tarayıcı geri/ileri ve yenileme sonrası durum
 - [ ] Bulgular Ek A şablonuyla kaydedildi

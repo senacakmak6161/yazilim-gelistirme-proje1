@@ -80,7 +80,7 @@ test.describe('US-08 Uzun Türkçe metinler', () => {
       await dashboard.resize(narrowPhone.width, narrowPhone.height);
       await dashboard.selectWeekCard(1);
 
-      await expect(dashboard.goalItems).toHaveText(weekByNumber(longTextCourse, 1).goals);
+      await expect(dashboard.goalItems).toHaveText(weekByNumber(longTextCourse, 1).objectives);
       await expect.poll(() => dashboard.hasHorizontalOverflow()).toBe(false);
       await expect.poll(() => dashboard.overlappingElements()).toEqual([]);
       await expect.poll(() => dashboard.clippedGoalTexts()).toEqual([]);
@@ -113,22 +113,22 @@ test.describe('US-08 Mobil cihaz profillerinde', () => {
   test('görev işaretleme, arama ve filtreleme mobil cihazda dokunarak çalışır',
     { tag: ['@US-08', '@AC-08.3', '@P3'] },
     async ({ dashboard }) => {
-      const t5 = titleOf(course, 't5');
+      const w2t2 = titleOf(course, 'w2-t2');
 
       await test.step('görev dokunarak tamamlanır', async () => {
-        await dashboard.tapTask(t5);
-        await expect(dashboard.taskCheckbox(t5)).toBeChecked();
+        await dashboard.tapTask(w2t2);
+        await expect(dashboard.taskCheckbox(w2t2)).toBeChecked();
       });
 
       await test.step('arama yapılır', async () => {
         await dashboard.search('grid');
-        await expect(dashboard.taskTitles).toHaveText([t5]);
+        await expect(dashboard.taskTitles).toHaveText([w2t2]);
         await dashboard.clearSearch();
       });
 
       await test.step('durum filtresi uygulanır', async () => {
         await dashboard.setStatusFilter(STATUS.completed);
-        await expect(dashboard.taskTitles).toHaveText([t5]);
+        await expect(dashboard.taskTitles).toHaveText([w2t2]);
       });
     });
 });

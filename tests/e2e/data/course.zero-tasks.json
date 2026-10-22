@@ -1,46 +1,50 @@
 {
   "course": {
-    "title": "Yazılım Geliştirme"
+    "title": "Yazılım Geliştirme",
+    "term": "2026 Güz"
   },
   "weeks": [
     {
-      "id": "w1",
-      "number": 1,
+      "id": 1,
+      "weekNumber": 1,
       "title": "HTML Temelleri",
       "description": "Semantik etiketler ve sayfa yapısı",
-      "goals": [
+      "objectives": [
         "Semantik HTML etiketlerini doğru kullanmak",
         "Erişilebilir form öğeleri oluşturmak"
-      ]
+      ],
+      "tasks": []
     },
     {
-      "id": "w2",
-      "number": 2,
+      "id": 2,
+      "weekNumber": 2,
       "title": "CSS ile Yerleşim",
       "description": "Flexbox ve Grid",
-      "goals": [
+      "objectives": [
         "Flexbox ile tek boyutlu yerleşim kurmak",
         "Grid ile duyarlı sayfa tasarlamak"
-      ]
+      ],
+      "tasks": []
     },
     {
-      "id": "w3",
-      "number": 3,
+      "id": 3,
+      "weekNumber": 3,
       "title": "JavaScript ve DOM",
       "description": "Olaylar ve DOM işlemleri",
-      "goals": [
+      "objectives": [
         "DOM öğelerini seçmek ve güncellemek",
         "Olay dinleyicileri yazmak",
         "localStorage ile veri saklamak"
-      ]
+      ],
+      "tasks": []
     },
     {
-      "id": "w4",
-      "number": 4,
+      "id": 4,
+      "weekNumber": 4,
       "title": "Proje Haftası",
       "description": "İçerik henüz eklenmedi",
-      "goals": []
+      "objectives": [],
+      "tasks": []
     }
-  ],
-  "tasks": []
+  ]
 }

@@ -1,9 +1,9 @@
 import { test, expect } from '../fixtures';
 import { LABELS, STATUS, fmt } from '../support/contract';
-import { loadCourse, titleOf, weekByNumber } from '../support/data';
+import { allTasks, loadCourse, titleOf, weekByNumber } from '../support/data';
 
 const course = loadCourse('course.default.json');
-const threeTaskCourse = { ...course, tasks: course.tasks.slice(0, 3) };
+const threeTaskCourse = { ...course, weeks: course.weeks.map((w) => (w.weekNumber === 1 ? w : { ...w, tasks: [] })) };
 
 test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
   test('hiç görev tamamlanmamışken tamamlanan ve toplam görev sayısı gösterilir',
@@ -14,7 +14,7 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
     });
 
   test.describe('üç görev tamamlanmışken', () => {
-    test.use({ seededCompleted: ['t1', 't2', 't3'] });
+    test.use({ seededCompleted: ['w1-t1', 'w1-t2', 'w1-t3'] });
 
     test('üç görev tamamlanmışken tamamlanan ve toplam görev sayısı 3 / 10 gösterilir',
       { tag: ['@US-07', '@AC-07.1', '@P1'] },
@@ -24,7 +24,7 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
   });
 
   test.describe('10 görevden 6\'sı tamamlanmışken (PDF örneği)', () => {
-    test.use({ seededCompleted: ['t1', 't2', 't3', 't4', 't5', 't6'] });
+    test.use({ seededCompleted: ['w1-t1', 'w1-t2', 'w1-t3', 'w2-t1', 'w2-t2', 'w2-t3'] });
 
     test('10 görevden 6\'sı tamamlanmışken ilerleme yüzdesi %60 olarak hesaplanır',
       { tag: ['@US-07', '@AC-07.2', '@P1'] },
@@ -44,7 +44,7 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
     test('görev tamamlanınca çubuk sayısal göstergeyle birlikte güncellenir',
       { tag: ['@US-07', '@AC-07.5', '@P1'] },
       async ({ dashboard }) => {
-        await dashboard.toggleTask(titleOf(course, 't7'));
+        await dashboard.toggleTask(titleOf(course, 'w3-t1'));
 
         await expect(dashboard.progressPercent).toHaveText(fmt.progressPercent(70));
         await expect(dashboard.progressBar).toHaveAttribute('aria-valuenow', '70');
@@ -53,7 +53,7 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
   });
 
   test.describe('tüm görevler tamamlanmışken', () => {
-    test.use({ seededCompleted: course.tasks.map((t) => t.id) });
+    test.use({ seededCompleted: allTasks(course).map((t) => t.id) });
 
     test('tüm görevler tamamlanınca ilerleme %100 gösterilir',
       { tag: ['@US-07', '@AC-07.2', '@P1'] },
@@ -67,7 +67,7 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
     test.use({ courseData: threeTaskCourse });
 
     test.describe('3 görevden 1\'i tamamlanmışken', () => {
-      test.use({ seededCompleted: ['t1'] });
+      test.use({ seededCompleted: ['w1-t1'] });
 
       test('1/3 ilerleme %33 olarak gösterilir',
         {
@@ -81,7 +81,7 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
     });
 
     test.describe('3 görevden 2\'si tamamlanmışken', () => {
-      test.use({ seededCompleted: ['t1', 't2'] });
+      test.use({ seededCompleted: ['w1-t1', 'w1-t2'] });
 
       test('2/3 ilerleme %67 olarak gösterilir',
         {
@@ -100,21 +100,21 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
     async ({ dashboard }) => {
       await expect(dashboard.progressText).toHaveText(fmt.progressText(0, 10));
 
-      await dashboard.toggleTask(titleOf(course, 't1'));
+      await dashboard.toggleTask(titleOf(course, 'w1-t1'));
 
       await expect(dashboard.progressText).toHaveText(fmt.progressText(1, 10));
       await expect(dashboard.progressPercent).toHaveText(fmt.progressPercent(10));
     });
 
   test.describe('iki görev tamamlanmışken', () => {
-    test.use({ seededCompleted: ['t1', 't2'] });
+    test.use({ seededCompleted: ['w1-t1', 'w1-t2'] });
 
     test('tamamlanan görev geri alınınca ilerleme yeniden hesaplanır',
       { tag: ['@US-07', '@AC-07.4', '@P1'] },
       async ({ dashboard }) => {
         await expect(dashboard.progressText).toHaveText(fmt.progressText(2, 10));
 
-        await dashboard.toggleTask(titleOf(course, 't2'));
+        await dashboard.toggleTask(titleOf(course, 'w1-t2'));
 
         await expect(dashboard.progressText).toHaveText(fmt.progressText(1, 10));
         await expect(dashboard.progressPercent).toHaveText(fmt.progressPercent(10));

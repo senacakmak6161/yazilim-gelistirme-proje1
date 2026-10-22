@@ -49,7 +49,7 @@ test.describe('US-09 Tema değiştirme', () => {
     });
 
   test.describe('tamamlanmış görevler varken', () => {
-    test.use({ seededCompleted: ['t1', 't5'] });
+    test.use({ seededCompleted: ['w1-t1', 'w2-t2'] });
 
     test('tema değiştirmek görev durumlarını değiştirmez',
       { tag: ['@US-09', '@AC-09.4', '@P3'] },

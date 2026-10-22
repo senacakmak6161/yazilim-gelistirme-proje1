@@ -44,7 +44,7 @@ const IKON = {
 
 // Gereksinim etiketi biçimleri. US-xx ve P1/P2/P3 etiketleri gruplama içindir,
 // gereksinim değildir; bu yüzden "bilinmeyen etiket" kontrolüne girmezler.
-const GEREKSINIM_ETIKETI = /^(AC-\d{2}\.\d+|T\d+|NFR-\d+|DS-\d+)$/;
+const GEREKSINIM_ETIKETI = /^(AC-\d{2}\.\d+|T\d+|NFR-\d+|DS-\d+|VM-\d+)$/;
 
 const readJson = (p) => JSON.parse(readFileSync(p, 'utf-8'));
 

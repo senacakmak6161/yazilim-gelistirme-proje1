@@ -1,5 +1,5 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-import { LABELS, STORAGE_KEYS, taskStorage, type StatusLabel } from '../support/contract';
+import { LABELS, STORAGE_KEYS, taskStorage, themeStorage, type StatusLabel } from '../support/contract';
 import { collectBoxes, findOverlaps } from '../support/layout';
 
 // PAGE OBJECT: sayfanın "nasıl" kullanıldığını bilir.
@@ -37,8 +37,6 @@ export class DashboardPage {
 
   // Diğer
   readonly themeToggle: Locator;
-  readonly loadError: Locator;
-  readonly retryButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -71,21 +69,17 @@ export class DashboardPage {
     this.progressFill = page.getByTestId('progress-fill');
 
     this.themeToggle = page.getByRole('button', { name: LABELS.themeToggle });
-    this.loadError = page.getByRole('alert');
-    this.retryButton = page.getByRole('button', { name: LABELS.retry });
   }
 
-  /** Sayfayı açar; içerik ya da hata mesajı görünene kadar bekler. */
+  /** Sayfayı açar; hafta kartları görünene kadar bekler. */
   async goto() {
     await this.page.goto('/');
-    // .or(): iki durumdan biri gerçekleşince devam eder.
-    // Veri yüklenemedi testinde hafta kartı hiç gelmeyeceği için bu gerekli.
-    await expect(this.weekCards.or(this.loadError).first()).toBeVisible();
+    await expect(this.weekCards.first()).toBeVisible();
   }
 
   async reload() {
     await this.page.reload();
-    await expect(this.weekCards.or(this.loadError).first()).toBeVisible();
+    await expect(this.weekCards.first()).toBeVisible();
   }
 
   // ---------- Haftalar ----------
@@ -177,6 +171,10 @@ export class DashboardPage {
 
   async selectWeekFilter(optionLabel: string) {
     await this.weekSelect.selectOption({ label: optionLabel });
+  }
+
+  async selectedWeekLabel(): Promise<string> {
+    return this.weekSelect.evaluate((el) => (el as HTMLSelectElement).selectedOptions[0]?.textContent?.trim() ?? '');
   }
 
   async search(text: string) {
@@ -309,10 +307,6 @@ export class DashboardPage {
     });
   }
 
-  async retryLoading() {
-    await this.retryButton.click();
-  }
-
   // ---------- Performans ----------
 
   async measureUpdateMs(action: () => Promise<void>, settled: () => Promise<void>): Promise<number> {
@@ -345,6 +339,10 @@ export class DashboardPage {
   }
 
   async readStoredTheme(): Promise<string | null> {
-    return this.page.evaluate((key) => localStorage.getItem(key), STORAGE_KEYS.theme);
+    return themeStorage.decode(await this.page.evaluate((key) => localStorage.getItem(key), STORAGE_KEYS.theme));
+  }
+
+  async readStoredFilters(): Promise<string | null> {
+    return this.page.evaluate((key) => localStorage.getItem(key), STORAGE_KEYS.filters);
   }
 }

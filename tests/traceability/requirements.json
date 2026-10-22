@@ -1,6 +1,6 @@
 {
-  "_aciklama": "PDF'ten çıkarılan ana gereksinim listesi. Rapor bu listeden başlar; testi olmayan madde 'Test edilmedi' görünür. yontem: otomatik | elle | kapsam-disi",
-  "kaynak": "Proje 1 – Etkileşimli Ders Deneyimi Panosu: Kullanıcı İhtiyaç Analizi ve Kabul Kriterleri (Ekim 2026)",
+  "_aciklama": "PDF'ten ve proje README'sinden (VM) çıkarılan ana gereksinim listesi. Rapor bu listeden başlar; testi olmayan madde 'Test edilmedi' görünür. yontem: otomatik | elle | kapsam-disi",
+  "kaynak": "Proje 1 – Etkileşimli Ders Deneyimi Panosu: Kullanıcı İhtiyaç Analizi ve Kabul Kriterleri (Ekim 2026); proje README'si (Veri modeli)",
   "gruplar": [
     {
       "kod": "US-01",
@@ -63,6 +63,10 @@
     {
       "kod": "DS",
       "baslik": "Ders sorumlusu beklentileri (Bölüm 3.2)"
+    },
+    {
+      "kod": "VM",
+      "baslik": "README veri modeli (Kullanıcı durumu)"
     }
   ],
   "gereksinimler": [
@@ -506,6 +510,20 @@
       "yontem": "elle",
       "metin": "Ders içerikleri ile görevler arasındaki ilişkinin anlaşılır olması.",
       "not": "\"Anlaşılır\" öznel bir ölçüttür; elle kullanılabilirlik kontrolüyle değerlendirilir."
+    },
+    {
+      "kod": "VM-1",
+      "grup": "VM",
+      "yontem": "otomatik",
+      "metin": "Son kullanılan filtre tercihi (ddp.filters) saklanır ve sayfa yenilendiğinde geri yüklenir.",
+      "not": "Kaynak: README, Veri modeli → Kullanıcı durumu."
+    },
+    {
+      "kod": "VM-2",
+      "grup": "VM",
+      "yontem": "otomatik",
+      "metin": "Filtre kaydı bozuksa uygulama çökmez, varsayılan filtrelerle açılır.",
+      "not": "Kaynak: README, Veri modeli → Dayanıklılık kuralı."
     }
   ]
 }
