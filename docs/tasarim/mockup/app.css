@@ -1,0 +1,205 @@
+/* Ders Patikası — görsel tasarım referansı
+   Bu dosya mockup içindir; uygulamadaki variables.css bundan türetilir. */
+
+:root{
+  --bg:#f3f6f3;
+  --surface:#ffffff;
+  --surface-2:#e9efe9;
+  --ink:#15201a;
+  --text:#2c3a33;
+  --soft:#4e5d55;
+  --muted:#7a877f;
+  --border:#d5ded7;
+  --line:#c6d1c8;
+  --accent:#a2701f;
+  --accent-ink:#8a5e16;
+  --accent-soft:#f6ecd8;
+  --accent-line:#dcc08a;
+  --done:#35714f;
+  --done-soft:#e2efe7;
+  --focus:#a2701f;
+}
+
+html[data-theme="dark"]{
+  --bg:#0e1411;
+  --surface:#151d18;
+  --surface-2:#1b241e;
+  --ink:#e9efe9;
+  --text:#d3ddd6;
+  --soft:#aebbb3;
+  --muted:#7f8d85;
+  --border:#26312b;
+  --line:#2f3b34;
+  --accent:#dfa948;
+  --accent-ink:#e8bb6b;
+  --accent-soft:#261d0f;
+  --accent-line:#5c4820;
+  --done:#6cba8c;
+  --done-soft:#14251b;
+  --focus:#dfa948;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Work Sans","Segoe UI",system-ui,sans-serif;
+  font-size:15px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  font-variant-numeric:tabular-nums;
+}
+h1,h2,h3,.display{font-family:"Outfit","Bahnschrift","Segoe UI",sans-serif;font-weight:600;color:var(--ink);letter-spacing:-.015em;margin:0}
+
+.eyebrow{
+  font-family:"Outfit","Bahnschrift",sans-serif;
+  font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;
+}
+
+/* ---------- üst bant ---------- */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;padding:20px 0;border-bottom:1px solid var(--border);
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .mark{color:var(--accent);display:block}
+.brand .name{font-family:"Outfit",sans-serif;font-weight:600;font-size:16px;color:var(--ink);letter-spacing:-.01em}
+.brand .sep{width:1px;height:18px;background:var(--border)}
+.brand .course{font-size:13.5px;color:var(--muted)}
+
+.iconbtn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:transparent;border:1px solid var(--border);border-radius:8px;
+  padding:7px 12px;color:var(--soft);font-size:13px;font-family:inherit;cursor:pointer;
+}
+.iconbtn svg{color:var(--muted)}
+
+/* ---------- ilerleme bandı ---------- */
+.progress{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:40px;padding:30px 0 22px;
+}
+.progress .big{font-family:"Outfit",sans-serif;font-size:40px;line-height:1;font-weight:600;color:var(--ink);letter-spacing:-.03em}
+.progress .big .of{color:var(--muted);font-weight:400}
+.progress .sub{font-size:13px;color:var(--muted);margin-top:6px}
+.progress .right{text-align:right}
+.progress .pct{font-family:"Outfit",sans-serif;font-size:28px;font-weight:600;color:var(--accent-ink);line-height:1;letter-spacing:-.02em}
+
+.bar{height:6px;border-radius:99px;background:var(--surface-2);overflow:hidden;position:relative}
+.bar i{position:absolute;inset:0 auto 0 0;display:block;background:var(--done);border-radius:99px}
+.bar .tick{position:absolute;top:-3px;width:2px;height:12px;background:var(--bg);opacity:.9}
+
+/* ---------- araç çubuğu ---------- */
+.toolbar{display:flex;gap:12px;align-items:center;padding:22px 0;border-bottom:1px solid var(--border)}
+.search{
+  flex:1;display:flex;align-items:center;gap:10px;
+  background:var(--surface);border:1px solid var(--border);border-radius:9px;
+  padding:9px 13px;color:var(--muted);font-size:14px;
+}
+.search svg{flex:none;color:var(--muted)}
+.search .ph{color:var(--muted)}
+.seg{display:flex;border:1px solid var(--border);border-radius:9px;overflow:hidden;background:var(--surface)}
+.seg button{
+  font-family:inherit;font-size:13px;padding:9px 15px;border:0;background:transparent;
+  color:var(--soft);cursor:pointer;border-right:1px solid var(--border);white-space:nowrap;
+}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent-ink);font-weight:600}
+.select{
+  display:flex;align-items:center;gap:9px;background:var(--surface);
+  border:1px solid var(--border);border-radius:9px;padding:9px 13px;font-size:13.5px;color:var(--soft);
+}
+
+/* ---------- yerleşim ---------- */
+.layout{display:grid;grid-template-columns:286px 1fr;gap:56px;padding-top:34px;align-items:start}
+
+/* ---------- patika ---------- */
+.trail{display:grid;grid-template-columns:18px 1fr;column-gap:16px}
+.rail{display:flex;flex-direction:column;align-items:center}
+.dot{width:12px;height:12px;border-radius:50%;margin-top:5px;flex:none;
+  border:2px solid var(--line);background:var(--bg)}
+.dot.done{background:var(--done);border-color:var(--done)}
+.dot.now{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.seg-line{width:2px;flex:1;min-height:30px;background:var(--line);margin:6px 0}
+.seg-line.done{background:var(--done)}
+.seg-line.future{background:repeating-linear-gradient(to bottom,var(--line) 0 3px,transparent 3px 8px)}
+
+.stop{padding-bottom:22px}
+.stop .wk{font-family:"Outfit",sans-serif;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.stop .ttl{font-family:"Outfit",sans-serif;font-size:15px;font-weight:600;color:var(--soft);margin-top:2px;letter-spacing:-.01em}
+.stop.is-now .ttl{color:var(--ink)}
+.stop.is-future .ttl{color:var(--muted)}
+.stop .meta{font-size:12.5px;color:var(--muted);margin-top:3px}
+.badge-now{
+  display:inline-block;font-family:"Outfit",sans-serif;font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:700;color:var(--accent-ink);
+  background:var(--accent-soft);border:1px solid var(--accent-line);
+  border-radius:4px;padding:1px 6px;margin-left:8px;vertical-align:2px;
+}
+
+/* ---------- detay ---------- */
+.detail{max-width:620px}
+.detail h1{font-size:30px;line-height:1.14;margin:7px 0 10px;letter-spacing:-.025em}
+.detail .lead{font-size:15px;color:var(--soft);margin:0 0 30px;max-width:56ch}
+
+.block-title{display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  padding-bottom:10px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.block-title .count{font-size:13px;color:var(--muted)}
+
+.goals{list-style:none;margin:0 0 34px;padding:0}
+.goals li{display:flex;gap:12px;padding:7px 0;font-size:14.5px;color:var(--soft)}
+.goals li svg{flex:none;margin-top:5px;color:var(--accent)}
+
+.tasks{list-style:none;margin:0;padding:0}
+.tasks li{display:flex;align-items:flex-start;gap:13px;padding:13px 0;border-bottom:1px solid var(--border)}
+.tasks li:last-child{border-bottom:0}
+.tick{width:18px;height:18px;border-radius:5px;border:1.6px solid var(--line);flex:none;margin-top:2px;
+  display:grid;place-items:center;color:transparent}
+.tasks li.ok .tick{background:var(--done);border-color:var(--done);color:#fff}
+.tasks .t-body{flex:1;min-width:0}
+.tasks .t-title{font-size:14.5px;color:var(--text)}
+.tasks li.ok .t-title{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
+.tasks .t-meta{display:flex;gap:9px;align-items:center;margin-top:5px}
+.tag{font-size:11px;letter-spacing:.04em;color:var(--muted);border:1px solid var(--border);
+  border-radius:4px;padding:1px 7px;background:var(--surface)}
+.due{font-size:12px;color:var(--muted)}
+.due.soon{color:var(--accent-ink)}
+
+/* ---------- boş durum ---------- */
+.empty{border:1px dashed var(--line);border-radius:10px;padding:26px 24px;text-align:left;background:transparent}
+.empty .h{font-family:"Outfit",sans-serif;font-weight:600;color:var(--ink);font-size:15px;margin-bottom:4px}
+.empty p{margin:0;font-size:13.5px;color:var(--muted)}
+.empty a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- çerçeve ---------- */
+.page{padding:0 48px}
+.inner{max-width:1180px;margin:0 auto}
+
+/* ---------- mobil ----------
+   Mockup görüntüsü alınırken gövde 390px'e sabitlenir; böylece tarayıcı
+   penceresinin asgari genişliğinden bağımsız olarak gerçek telefon
+   genişliğinde yerleşim hesaplanır. */
+body.m{font-size:14.5px;width:390px;margin:0 auto;overflow-x:hidden}
+.m .inner{max-width:100%}
+.m .stop,.m .detail,.m .t-body{min-width:0}
+.m .page{padding:0 18px}
+.m .topbar{padding:16px 0}
+.m .brand .course{display:none}
+.m .progress{display:block;padding:18px 0 14px}
+.m .progress .big{font-size:30px}
+.m .progress .right{text-align:left;display:flex;align-items:baseline;gap:10px;margin-top:10px}
+.m .progress .pct{font-size:19px}
+.m .toolbar{flex-direction:column;align-items:stretch;gap:9px;padding:14px 0}
+.m .seg{width:100%}
+.m .seg button{flex:1;padding:9px 6px;font-size:12.5px}
+.m .layout{display:block;padding-top:18px}
+.m .trail{column-gap:13px}
+.m .detail{max-width:none}
+.m .detail h1{font-size:19px;margin:5px 0 7px}
+.m .detail .lead{font-size:13.5px;margin-bottom:18px}
+.m .goals li{font-size:13.5px}
+.m .tasks .t-title{font-size:13.5px}
+.m .stop{padding-bottom:16px}
+.m .stop .ttl{font-size:14px}

@@ -1,0 +1,674 @@
+<title>Tasarım Yönü ve Arayüz Taslağı — Ders Patikası</title>
+<style>
+  :root{
+    --bg:#f3f6f3; --surface:#fff; --surface-2:#e9efe9;
+    --ink:#15201a; --text:#2c3a33; --soft:#4e5d55; --muted:#7a877f;
+    --border:#d5ded7; --line:#c6d1c8;
+    --accent:#a2701f; --accent-soft:#f3e8d2; --accent-line:#d9bb7e;
+    --done:#35714f; --done-soft:#e0efe5;
+    --wire:#9aa7a0; --wire-bg:#eef2ee;
+    --mono:"Cascadia Mono",Consolas,ui-monospace,monospace;
+    --sans:"Segoe UI",system-ui,-apple-system,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0e1411; --surface:#151d18; --surface-2:#1b241e;
+      --ink:#e6ece7; --text:#d3ddd6; --soft:#aebbb3; --muted:#7f8d85;
+      --border:#26312b; --line:#2f3b34;
+      --accent:#dfa948; --accent-soft:#251d10; --accent-line:#5a4720;
+      --done:#6cba8c; --done-soft:#14251b;
+      --wire:#6d7b74; --wire-bg:#182019;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0e1411; --surface:#151d18; --surface-2:#1b241e;
+    --ink:#e6ece7; --text:#d3ddd6; --soft:#aebbb3; --muted:#7f8d85;
+    --border:#26312b; --line:#2f3b34;
+    --accent:#dfa948; --accent-soft:#251d10; --accent-line:#5a4720;
+    --done:#6cba8c; --done-soft:#14251b; --wire:#6d7b74; --wire-bg:#182019;
+  }
+  :root[data-theme="light"]{
+    --bg:#f3f6f3; --surface:#fff; --surface-2:#e9efe9;
+    --ink:#15201a; --text:#2c3a33; --soft:#4e5d55; --muted:#7a877f;
+    --border:#d5ded7; --line:#c6d1c8;
+    --accent:#a2701f; --accent-soft:#f3e8d2; --accent-line:#d9bb7e;
+    --done:#35714f; --done-soft:#e0efe5; --wire:#9aa7a0; --wire-bg:#eef2ee;
+  }
+
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);
+    font-size:16.5px;line-height:1.62;margin:0;padding:0 1.25rem 5rem;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:62rem;margin:0 auto}
+  .col{max-width:43rem}
+
+  h1,h2,h3{color:var(--ink);font-weight:650;letter-spacing:-.015em;text-wrap:balance}
+  h1{font-size:2.5rem;line-height:1.08;margin:0 0 .5rem}
+  h2{font-size:1.6rem;line-height:1.2;margin:0 0 .5rem}
+  h3{font-size:1.08rem;margin:1.6rem 0 .4rem}
+  p{margin:0 0 .95rem;color:var(--soft)}
+  strong{color:var(--ink);font-weight:620}
+
+  header{padding:3.4rem 0 2.2rem;border-bottom:1px solid var(--border);margin-bottom:2.6rem}
+  .eyebrow{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 .9rem}
+  .lede{font-size:1.1rem;color:var(--soft);max-width:38rem}
+  .meta{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:1.4rem}
+  .chip{font-size:.8rem;padding:.26rem .66rem;border-radius:999px;background:var(--surface-2);
+    color:var(--soft);border:1px solid var(--border)}
+
+  section{margin:0 0 3rem}
+  .sec-head{display:flex;align-items:baseline;gap:.85rem;margin-bottom:1rem}
+  .sec-num{font-family:var(--mono);font-size:.76rem;font-weight:700;color:var(--accent);
+    background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:5px;padding:.2rem .48rem;flex:none}
+
+  .note{border:1px solid var(--border);background:var(--surface);border-radius:9px;
+    padding:.95rem 1.1rem;margin:1.2rem 0;font-size:.94rem}
+  .note p:last-child{margin-bottom:0}
+  .note .tag{display:block;font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;font-weight:700;margin-bottom:.4rem;color:var(--accent)}
+  .note.why{background:var(--accent-soft);border-color:var(--accent-line)}
+  .note.ok{background:var(--done-soft);border-color:color-mix(in srgb,var(--done) 35%,transparent)}
+  .note.ok .tag{color:var(--done)}
+
+  .tablewrap{overflow-x:auto;margin:1.1rem 0 1.6rem}
+  table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:28rem}
+  th,td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--border);vertical-align:top}
+  th{font-size:.73rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  td{color:var(--soft)}
+  td strong{color:var(--ink)}
+  .mono{font-family:var(--mono);font-size:.88em}
+
+  /* palet */
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(8.5rem,1fr));gap:.6rem;margin:1rem 0 1.6rem}
+  .sw{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--surface)}
+  .sw .chipc{height:3.1rem}
+  .sw .lab{padding:.45rem .55rem;font-size:.74rem;line-height:1.35}
+  .sw .lab b{display:block;color:var(--ink);font-size:.78rem}
+  .sw .lab span{font-family:var(--mono);color:var(--muted);font-size:.72rem}
+
+  /* tip ölçeği */
+  .scale div{border-bottom:1px solid var(--border);padding:.5rem 0;display:flex;align-items:baseline;gap:1rem}
+  .scale .n{font-family:var(--mono);font-size:.74rem;color:var(--muted);min-width:8.5rem;flex:none}
+
+  /* diyagram / wireframe */
+  pre.dia{font-family:var(--mono);font-size:.8rem;line-height:1.45;color:var(--soft);
+    background:var(--wire-bg);border:1px solid var(--border);border-radius:9px;
+    padding:1rem 1.1rem;overflow-x:auto;margin:1.1rem 0 .6rem}
+  .cap{font-size:.86rem;color:var(--muted);padding-left:.85rem;border-left:2px solid var(--border);margin:0 0 1.7rem}
+
+  /* lo-fi wireframe kutuları */
+  .wf{border:1px solid var(--border);border-radius:10px;background:var(--wire-bg);padding:1rem;margin:1.1rem 0 .6rem}
+  .wf-row{display:flex;gap:.6rem;margin-bottom:.6rem}
+  .wf-col{display:flex;flex-direction:column;gap:.6rem}
+  .box{border:1.5px dashed var(--wire);border-radius:6px;padding:.55rem .7rem;
+    font-family:var(--mono);font-size:.74rem;color:var(--wire);background:transparent;line-height:1.35}
+  .box.solid{border-style:solid}
+  .box.fill{background:color-mix(in srgb,var(--wire) 12%,transparent)}
+  .box.tall{min-height:4.5rem}
+  .box b{color:var(--soft);font-weight:600;display:block;margin-bottom:.15rem}
+  .g1{flex:1}.g2{flex:2}.g3{flex:3}
+
+  /* hi-fi önizleme: patika */
+  .preview{border:1px solid var(--border);border-radius:12px;background:var(--surface);
+    padding:1.3rem 1.4rem;margin:1.2rem 0 .6rem}
+  .pv-head{display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;
+    padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:1.1rem}
+  .pv-head .t{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .pv-head .v{font-size:1.5rem;color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
+  .bar{height:7px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin-top:.5rem}
+  .bar i{display:block;height:100%;width:60%;background:var(--done);border-radius:99px}
+
+  .trail{display:grid;grid-template-columns:1.6rem 1fr;gap:0 .9rem}
+  .stop{display:contents}
+  .rail{position:relative;display:flex;flex-direction:column;align-items:center}
+  .dot{width:.85rem;height:.85rem;border-radius:50%;flex:none;margin-top:.35rem;
+    border:2px solid var(--line);background:var(--surface)}
+  .dot.done{background:var(--done);border-color:var(--done)}
+  .dot.now{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+  .seg{width:2px;flex:1;background:var(--line);margin:.3rem 0}
+  .seg.done{background:var(--done)}
+  .seg.next{background:repeating-linear-gradient(to bottom,var(--line) 0 4px,transparent 4px 9px)}
+  .body{padding-bottom:1.5rem}
+  .wk{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+  .ttl{color:var(--ink);font-weight:620;margin:.1rem 0 .35rem}
+  .now-badge{display:inline-block;font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;
+    font-weight:700;color:var(--accent);background:var(--accent-soft);
+    border:1px solid var(--accent-line);border-radius:4px;padding:.08rem .38rem;margin-left:.45rem;vertical-align:1px}
+  .goals{margin:.5rem 0 .7rem;padding-left:1rem;border-left:2px solid var(--accent-line)}
+  .goals li{font-size:.9rem;color:var(--soft);margin-bottom:.2rem}
+  .tasks{list-style:none;padding:0;margin:0}
+  .tasks li{display:flex;gap:.5rem;align-items:center;font-size:.92rem;padding:.2rem 0;color:var(--soft)}
+  .tick{width:1rem;height:1rem;border-radius:4px;border:1.5px solid var(--line);flex:none}
+  .tasks li.ok .tick{background:var(--done);border-color:var(--done)}
+  .tasks li.ok{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
+
+  figure{margin:1.2rem 0 .6rem}
+  figure img{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--border)}
+  figure.narrow img{max-width:22rem}
+  footer{border-top:1px solid var(--border);padding-top:1.6rem;color:var(--muted);font-size:.86rem}
+  .divider{height:1px;background:var(--border);border:0;margin:2.8rem 0}
+
+  @media(max-width:640px){
+    body{font-size:15.5px}h1{font-size:1.9rem}h2{font-size:1.3rem}
+    .wf-row{flex-direction:column}
+  }
+
+  @page{size:A4;margin:14mm 13mm}
+  @media print{
+    :root{--bg:#fff;--surface:#fff;--surface-2:#eef2ee;--ink:#15201a;--text:#2c3a33;
+      --soft:#3f4d46;--muted:#6b7872;--border:#ccd6cf;--line:#bcc7be;
+      --accent:#8c5f18;--accent-soft:#f6edda;--accent-line:#d3b374;
+      --done:#2d6344;--done-soft:#e4f0e8;--wire:#8c9a93;--wire-bg:#f2f5f2}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    body{font-size:10.5pt;padding:0}
+    .wrap,.col{max-width:none}
+    h1{font-size:23pt}h2{font-size:14pt}h3{font-size:11pt}
+    header{padding:0 0 1.1rem;margin-bottom:1.5rem;break-after:avoid}
+    section{margin-bottom:1.4rem}
+    .note,.tablewrap,pre.dia,.wf,.preview,.swatches,.scale,footer,figure{break-inside:avoid;page-break-inside:avoid}
+    figure{margin:.8rem 0 .5rem}
+    figure img{max-height:150mm;width:auto;max-width:100%;margin:0 auto}
+    figure.narrow img{max-height:150mm}
+    .cap{break-before:avoid;page-break-before:avoid}
+    h1,h2,h3,.sec-head{break-after:avoid;page-break-after:avoid}
+    pre.dia{font-size:7.6pt;line-height:1.35}
+    table{min-width:0;font-size:9pt}
+    th,td{padding:.36rem .5rem}
+    .divider{margin:1.3rem 0}
+    .wf-row{flex-direction:row}
+  }
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="col">
+    <p class="eyebrow">P1-04 · Sistem ve Arayüz Tasarımı</p>
+    <h1>Ders Patikası</h1>
+    <p class="lede">
+      Etkileşimli Ders Deneyimi Panosu için tasarım yönü, ekran haritası ve arayüz taslağı.
+      Bu belge, geliştirme başlamadan önce <strong>neyin nasıl görüneceğini</strong> ve
+      <strong>hangi ekranların bulunacağını</strong> sabitler.
+    </p>
+    <div class="meta">
+      <span class="chip">Yazılım Geliştirme · Proje 1 · Grup 2</span>
+      <span class="chip">Hazırlayan: Yunus Emre Demirci</span>
+      <span class="chip">Rol: Dokümantasyon / Sunum</span>
+      <span class="chip">Ekim 2026</span>
+    </div>
+  </div>
+</header>
+
+<div class="col">
+
+<section>
+  <div class="sec-head"><span class="sec-num">01</span><h2>Tasarım yönü: neden patika?</h2></div>
+  <p>
+    Proje teknik dokümanı açık bir uyarı içeriyor: uygulama
+    <strong>"klasik to-do list görünümüne indirgenmemeli"</strong>, öğrenme ilerlemesi
+    görsel olarak anlamlı biçimde sunulmalı. Bu, estetik bir tercih değil değerlendirme kriteri.
+  </p>
+  <p>
+    Seçtiğimiz metafor: <strong>ders dönemi bir patikadır, her hafta bu patikada bir duraktır.</strong>
+    Tamamlanan haftalar arkada kalan yol olarak dolu çizilir, bulunulan hafta işaretlenir,
+    gelecek haftalar kesikli çizgiyle beklemede durur. İlerleme bir yüzde değil, kat edilen mesafedir.
+  </p>
+  <div class="note why">
+    <span class="tag">Neden varsayılanı seçmedik</span>
+    <p>
+      Eğitim uygulamaları için yaygın öneri <strong>pastel, yuvarlak, oyuncak hissi veren
+      (claymorphism) bir arayüzdür</strong>. Bu yön hem bu dersteki diğer gruplarda yüksek olasılıkla
+      tekrarlanacak hem de "ders takibi" gibi ciddi bir işi hafifletiyor. Biz bunun yerine
+      <strong>organik / topografik</strong> bir yöne gittik: toprak tonları, ince çizgiler,
+      yol metaforu. Hem ayırt edici hem de içerikle tutarlı.
+    </p>
+  </div>
+  <h3>Üç tasarım ilkesi</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>İlke</th><th>Karşılığı</th></tr></thead>
+      <tbody>
+        <tr><td><strong>İlerleme mesafedir</strong></td><td>İlerleme göstergesi yalnızca yüzde değil; patikanın ne kadarının dolduğu.</td></tr>
+        <tr><td><strong>Bağlam kaybolmaz</strong></td><td>Görev her zaman ait olduğu haftanın ve öğrenme hedefinin yanında görünür; serbest bir liste yoktur.</td></tr>
+        <tr><td><strong>Tek vurgu rengi</strong></td><td>Dikkat tek bir yere gider: bulunduğun durak. Geri kalan her şey nötr.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">02</span><h2>Renk sistemi</h2></div>
+  <p>
+    Nötrler saf gri değil, <strong>hafif yeşile çalan gri</strong> — vurgu rengiyle aynı dünyadan
+    geldikleri için seçilmiş hissi veriyor. Tek vurgu rengi <strong>okr/toprak sarısı</strong>
+    (yol işareti), başarı rengi ise ondan ayrı bir <strong>yosun yeşili</strong>.
+    Saf siyah ve saf beyaz kullanılmıyor.
+  </p>
+
+  <h3>Aydınlık tema</h3>
+  <div class="swatches">
+    <div class="sw"><div class="chipc" style="background:#f3f6f3"></div><div class="lab"><b>Zemin</b><span>#F3F6F3</span></div></div>
+    <div class="sw"><div class="chipc" style="background:#ffffff;border-bottom:1px solid #d5ded7"></div><div class="lab"><b>Yüzey</b><span>#FFFFFF</span></div></div>
+    <div class="sw"><div class="chipc" style="background:#15201a"></div><div class="lab"><b>Metin</b><span>#15201A</span></div></div>
+    <div class="sw"><div class="chipc" style="background:#7a877f"></div><div class="lab"><b>Soluk metin</b><span>#7A877F</span></div></div>
+    <div class="sw"><div class="chipc" style="background:#d5ded7"></div><div class="lab"><b>Kenarlık</b><span>#D5DED7</span></div></div>
+    <div class="sw"><div class="chipc" style="background:#a2701f"></div><div class="lab"><b>Vurgu · şimdi</b><span>#A2701F</span></div></div>
+    <div class="sw"><div class="chipc" style="background:#35714f"></div><div class="lab"><b>Tamamlandı</b><span>#35714F</span></div></div>
+    <div class="sw"><div class="chipc" style="background:#f3e8d2"></div><div class="lab"><b>Vurgu zemini</b><span>#F3E8D2</span></div></div>
+  </div>
+
+  <h3>Karanlık tema</h3>
+  <div class="swatches">
+    <div class="sw"><div class="chipc" style="background:#0e1411"></div><div class="lab"><b>Zemin</b><span>#0E1411</span></div></div>
+    <div class="sw"><div class="chipc" style="background:#151d18"></div><div class="lab"><b>Yüzey</b><span>#151D18</span></div></div>
+    <div class="sw"><div class="chipc" style="background:#e6ece7"></div><div class="lab"><b>Metin</b><span>#E6ECE7</span></div></div>
+    <div class="sw"><div class="chipc" style="background:#7f8d85"></div><div class="lab"><b>Soluk metin</b><span>#7F8D85</span></div></div>
+    <div class="sw"><div class="chipc" style="background:#26312b"></div><div class="lab"><b>Kenarlık</b><span>#26312B</span></div></div>
+    <div class="sw"><div class="chipc" style="background:#dfa948"></div><div class="lab"><b>Vurgu · şimdi</b><span>#DFA948</span></div></div>
+    <div class="sw"><div class="chipc" style="background:#6cba8c"></div><div class="lab"><b>Tamamlandı</b><span>#6CBA8C</span></div></div>
+    <div class="sw"><div class="chipc" style="background:#251d10"></div><div class="lab"><b>Vurgu zemini</b><span>#251D10</span></div></div>
+  </div>
+
+  <div class="note">
+    <span class="tag">Uygulama kuralı</span>
+    <p>
+      Renkler koda doğrudan yazılmaz. <span class="mono">styles/variables.css</span> içinde CSS
+      değişkeni olarak tanımlanır; tema değişimi kök elemandaki
+      <span class="mono">data-theme</span> niteliğiyle yapılır. Böylece US-09 (tema değiştirme)
+      tek satırlık bir değişiklikle çözülür.
+    </p>
+  </div>
+  <div class="note ok">
+    <span class="tag">Erişilebilirlik</span>
+    <p>
+      Durum yalnızca renkle anlatılmaz: tamamlanan görevde <strong>dolu kutu + üstü çizili metin</strong>,
+      bulunulan haftada <strong>"şimdi" etiketi</strong>, gelecek haftalarda <strong>kesikli çizgi</strong>
+      var. Renk körü bir kullanıcı da durumu ayırt edebilir.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">03</span><h2>Tipografi</h2></div>
+  <p>
+    Başlıklarda <strong>Outfit</strong> (geometrik, karakterli), gövdede <strong>Work Sans</strong>
+    (yüksek okunabilirlik). Pano arayüzü olduğu için serif kullanılmıyor.
+    Sayılar <span class="mono">font-variant-numeric: tabular-nums</span> ile hizalanır —
+    ilerleme oranı değişirken rakamlar zıplamaz.
+  </p>
+  <div class="scale">
+    <div><span class="n">Sayfa başlığı · 32/1.1 · 650</span><span style="font-size:1.6rem;color:var(--ink);font-weight:650;letter-spacing:-.02em">Öğrenme Yolculuğun</span></div>
+    <div><span class="n">Hafta başlığı · 19/1.3 · 620</span><span style="font-size:1.05rem;color:var(--ink);font-weight:620">Geliştirme ve Test</span></div>
+    <div><span class="n">Gövde · 16/1.6 · 400</span><span>Bu hafta tamamlaman gereken görevler</span></div>
+    <div><span class="n">Etiket · 12/1.3 · 700 · 0.1em</span><span style="font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">HAFTA 03</span></div>
+    <div><span class="n">Sayı · 24 · tabular</span><span style="font-size:1.4rem;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:650">12 / 20</span></div>
+  </div>
+  <p style="font-size:.9rem;color:var(--muted)">
+    Not: Bu belge sistem yazı tipleriyle görüntüleniyor. Outfit ve Work Sans uygulamaya
+    <span class="mono">@fontsource/outfit</span> ve <span class="mono">@fontsource/work-sans</span>
+    paketleriyle dahil edilecek — internet bağlantısı gerektirmez, demo ortamında da çalışır.
+  </p>
+</section>
+
+<hr class="divider">
+
+<section>
+  <div class="sec-head"><span class="sec-num">04</span><h2>Ekran ve durum haritası</h2></div>
+  <p>
+    Uygulama tek sayfadır; ayrı adresler yerine <strong>görünüm durumları</strong> vardır.
+    Haritada her kutu kullanıcının karşılaşabileceği bir ekran durumudur.
+  </p>
+  <pre class="dia">
+                        ┌─────────────────────────┐
+                        │  UYGULAMA AÇILIŞI       │
+                        │  localStorage okunur    │
+                        └───────────┬─────────────┘
+                                    │
+                      ┌─────────────┴─────────────┐
+                      │                           │
+            ┌─────────▼──────────┐     ┌──────────▼───────────┐
+            │  E0 · İLK AÇILIŞ   │     │  E1 · PATİKA         │
+            │  kayıt yok         │     │  ana görünüm         │
+            │  tüm haftalar açık │     │  hafta durakları     │
+            └─────────┬──────────┘     └──────────┬───────────┘
+                      └─────────────┬─────────────┘
+                                    │
+          ┌──────────────┬──────────┼──────────┬──────────────┐
+          │              │          │          │              │
+   ┌──────▼─────┐ ┌──────▼─────┐ ┌──▼───────┐ ┌▼───────────┐ ┌▼──────────┐
+   │ E2 · HAFTA │ │ E3 · FİLTRE│ │ E4·ARAMA │ │ E5 · TEMA  │ │ E6·GÖREV  │
+   │ DETAYI     │ │ UYGULANMIŞ │ │ SONUÇLARI│ │ DEĞİŞİMİ   │ │ İŞARETLEME│
+   │ hedefler + │ │ liste      │ │ eşleşen  │ │ renkler    │ │ durum +   │
+   │ görevler   │ │ daralır    │ │ görevler │ │ güncellenir│ │ ilerleme  │
+   └──────┬─────┘ └──────┬─────┘ └──┬───────┘ └────────────┘ └───────────┘
+          │              │          │
+          │        ┌─────▼──────────▼─────┐
+          │        │ E7 · BOŞ SONUÇ       │
+          │        │ "eşleşen görev yok"  │
+          │        └──────────────────────┘
+          │
+   ┌──────▼──────────────┐
+   │ E8 · İÇERİKSİZ HAFTA│
+   │ "bu haftaya içerik  │
+   │  henüz eklenmedi"   │
+   └─────────────────────┘
+  </pre>
+  <p class="cap">
+    <strong>Dokuz ekran durumu.</strong> E0, E7 ve E8 "boş durumlar"dır —
+    kabul kriterlerinde açıkça isteniyor ve çoğu projede atlandığı için ayrıca tasarlandı.
+  </p>
+
+  <h3>Temel kullanıcı yolculuğu</h3>
+  <p>
+    Yukarıdaki harita tüm durumları listeliyor; aşağıdaki akış ise kullanıcının bu durumlar
+    arasında <strong>hangi sırayla</strong> geçtiğini gösteriyor.
+  </p>
+  <figure>
+    <img src="img/ekran-akisi.png" alt="Dört ekran yan yana: patika açılışı, hafta detayı, görev işaretleme ve boş sonuç; aralarında yönlü oklar">
+  </figure>
+  <p class="cap">
+    <strong>Ekran akışı.</strong> Açılıştan görev işaretlemeye ve boş duruma kadar temel yol.
+    Dönüş oku, aramanın temizlenmesiyle kullanıcının hafta detayına geri döndüğünü gösterir.
+  </p>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">05</span><h2>Masaüstü taslağı</h2></div>
+  <p>
+    Asimetrik iki sütun: solda <strong>patika</strong> (yapışkan, kaydırmada sabit kalır),
+    sağda <strong>seçili haftanın detayı</strong>. Ortalanmış tek sütun kullanılmadı —
+    patikanın dikey akışı sol kenarda bir "omurga" oluşturuyor.
+  </p>
+  <figure>
+    <img src="img/wireframe-masaustu.png" alt="Masaüstü wireframe: tarayıcı penceresi içinde gri bloklarla yerleşim, kenarlarda numaralı açıklamalar ve bağlantı çizgileri">
+  </figure>
+  <p class="cap">
+    <strong>Wireframe.</strong> Renk ve içerik yok; yalnızca <em>ne nerede ve neden</em>.
+    Kesikli çerçeveler yerleşim bölgelerini, numaralı açıklamalar her bölgenin davranışını anlatır.
+  </p>
+
+  <h3>Tasarım uygulanmış hâli</h3>
+  <figure>
+    <img src="img/mockup-desktop-light.png" alt="Masaüstü arayüz tasarımı: üstte ilerleme bandı ve araç çubuğu, solda haftalık patika, sağda seçili haftanın hedefleri ve görevleri">
+  </figure>
+  <p class="cap">
+    <strong>Mockup · 1440 px.</strong> Aynı yerleşimin renk, tipografi ve gerçek ders
+    içeriğiyle doldurulmuş hâli. Geliştirmede hedeflenen görünüm budur.
+  </p>
+
+  <h3>Yerleşim bölgeleri</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Bölge</th><th>İçerik</th><th>Davranış</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Üst bant</strong></td><td>Uygulama adı, ders ve dönem, tema düğmesi</td><td>Sabit yükseklik, alt kenarlıkla ayrılır</td></tr>
+        <tr><td><strong>İlerleme bandı</strong></td><td>Tamamlanan / toplam görev, yüzde, ilerleme çubuğu, bulunulan hafta</td><td>Her görev değişiminde güncellenir</td></tr>
+        <tr><td><strong>Araç çubuğu</strong></td><td>Arama alanı, durum filtresi (üçlü), hafta filtresi</td><td>Filtre ve arama birlikte uygulanır</td></tr>
+        <tr><td><strong>Patika (sol)</strong></td><td>Haftalar, durum noktaları, görev sayacı</td><td>Kaydırmada yapışkan; hafta seçimi sağ sütunu değiştirir</td></tr>
+        <tr><td><strong>Detay (sağ)</strong></td><td>Hafta başlığı, açıklama, öğrenme hedefleri, görev listesi</td><td>Seçili haftaya göre içerik değişir</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">
+    <span class="tag">Tasarım notu</span>
+    <p>
+      Arayüzde kart kutuları kullanılmadı. Gruplama, <strong>ince ayraç çizgileri ve boşlukla</strong>
+      yapılıyor; gölge yalnızca gerçekten katman gerektiğinde kullanılacak. Böylece ekran
+      kalabalıklaşmıyor ve patikanın dikey çizgisi tek yapısal unsur olarak öne çıkıyor.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">06</span><h2>Mobil taslağı</h2></div>
+  <p>
+    Tek sütun. Patika yatay bir şeride dönüşmez — <strong>dikey kalır</strong>, çünkü metafor
+    zaten dikey akıyor. Seçilen hafta patikanın içinde yerinde açılır; ayrı sayfaya gidilmez.
+    Arama ve filtreler üstte yapışkan bir blokta toplanır.
+  </p>
+  <figure>
+    <img src="img/wireframe-mobil.png" alt="Mobil wireframe: telefon çerçevesi içinde gri bloklar, iki yanda numaralı açıklamalar ve bağlantı çizgileri">
+  </figure>
+  <p class="cap">
+    <strong>Wireframe.</strong> Dokuz numaralı açıklama her bölgenin ne olduğunu ve neden
+    orada durduğunu anlatır.
+  </p>
+
+  <h3>Tasarım uygulanmış hâli</h3>
+  <figure class="narrow">
+    <img src="img/mockup-mobile-light.png" alt="Mobil arayüz tasarımı: tek sütun, üstte ilerleme ve filtreler, altta dikey patika, bulunulan hafta açık">
+  </figure>
+  <p class="cap">
+    <strong>Mockup · 390 px genişlik.</strong> Hafta kapalıyken yalnızca başlık ve görev sayacı
+    görünür; bulunulan hafta yerinde açılır, ayrı bir sayfaya gidilmez.
+  </p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Masaüstünden farkı</th><th>Gerekçe</th></tr></thead>
+      <tbody>
+        <tr><td>İki sütun tek sütuna iner</td><td>Dar ekranda yan yana yerleşim okunabilirliği bozar</td></tr>
+        <tr><td>Hafta filtresi gizlenir</td><td>Patika zaten haftaları gösteriyor; tekrar eden kontrol kaldırıldı</td></tr>
+        <tr><td>Ders adı üst bantta gizlenir</td><td>Sınırlı genişlikte uygulama adı yeterli</td></tr>
+        <tr><td>Detay patikanın içinde açılır</td><td>Bağlam korunur, kullanıcı yerini kaybetmez</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Dokunma hedefleri en az <strong>44 × 44 px</strong>; hiçbir kırılımda yatay kaydırma yok.
+    Uzun görev başlıkları taşmaz, satır atlar.
+  </p>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">07</span><h2>Yan durum ekranları</h2></div>
+  <p>
+    Uygulama tek sayfa olduğu için ayrı adresler yoktur; <strong>her "sayfa" bir görünüm
+    durumudur.</strong> Temel akışta görünmeyen üç durumun taslağı aşağıda.
+  </p>
+  <figure>
+    <img src="img/durum-ekranlari.png" alt="Üç telefon yan yana: ilk açılış, içeriksiz hafta ve karanlık tema durumları">
+  </figure>
+  <p class="cap">
+    <strong>E0, E8 ve E5.</strong> Boş durumlar çoğu projede atlanır; kabul kriterlerinde
+    açıkça istendiği için ayrıca tasarlandı.
+  </p>
+  <p>Durumların tam listesi ve tetiklenme koşulları:</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Durum</th><th>Ne zaman</th><th>Ekranda</th></tr></thead>
+      <tbody>
+        <tr><td><strong>E0 · İlk açılış</strong></td><td>Hiç görev işaretlenmemiş</td><td>İlerleme "0 / 20", patika tamamen kesikli, ilk durak vurgulu</td></tr>
+        <tr><td><strong>E7 · Boş sonuç</strong></td><td>Arama/filtre hiçbir görevle eşleşmiyor</td><td>"Aramanla eşleşen görev yok" + <em>Filtreyi temizle</em> bağlantısı</td></tr>
+        <tr><td><strong>E8 · İçeriksiz hafta</strong></td><td>Haftanın görevi yok</td><td>"Bu haftaya henüz görev eklenmedi" — hedefler yine gösterilir</td></tr>
+        <tr><td><strong>Sıfır görev</strong></td><td>Toplam görev sayısı 0</td><td>İlerleme %0 gösterilir, bölme işlemi yapılmaz</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section>
+  <div class="sec-head"><span class="sec-num">08</span><h2>Karanlık tema ve bileşen anatomisi</h2></div>
+  <p>
+    Karanlık tema ayrı bir tasarım değil, aynı yerleşimin farklı renk değişkenleriyle
+    çalışan hâli. Düzen, boşluklar ve tipografi birebir aynı kalır — yalnızca
+    <span class="mono">variables.css</span> içindeki değerler değişir.
+  </p>
+  <figure>
+    <img src="img/mockup-desktop-dark.png" alt="Karanlık temada masaüstü arayüz: aynı yerleşim, koyu zemin, açık okr ve yeşil tonlar">
+  </figure>
+  <p class="cap">
+    <strong>Karanlık tema.</strong> Vurgu rengi koyu zeminde okunabilirlik için açılır
+    (<span class="mono">#A2701F → #DFA948</span>), tamamlanan rengi de aynı şekilde
+    (<span class="mono">#35714F → #6CBA8C</span>). Kontrast her iki temada da korunur.
+  </p>
+  <h3>Patika bileşeninin anatomisi</h3>
+  <p>
+    Aşağıdaki blok patikanın tek tek parçalarını yakın planda gösteriyor: durum noktaları,
+    dolu / kesikli çizgi, "şimdi" etiketi, hedef listesi ve görev satırları.
+  </p>
+  <div class="preview">
+    <div class="pv-head">
+      <div>
+        <div class="t">Öğrenme yolculuğun</div>
+        <div class="v">12 / 20</div>
+      </div>
+      <div style="text-align:right">
+        <div class="t">Tamamlanan</div>
+        <div class="v">%60</div>
+      </div>
+    </div>
+    <div class="bar"><i></i></div>
+    <div style="height:1.4rem"></div>
+
+    <div class="trail">
+      <div class="rail"><span class="dot done"></span><span class="seg done"></span></div>
+      <div class="body">
+        <div class="wk">Hafta 01</div>
+        <div class="ttl">İhtiyaç Analizi</div>
+      </div>
+
+      <div class="rail"><span class="dot done"></span><span class="seg done"></span></div>
+      <div class="body">
+        <div class="wk">Hafta 02</div>
+        <div class="ttl">Tasarım ve İskelet</div>
+      </div>
+
+      <div class="rail"><span class="dot now"></span><span class="seg next"></span></div>
+      <div class="body">
+        <div class="wk">Hafta 03</div>
+        <div class="ttl">Geliştirme ve Test<span class="now-badge">Şimdi</span></div>
+        <ul class="goals">
+          <li>Arayüzü bileşenlere ayırabilmek</li>
+          <li>Durum yönetimini tek kaynaktan kurabilmek</li>
+        </ul>
+        <ul class="tasks">
+          <li class="ok"><span class="tick"></span>Görev kartı bileşenini yaz</li>
+          <li class="ok"><span class="tick"></span>Arama kutusunu bağla</li>
+          <li><span class="tick"></span>Hafta filtresini ekle</li>
+        </ul>
+      </div>
+
+      <div class="rail"><span class="dot"></span></div>
+      <div class="body" style="padding-bottom:0">
+        <div class="wk">Hafta 04</div>
+        <div class="ttl" style="color:var(--muted)">Teslim Hazırlığı</div>
+      </div>
+    </div>
+  </div>
+  <p class="cap">
+    <strong>Hi-fi önizleme.</strong> Dolu yeşil çizgi kat edilen yolu, okr nokta bulunulan haftayı,
+    kesikli çizgi önümüzdeki haftaları gösterir.
+  </p>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">09</span><h2>Hareket ve etkileşim</h2></div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Etkileşim</th><th>Davranış</th><th>Süre</th></tr></thead>
+      <tbody>
+        <tr><td>Hafta açma/kapama</td><td>Yükseklik ve opaklık geçişi</td><td>240 ms</td></tr>
+        <tr><td>Görev işaretleme</td><td>Kutu dolar, metin üstü çizilir, ilerleme çubuğu akar</td><td>180 ms</td></tr>
+        <tr><td>İlerleme çubuğu</td><td>Genişlik değil <span class="mono">transform</span> ile</td><td>320 ms</td></tr>
+        <tr><td>Patika ilk yükleme</td><td>Duraklar sırayla belirir (kademeli gecikme)</td><td>60 ms aralık</td></tr>
+        <tr><td>Tema değişimi</td><td>Renk geçişi; düzen değişmez</td><td>200 ms</td></tr>
+        <tr><td>Odaklanma</td><td>2 px vurgu rengi halka, her iki temada görünür</td><td>anlık</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">
+    <span class="tag">Kural</span>
+    <p>
+      Yalnızca <span class="mono">transform</span> ve <span class="mono">opacity</span> animasyonlanır.
+      <span class="mono">prefers-reduced-motion</span> açıksa tüm geçişler kapatılır — bu,
+      erişilebilirlik kontrol listesinin bir maddesi.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">10</span><h2>Taslak → bileşen eşlemesi</h2></div>
+  <p>Her taslak bölgesinin hangi React bileşenine ve hangi kullanıcı hikâyesine karşılık geldiği:</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Taslak bölgesi</th><th>Bileşen</th><th>Hikâye</th></tr></thead>
+      <tbody>
+        <tr><td>Başlık + ders bilgisi</td><td><span class="mono">Header</span></td><td>—</td></tr>
+        <tr><td>İlerleme çubuğu</td><td><span class="mono">ProgressBar</span> · <span class="mono">calculateProgress</span></td><td>US-07</td></tr>
+        <tr><td>Tema düğmesi</td><td><span class="mono">ThemeToggle</span> · <span class="mono">useTheme</span></td><td>US-09</td></tr>
+        <tr><td>Arama alanı</td><td><span class="mono">SearchBar</span></td><td>US-06</td></tr>
+        <tr><td>Durum / hafta filtresi</td><td><span class="mono">FilterBar</span> · <span class="mono">filterTasks</span></td><td>US-04, US-05</td></tr>
+        <tr><td>Patika ve duraklar</td><td><span class="mono">TrailList</span> · <span class="mono">TrailStop</span></td><td>US-01</td></tr>
+        <tr><td>Öğrenme hedefleri</td><td><span class="mono">ObjectiveList</span></td><td>US-02</td></tr>
+        <tr><td>Görev listesi</td><td><span class="mono">TaskList</span> · <span class="mono">TaskItem</span></td><td>US-03</td></tr>
+        <tr><td>Boş durum blokları</td><td><span class="mono">EmptyState</span></td><td>US-04, US-06</td></tr>
+        <tr><td>Veri kalıcılığı</td><td><span class="mono">useLocalStorage</span></td><td>US-10</td></tr>
+        <tr><td>Responsive yerleşim</td><td><span class="mono">styles/responsive.css</span></td><td>US-08</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">
+    <span class="tag">Adlandırma değişikliği</span>
+    <p>
+      README'deki <span class="mono">WeekList</span> / <span class="mono">WeekCard</span> bileşenleri
+      bu tasarımda <span class="mono">TrailList</span> / <span class="mono">TrailStop</span> adını alıyor.
+      İsimler konseptle uyumlu hâle geldi; README güncellenmeli.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">11</span><h2>Responsive kırılımlar</h2></div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Aralık</th><th>Yerleşim</th><th>Patika</th></tr></thead>
+      <tbody>
+        <tr><td><strong>&lt; 640 px</strong></td><td>Tek sütun, yapışkan araç çubuğu</td><td>Dikey; hafta yerinde açılır</td></tr>
+        <tr><td><strong>640 – 1023 px</strong></td><td>Tek sütun, filtreler yan yana</td><td>Dikey; detay durağın altında</td></tr>
+        <tr><td><strong>≥ 1024 px</strong></td><td>İki sütun (patika + detay), patika yapışkan</td><td>Dikey; detay sağ sütunda</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Üç kırılımda da <strong>yatay kaydırma yok</strong>. Yerleşim yüzde hesabıyla değil
+    CSS Grid ile kurulur; uzun görev başlıkları taşmaz, satır atlar.
+  </p>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-num">12</span><h2>P1-04 tamamlanma kontrolü</h2></div>
+  <p>Takip listesindeki doğrulama kriterleri ve bu belgedeki karşılıkları:</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Kriter</th><th>Karşılığı</th><th>Durum</th></tr></thead>
+      <tbody>
+        <tr><td>Sayfa akış şeması</td><td>Bölüm 04 · durum haritası (9 durum) <strong>ve</strong> dört ekranlı akış diyagramı</td><td><strong>Var</strong></td></tr>
+        <tr><td>Masaüstü wireframe</td><td>Bölüm 05 · 9 numaralı açıklamalı wireframe</td><td><strong>Var</strong></td></tr>
+        <tr><td>Mobil wireframe</td><td>Bölüm 06 · 9 numaralı açıklamalı wireframe</td><td><strong>Var</strong></td></tr>
+        <tr><td>Kart ekranı taslakta</td><td>Patika durakları — bölüm 04, 05, 06</td><td><strong>Var</strong></td></tr>
+        <tr><td>Görev ekranı taslakta</td><td>Görev listesi bölgesi — bölüm 04, 05, 06</td><td><strong>Var</strong></td></tr>
+        <tr><td>İlerleme ekranı taslakta</td><td>İlerleme bandı — bölüm 04, 05, 06</td><td><strong>Var</strong></td></tr>
+        <tr><td>Kullanıcı akışı anlaşılır</td><td>Bölüm 04 · akış diyagramı + README'deki kullanıcı akışı</td><td><strong>Var</strong></td></tr>
+        <tr><td colspan="3" style="color:var(--muted);font-size:.88em">Ek olarak: tasarım sistemi (renk, tipografi), karanlık tema, boş durum ekranları ve bileşen eşlemesi — hocanın istediğinin ötesinde, geliştirme aşamasına doğrudan girdi olacak şekilde.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note ok">
+    <span class="tag">Sonraki adım</span>
+    <p>
+      Bu belge onaylandıktan sonra: <span class="mono">variables.css</span> renk değişkenleriyle
+      oluşturulur (P1-05 kapsamında), bileşen dosyaları taslaktaki bölgelere göre açılır,
+      README'deki bileşen adları güncellenir.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <p>
+    <strong>Ders Patikası · Tasarım Yönü ve Arayüz Taslağı</strong><br>
+    Yazılım Geliştirme · Proje 1 · Grup 2 — Görev P1-04 (Sistem ve Arayüz Tasarımı)<br>
+    Hazırlayan: Yunus Emre Demirci · Dokümantasyon / Sunum Sorumlusu
+  </p>
+</footer>
+
+</div>
+</div>

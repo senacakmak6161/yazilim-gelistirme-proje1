@@ -13,7 +13,7 @@
 
 Yazılım Geliştirme dersi · Proje 1 · **Grup 2**
 
-[Canlı Demo](#demo) · [Kurulum](#kurulum) · [Özellikler](#özellikler) · [Mimari](#mimari) · [Ekip](#ekip-ve-roller)
+[Canlı Demo](#demo) · [Kurulum](#kurulum) · [Tasarım](#tasarım) · [Mimari](#mimari) · [Ekip](#ekip-ve-roller)
 
 </div>
 
@@ -24,6 +24,7 @@ Yazılım Geliştirme dersi · Proje 1 · **Grup 2**
 - [Proje hakkında](#proje-hakkında)
 - [Demo](#demo)
 - [Özellikler](#özellikler)
+- [Tasarım](#tasarım)
 - [Ekran görüntüleri](#ekran-görüntüleri)
 - [Teknoloji yığını](#teknoloji-yığını)
 - [Mimari](#mimari)
@@ -130,21 +131,91 @@ Temel gereksinimlerin ötesinde, kullanılabilirliği doğrudan etkileyen davran
 
 ---
 
-## Ekran görüntüleri
+## Tasarım
 
-<!-- TODO: Arayüz tamamlandığında görseller docs/screenshots/ altına eklenip buraya bağlanacak -->
+Arayüz, geliştirmeye başlamadan önce tasarlandı. Tam tasarım belgesi — renk sistemi, tipografi,
+hareket kuralları ve bileşen eşlemesiyle birlikte — şurada:
+**[`docs/tasarim/Tasarim-ve-Arayuz-Taslagi.pdf`](docs/tasarim/Tasarim-ve-Arayuz-Taslagi.pdf)**
+
+### Konsept: Ders Patikası
+
+Ders dönemi bir **patika**, her hafta bu patikada bir **durak**. Tamamlanan haftalar arkada kalan
+yol olarak dolu çizilir, bulunulan hafta işaretlenir, gelecek haftalar kesikli çizgiyle beklemede
+durur. İlerleme bir yüzde değil, **kat edilen mesafedir**.
+
+Bu tercih keyfî değil: teknik doküman uygulamanın *"klasik to-do list görünümüne
+indirgenmemesini"* ve öğrenme ilerlemesinin *"görsel olarak anlamlı biçimde sunulmasını"* istiyor.
+
+### Wireframe — ne nerede, neden
 
 <div align="center">
 
-| Masaüstü — Aydınlık tema | Masaüstü — Karanlık tema |
-|:---:|:---:|
-| _eklenecek_ | _eklenecek_ |
+<img src="docs/tasarim/img/wireframe-mobil.png" alt="Mobil arayüz wireframe'i: telefon çerçevesi içinde gri bloklar, kenarlarda numaralı açıklamalar" width="100%">
 
-| Mobil görünüm | İlerleme ve filtreleme |
-|:---:|:---:|
-| _eklenecek_ | _eklenecek_ |
+_Mobil · 390 px — sekiz numaralı açıklama her bölgenin ne olduğunu ve neden orada durduğunu anlatır_
+
+<img src="docs/tasarim/img/wireframe-masaustu.png" alt="Masaüstü arayüz wireframe'i: tarayıcı penceresi içinde yerleşim bölgeleri ve numaralı açıklamalar" width="100%">
+
+_Masaüstü · ≥ 1024 px — asimetrik iki sütun: solda yapışkan patika, sağda seçili haftanın detayı_
 
 </div>
+
+### Ekran akışı
+
+<div align="center">
+
+<img src="docs/tasarim/img/ekran-akisi.png" alt="Dört ekran yan yana: patika açılışı, hafta detayı, görev işaretleme ve boş sonuç; aralarında yönlü oklar" width="100%">
+
+_Açılıştan görev işaretlemeye ve boş duruma kadar temel kullanıcı yolculuğu_
+
+</div>
+
+Uygulama **tek sayfadır**; ayrı adresler yerine görünüm durumları vardır. Akışta görünmeyen yan
+durumlar:
+
+<div align="center">
+
+<img src="docs/tasarim/img/durum-ekranlari.png" alt="Üç telefon yan yana: ilk açılış, içeriksiz hafta ve karanlık tema durumları" width="100%">
+
+_İlk açılış (kayıt yokken), içeriksiz hafta ve karanlık tema_
+
+</div>
+
+### Tasarım uygulanmış hâli
+
+<div align="center">
+
+<img src="docs/tasarim/img/mockup-desktop-light.png" alt="Masaüstü arayüz tasarımı, aydınlık tema" width="100%">
+
+_Masaüstü · aydınlık tema_
+
+<img src="docs/tasarim/img/mockup-desktop-dark.png" alt="Masaüstü arayüz tasarımı, karanlık tema" width="100%">
+
+_Masaüstü · karanlık tema — aynı yerleşim, yalnızca renk değişkenleri değişir_
+
+<img src="docs/tasarim/img/mockup-mobile-light.png" alt="Mobil arayüz tasarımı" width="40%">
+
+_Mobil · 390 px_
+
+</div>
+
+> **Not:** Yukarıdakiler tasarım taslaklarıdır, çalışan uygulamanın ekran görüntüsü değildir.
+> Gerçek ekran görüntüleri aşağıdaki bölüme, uygulama çalışır hâle geldiğinde eklenecektir.
+
+---
+
+## Ekran görüntüleri
+
+<!-- TODO: Uygulama çalışır hâle geldiğinde görseller docs/screenshots/ altına eklenip buraya bağlanacak -->
+
+Çalışan uygulamanın ekran görüntüleri geliştirme tamamlandığında bu bölüme eklenecektir.
+
+| Görünüm | Durum |
+|---|---|
+| Masaüstü — aydınlık tema | _bekliyor_ |
+| Masaüstü — karanlık tema | _bekliyor_ |
+| Mobil görünüm | _bekliyor_ |
+| Boş durum ekranı | _bekliyor_ |
 
 ---
 
@@ -157,6 +228,7 @@ Ders kapsamında teknoloji seçimi serbesttir. Aşağıdaki tercihler, projenin 
 | **Arayüz** | React 18 | Arayüzün yeniden kullanılabilir bileşenlere ayrılmasını sağlar. Görev durumu, filtre ve arama gibi sürekli değişen veriler bileşen state'i üzerinden yönetildiği için arayüzün veriyle tutarlı kalması garanti altına alınır. Ekip üyelerinin ayrı bileşenler üzerinde eşzamanlı çalışmasına imkân verir. |
 | **Derleme ortamı** | Vite 5 | Hızlı geliştirme sunucusu ve sade yapılandırma sunar. Üretim derlemesi tamamen statik dosyalar ürettiği için uygulama sunucu gerektirmeden yayınlanabilir. |
 | **Stil** | Saf CSS + CSS Custom Properties | Tema geçişi, renklerin CSS değişkenleri üzerinden tanımlanmasıyla tek bir sınıf değişimiyle çözülür. Hazır bir UI kütüphanesi yerine kendi tasarım kararlarımızı uygulamayı tercih ettik; böylece her stil kararını gerekçelendirebiliyoruz. |
+| **Tipografi** | Outfit (başlık) + Work Sans (gövde), `@fontsource` ile | Geometrik ve karakterli bir başlık yazı tipi ile yüksek okunabilirlikli bir gövde yazı tipi eşleştirildi. Paket olarak kurulduğu için demo ortamında internet bağlantısı gerektirmez. |
 | **Düzen** | CSS Flexbox & Grid + Media Query | Harici bir grid sistemine ihtiyaç duymadan üç kırılım noktasında responsive yerleşim sağlanır. |
 | **Veri** | Statik JSON + `localStorage` | Projede veri tabanı zorunlu değildir. Ders içerikleri sürüm kontrolünde tutulan bir JSON dosyasından okunur; kullanıcıya özel durumlar tarayıcıda saklanır. |
 | **Sürüm kontrolü** | Git & GitHub | Kaynak kod yönetimi, issue takibi ve bireysel katkıların kayıt altına alınması. |
@@ -169,6 +241,9 @@ Ders kapsamında teknoloji seçimi serbesttir. Aşağıdaki tercihler, projenin 
 ## Mimari
 
 ### Tasarım ilkeleri
+
+> Arayüz tasarımının gerekçeleri, renk sistemi ve bileşen eşlemesi için bkz.
+> [Tasarım](#tasarım) bölümü ve [tasarım belgesi](docs/tasarim/Tasarim-ve-Arayuz-Taslagi.pdf).
 
 1. **Tek doğruluk kaynağı** — Görev durumları yalnızca `App` bileşeninde tutulur. Alt bileşenler kendi kopyalarını saklamaz; güncellemeleri geri çağırma (callback) fonksiyonlarıyla yukarı iletir. Bu sayede görev listesi ile ilerleme göstergesinin tutarsızlaşması yapısal olarak engellenir.
 2. **Türetilmiş veri hesaplanır, saklanmaz** — Filtrelenmiş görev listesi ve ilerleme yüzdesi ayrı bir state'te tutulmaz; her render'da mevcut veriden türetilir. Böylece senkronizasyon hatası oluşmaz.
@@ -184,8 +259,8 @@ graph TD
     A --> D[ProgressBar]
     A --> E[FilterBar]
     A --> F[SearchBar]
-    A --> G[WeekList]
-    G --> H[WeekCard]
+    A --> G[TrailList]
+    G --> H[TrailStop]
     H --> I[ObjectiveList]
     H --> J[TaskList]
     J --> K[TaskItem]
@@ -216,8 +291,8 @@ yazilim-gelistirme-proje1/
 │   │   ├── ProgressBar.jsx
 │   │   ├── FilterBar.jsx
 │   │   ├── SearchBar.jsx
-│   │   ├── WeekList.jsx
-│   │   ├── WeekCard.jsx
+│   │   ├── TrailList.jsx
+│   │   ├── TrailStop.jsx
 │   │   ├── ObjectiveList.jsx
 │   │   ├── TaskList.jsx
 │   │   ├── TaskItem.jsx
@@ -236,7 +311,13 @@ yazilim-gelistirme-proje1/
 │   │   └── responsive.css       # Kırılım noktaları
 │   ├── App.jsx
 │   └── main.jsx
-├── docs/                        # Proje raporu, kullanıcı dokümanı, görseller
+├── docs/
+│   ├── tasarim/                 # Tasarım belgesi, wireframe ve mockup görselleri
+│   │   ├── Tasarim-ve-Arayuz-Taslagi.pdf
+│   │   ├── img/                 # PNG çıktılar
+│   │   └── mockup/              # Görsellerin kaynak HTML/CSS dosyaları
+│   ├── proje-raporu.pdf
+│   └── kullanici-dokumani.pdf
 ├── presentation/                # Sunum dosyası
 ├── index.html
 ├── vite.config.js
@@ -507,7 +588,7 @@ Aşağıdaki tablo, ihtiyaç analizinde belirlenen kullanıcı ihtiyaçlarının
 
 | İhtiyaç | Kullanıcı hikâyesi | Bileşen / modül | Test | Durum |
 |---|---|---|---|:---:|
-| **H-1** Haftalık içeriklere erişim | **US-01** Haftalık ders içeriklerini görüntüleme | `WeekList`, `WeekCard` | — | ⬜ |
+| **H-1** Haftalık içeriklere erişim | **US-01** Haftalık ders içeriklerini görüntüleme | `TrailList`, `TrailStop` | — | ⬜ |
 | | **US-02** Öğrenme hedeflerini inceleme | `ObjectiveList` | — | ⬜ |
 | **H-2** Görev takibi | **US-03** Görevleri tamamlandı olarak işaretleme | `TaskItem`, `TaskList` | T1, T2 | ⬜ |
 | **H-3** Görev filtreleme | **US-04** Duruma göre filtreleme | `FilterBar`, `filterTasks` | T3 | ⬜ |
@@ -597,10 +678,10 @@ Bileşenler birbirinden bağımsız tasarlandığı için paralel geliştirmeye 
 
 | Üye | Geliştirme alanı |
 |---|---|
-| Sena Çakmak | `App.jsx`, proje iskeleti, state mimarisi, yayın yapılandırması |
-| Berkant Aydın | `courses.json`, `WeekList`, `WeekCard`, `ObjectiveList` |
+| Sena Çakmak | `App.jsx`, state mimarisi, `TaskList`, `TaskItem` |
+| Berkant Aydın | `courses.json`, `TrailList`, `TrailStop`, `ObjectiveList` |
 | Tarık Kılıç | `FilterBar`, `SearchBar`, `filterTasks`, test senaryolarının yürütülmesi |
-| Yunus Emre Demirci | `ProgressBar`, `calculateProgress`, `ThemeToggle`, `useLocalStorage` |
+| Yunus Emre Demirci | Proje iskeleti, `ProgressBar`, `calculateProgress`, `ThemeToggle`, `useLocalStorage` |
 
 `responsive.css` ve erişilebilirlik iyileştirmeleri ortak sorumluluktur; her üye kendi bileşeninden sorumludur.
 
@@ -682,8 +763,8 @@ Proje dört haftalık bir takvimde yürütülür. Sıralama, ihtiyaç analizinde
 | Hafta | Odak | Kapsam | Durum |
 |:---:|---|---|:---:|
 | **1** | İhtiyaç analizi ve planlama | Kullanıcı ihtiyaçları, kullanıcı hikâyeleri, kabul kriterleri, repo kurulumu, görev dağılımı | ✅ |
-| **2** | Temel işlevler | US-01, US-02, US-03, US-07 — haftalık kartlar, öğrenme hedefleri, görev işaretleme, ilerleme göstergesi | 🟡 |
-| **3** | Kullanım kolaylığı | US-04, US-05, US-06, US-10 — filtreleme, arama, veri kalıcılığı; entegrasyon ve hata düzeltme | ⬜ |
+| **2** | Tasarım ve temel işlevler | Tasarım yönü, ekran haritası ve wireframe'ler (✅) · geliştirme ortamı kurulumu · US-01, US-03 | 🟡 |
+| **3** | Kullanım kolaylığı | US-02, US-04, US-05, US-06, US-07, US-10 — öğrenme hedefleri, filtreleme, arama, ilerleme, veri kalıcılığı | ⬜ |
 | **4** | Deneyim, kalite ve teslim | US-08, US-09 — responsive tasarım, tema, erişilebilirlik; test, dokümantasyon, sunum, yayın | ⬜ |
 
 ### Kapsam dışı / gelecek fikirler
@@ -719,6 +800,8 @@ Kapsam gereği bilinçli olarak dışarıda bırakılan ve kullanıcıyı etkile
 | İçerik | Konum |
 |---|---|
 | Kaynak kod | [`src/`](src/) |
+| **Tasarım belgesi** | [`docs/tasarim/Tasarim-ve-Arayuz-Taslagi.pdf`](docs/tasarim/Tasarim-ve-Arayuz-Taslagi.pdf) |
+| Tasarım görselleri | [`docs/tasarim/img/`](docs/tasarim/img/) |
 | Proje raporu | [`docs/proje-raporu.pdf`](docs/) |
 | Kullanıcı dokümantasyonu | [`docs/kullanici-dokumani.pdf`](docs/) |
 | Sunum dosyası | [`presentation/`](presentation/) |

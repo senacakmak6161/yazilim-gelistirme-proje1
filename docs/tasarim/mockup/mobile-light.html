@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="tr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ders Patikası — Mobil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+</head>
+<body class="m">
+<div class="page">
+<div class="inner">
+
+  <header class="topbar">
+    <div class="brand">
+      <svg class="mark" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 20c0-3 3-4 6-5s6-2 6-5-2-4-4-4"/>
+        <circle cx="5" cy="20" r="1.6" fill="currentColor" stroke="none"/>
+        <circle cx="13" cy="6" r="1.6" fill="currentColor" stroke="none"/>
+      </svg>
+      <span class="name">Ders Patikası</span>
+    </div>
+    <button class="iconbtn" type="button" aria-label="Karanlık temaya geç" style="padding:7px 9px">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8z"/>
+      </svg>
+    </button>
+  </header>
+
+  <section class="progress">
+    <div>
+      <p class="eyebrow">Öğrenme yolculuğun</p>
+      <div class="big">14 <span class="of">/ 23</span></div>
+    </div>
+    <div class="right">
+      <span class="pct">%61</span>
+      <span class="sub" style="margin:0">kat edilen yol</span>
+    </div>
+  </section>
+  <div class="bar"><i style="width:61%"></i></div>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/>
+      </svg>
+      <span class="ph">Görev ara…</span>
+    </div>
+    <div class="seg">
+      <button type="button" aria-pressed="false">Tümü</button>
+      <button type="button" aria-pressed="true">Devam eden</button>
+      <button type="button" aria-pressed="false">Tamamlanan</button>
+    </div>
+  </div>
+
+  <main class="layout">
+    <div class="trail">
+
+      <div class="rail"><span class="dot done"></span><span class="seg-line done"></span></div>
+      <div class="stop">
+        <div class="wk">Hafta 01</div>
+        <div class="ttl">HTML Yapısı ve Semantik</div>
+        <div class="meta">5 / 5 görev</div>
+      </div>
+
+      <div class="rail"><span class="dot done"></span><span class="seg-line done"></span></div>
+      <div class="stop">
+        <div class="wk">Hafta 02</div>
+        <div class="ttl">CSS Yerleşim: Flexbox ve Grid</div>
+        <div class="meta">7 / 7 görev</div>
+      </div>
+
+      <div class="rail"><span class="dot now"></span><span class="seg-line future"></span></div>
+      <div class="stop is-now">
+        <div class="wk">Hafta 03</div>
+        <div class="ttl">Form Doğrulama ve Olay Yönetimi<span class="badge-now">Şimdi</span></div>
+
+        <p class="lead" style="margin:9px 0 16px">
+          Kullanıcıdan gelen veriyi tarayıcı tarafında denetlemeyi ve hata durumunu
+          anlaşılır biçimde bildirmeyi çalışıyoruz.
+        </p>
+
+        <div class="block-title" style="margin-bottom:11px">
+          <span class="eyebrow">Öğrenme hedefleri</span>
+        </div>
+        <ul class="goals" style="margin-bottom:22px">
+          <li>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+            Form verisini göndermeden önce doğrulayabilmek
+          </li>
+          <li>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+            Olay dinleyicilerini bileşen içinde yönetebilmek
+          </li>
+        </ul>
+
+        <div class="block-title" style="margin-bottom:4px">
+          <span class="eyebrow">Görevler</span>
+          <span class="count">2 / 5</span>
+        </div>
+        <ul class="tasks">
+          <li class="ok">
+            <span class="tick"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></span>
+            <div class="t-body">
+              <div class="t-title">Form alanlarını semantik etiketlerle kur</div>
+              <div class="t-meta"><span class="tag">html</span><span class="due">21 Ekim</span></div>
+            </div>
+          </li>
+          <li class="ok">
+            <span class="tick"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></span>
+            <div class="t-body">
+              <div class="t-title">Gönderim olayını yakala</div>
+              <div class="t-meta"><span class="tag">javascript</span><span class="due">22 Ekim</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="tick"></span>
+            <div class="t-body">
+              <div class="t-title">E-posta alanı için doğrulama kuralı yaz</div>
+              <div class="t-meta"><span class="tag">javascript</span><span class="due soon">27 Ekim · 4 gün</span></div>
+            </div>
+          </li>
+          <li>
+            <span class="tick"></span>
+            <div class="t-body">
+              <div class="t-title">Hata mesajlarını alanın altında göster</div>
+              <div class="t-meta"><span class="tag">arayüz</span><span class="due">28 Ekim</span></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="rail"><span class="dot"></span><span class="seg-line future"></span></div>
+      <div class="stop is-future">
+        <div class="wk">Hafta 04</div>
+        <div class="ttl">Modüler JavaScript</div>
+        <div class="meta">2 görev</div>
+      </div>
+
+      <div class="rail"><span class="dot"></span></div>
+      <div class="stop is-future">
+        <div class="wk">Hafta 05</div>
+        <div class="ttl">Tarayıcı Depolama</div>
+        <div class="meta">2 görev</div>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+</div>
+</body>
+</html>

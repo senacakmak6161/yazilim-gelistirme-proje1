@@ -1,0 +1,267 @@
+﻿<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Masaüstü Wireframe — Ders Patikası</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#fbfcfb;font-family:"Work Sans",system-ui,sans-serif;color:#2f3a35}
+  .canvas{position:relative;width:1560px;height:800px;overflow:hidden}
+
+  .doc-title{position:absolute;left:44px;top:32px;font-family:"Outfit",sans-serif;font-weight:600;font-size:21px;color:#1b241f;letter-spacing:-.01em}
+  .doc-sub{position:absolute;left:44px;top:60px;font-size:12.5px;color:#8a948e}
+  .legend{position:absolute;right:44px;top:38px;font-size:11px;color:#8a948e}
+
+  .win{position:absolute;left:330px;top:120px;width:900px;height:620px;
+    border:2px solid #333d37;border-radius:10px;background:#fff;overflow:hidden}
+  .chrome{position:absolute;left:330px;top:120px;width:900px;height:30px;background:#eef1ef;border-bottom:1px solid #d6dcd8}
+  .cdot{position:absolute;top:131px;width:8px;height:8px;border-radius:50%;background:#c3cac6}
+  .urlbar{position:absolute;left:420px;top:127px;width:420px;height:16px;border-radius:8px;background:#fff;border:1px solid #d6dcd8}
+
+  .t{position:absolute;font-size:11px;color:#59645f;line-height:1;white-space:nowrap}
+  .t.big{font-size:19px;font-weight:600;color:#3f4a45;font-family:"Outfit",sans-serif}
+  .t.h1{font-size:17px;font-weight:600;color:#3f4a45;font-family:"Outfit",sans-serif}
+  .t.s{font-size:9.5px;color:#949e99}
+  .t.ph{font-size:11px;color:#a8b1ac}
+  .t.cap{font-family:"Outfit",sans-serif;font-size:8px;letter-spacing:.11em;
+    text-transform:uppercase;color:#a0a9a4;font-weight:600}
+  .t.strike{color:#a8b1ac;text-decoration:line-through;text-decoration-color:#c8d0cb}
+
+  .box{position:absolute;background:#fff;border:1.4px solid #b4bdb8;border-radius:6px}
+  .box.fill{background:#e4e9e6;border-color:#c3ccc7;border-radius:0}
+  .box.acc{background:#f6ecd8;border-color:#d9bb7e;border-radius:3px}
+  .box.dotted{border-style:dotted;border-color:#c3ccc7}
+  .bar{position:absolute;height:6px;border-radius:99px;background:#e4e9e6}
+  .bar i{display:block;height:100%;border-radius:99px;background:#9aa49f}
+  .dot{position:absolute;width:11px;height:11px;border-radius:50%;background:#7e8a84}
+  .dot.hollow{background:#fff;border:2px solid #b4bdb8}
+  .vline{position:absolute;width:2px;background:#9aa49f}
+  .vline.dash{background:repeating-linear-gradient(to bottom,#b4bdb8 0 3px,transparent 3px 7px)}
+  .hr{position:absolute;height:1px;background:#e6eae8}
+  .tick{position:absolute;width:15px;height:15px;border-radius:4px;background:#8d9792}
+  .tick.empty{background:#fff;border:1.4px solid #b4bdb8}
+  .zone{position:absolute;border:1.5px dashed #d2d9d5;border-radius:8px}
+  .zname{position:absolute;font-family:"Outfit",sans-serif;font-size:8.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:#bac2bd;font-weight:700}
+
+  .badge{position:absolute;width:22px;height:22px;border-radius:50%;
+    background:#f6ecd8;border:1.5px solid #d9bb7e;color:#8a5e16;
+    font-family:"Outfit",sans-serif;font-size:11px;font-weight:700;
+    display:grid;place-items:center}
+
+  .ann{position:absolute}
+  .ann.l{left:40px;width:230px;text-align:right}
+  .ann.r{left:1286px;width:250px;text-align:left}
+  .ann .h{font-family:"Outfit",sans-serif;font-size:13.5px;font-weight:600;color:#1b241f;line-height:1.2}
+  .ann .d{font-size:11.6px;line-height:1.4;color:#6d7872;margin-top:3px}
+
+  svg.leads{position:absolute;left:0;top:0;width:1560px;height:800px;pointer-events:none}
+  svg.leads path{fill:none;stroke:#c3cbc6;stroke-width:1.1}
+  svg.leads path.stub{stroke:#d9bb7e;stroke-width:1.1}
+  svg.leads circle{fill:#a2701f}
+  /* ---- Wireframe metinleri bilinçli olarak nötr bir yazı tipiyle gösterilir.
+     Son tipografi (Outfit + Work Sans) yalnızca mockup'larda uygulanır. ---- */
+  .t,.t.big,.t.cap,.t.md,.t.s,.t.ph,.t.h1,.t.strike,.t.acc{
+    font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <div class="doc-title">Masaüstü arayüz — açıklamalı taslak</div>
+  <div class="doc-sub">Ders Patikası · ≥ 1024 px · E1 patika görünümü, Hafta 3 seçili</div>
+  <div class="legend">Yerleşim taslağıdır — renk ve son tipografi uygulanmamıştır</div>
+
+  <div class="win"></div>
+  <div class="chrome"></div>
+  <div class="cdot" style="left:346px"></div>
+  <div class="cdot" style="left:362px"></div>
+  <div class="cdot" style="left:378px"></div>
+  <div class="urlbar"></div>
+
+  <!-- ÜST BANT -->
+  <div class="zone" style="left:352px;top:166px;width:856px;height:44px"></div>
+  <div class="zname" style="left:360px;top:156px">üst bant</div>
+  <div class="box" style="left:368px;top:182px;width:13px;height:13px;border-radius:4px"></div>
+  <div class="t" style="left:388px;top:183px;font-weight:600">Ders Patikası</div>
+  <div class="t s" style="left:478px;top:184px">|</div>
+  <div class="t s" style="left:494px;top:184px">Web Programlama · 2026 Güz</div>
+  <div class="box" style="left:1080px;top:177px;width:112px;height:26px"></div>
+  <div class="t s" style="left:1096px;top:186px">Karanlık tema</div>
+
+  <!-- İLERLEME -->
+  <div class="zone" style="left:352px;top:222px;width:856px;height:92px"></div>
+  <div class="zname" style="left:360px;top:212px">ilerleme bandı</div>
+  <div class="t cap" style="left:368px;top:236px">Öğrenme yolculuğun</div>
+  <div class="t big" style="left:368px;top:252px">14 / 23 görev</div>
+  <div class="t s" style="left:368px;top:285px">Hafta 3 · Form Doğrulama ve Olay Yönetimi</div>
+  <div class="t big" style="left:1146px;top:252px">%61</div>
+  <div class="t s" style="left:1110px;top:285px">kat edilen yol</div>
+  <div class="bar" style="left:368px;top:300px;width:824px"><i style="width:61%"></i></div>
+
+  <!-- ARAÇ ÇUBUĞU -->
+  <div class="zone" style="left:352px;top:326px;width:856px;height:52px"></div>
+  <div class="zname" style="left:360px;top:316px">araç çubuğu</div>
+  <div class="box" style="left:368px;top:338px;width:470px;height:30px"></div>
+  <div class="box" style="left:382px;top:348px;width:11px;height:11px;border-radius:50%"></div>
+  <div class="t ph" style="left:402px;top:349px">Görev ara…</div>
+  <div class="box" style="left:852px;top:338px;width:238px;height:30px"></div>
+  <div class="box fill" style="left:932px;top:338px;width:80px;height:30px"></div>
+  <div class="t s" style="left:866px;top:349px">Tümü</div>
+  <div class="t" style="left:940px;top:349px;font-size:10px;font-weight:600">Devam eden</div>
+  <div class="t s" style="left:1022px;top:349px">Tamamlanan</div>
+  <div class="box" style="left:1104px;top:338px;width:88px;height:30px"></div>
+  <div class="t s" style="left:1114px;top:349px">Tüm haftalar ▾</div>
+
+  <!-- PATİKA -->
+  <div class="zone" style="left:352px;top:396px;width:268px;height:318px"></div>
+  <div class="zname" style="left:360px;top:386px">patika · yapışkan</div>
+
+  <div class="dot" style="left:374px;top:416px"></div>
+  <div class="vline" style="left:378px;top:430px;height:28px"></div>
+  <div class="t cap" style="left:402px;top:408px">Hafta 01</div>
+  <div class="t" style="left:402px;top:420px;font-size:10.5px">HTML Yapısı ve Semantik</div>
+  <div class="t s" style="left:402px;top:435px">5 / 5 görev</div>
+
+  <div class="dot" style="left:374px;top:464px"></div>
+  <div class="vline" style="left:378px;top:478px;height:28px"></div>
+  <div class="t cap" style="left:402px;top:456px">Hafta 02</div>
+  <div class="t" style="left:402px;top:468px;font-size:10.5px">CSS Yerleşim: Flexbox</div>
+  <div class="t s" style="left:402px;top:483px">7 / 7 görev</div>
+
+  <div class="dot" style="left:373px;top:512px;width:13px;height:13px;background:#a2701f;box-shadow:0 0 0 4px #f6ecd8"></div>
+  <div class="vline dash" style="left:378px;top:532px;height:106px"></div>
+  <div class="t cap" style="left:402px;top:504px">Hafta 03</div>
+  <div class="t" style="left:402px;top:516px;font-size:10.5px;font-weight:600">Form Doğrulama ve…</div>
+  <div class="box acc" style="left:402px;top:532px;width:42px;height:13px"></div>
+  <div class="t" style="left:407px;top:536px;font-size:7px;letter-spacing:.08em;color:#8a5e16;font-weight:700">ŞİMDİ</div>
+  <div class="t s" style="left:402px;top:554px">2 / 5 görev</div>
+
+  <div class="dot hollow" style="left:373px;top:588px"></div>
+  <div class="vline dash" style="left:378px;top:604px;height:30px"></div>
+  <div class="t cap" style="left:402px;top:580px">Hafta 04</div>
+  <div class="t s" style="left:402px;top:592px;font-size:10.5px">Modüler JavaScript</div>
+
+  <div class="dot hollow" style="left:373px;top:636px"></div>
+  <div class="t cap" style="left:402px;top:628px">Hafta 05</div>
+  <div class="t s" style="left:402px;top:640px;font-size:10.5px">Tarayıcı Depolama</div>
+
+  <!-- DETAY -->
+  <div class="zone" style="left:650px;top:396px;width:558px;height:318px"></div>
+  <div class="zname" style="left:658px;top:386px">seçili haftanın detayı</div>
+
+  <div class="t cap" style="left:670px;top:410px">Hafta 03 · bu hafta</div>
+  <div class="t h1" style="left:670px;top:424px">Form Doğrulama ve Olay Yönetimi</div>
+  <div class="t s" style="left:670px;top:456px">Kullanıcıdan gelen veriyi tarayıcı tarafında denetlemeyi ve olay</div>
+  <div class="t s" style="left:670px;top:470px">dinleyicilerini düzenli biçimde kurmayı çalışıyoruz.</div>
+
+  <div class="t cap" style="left:670px;top:494px">Öğrenme hedefleri</div>
+  <div class="hr" style="left:670px;top:508px;width:518px"></div>
+  <div class="t s" style="left:676px;top:518px">› Form verisini göndermeden önce doğrulayabilmek</div>
+  <div class="t s" style="left:676px;top:534px">› Olay dinleyicilerini bileşenin içinde yönetebilmek</div>
+  <div class="t s" style="left:676px;top:550px">› Hata mesajlarını erişilebilir biçimde göstermek</div>
+
+  <div class="t cap" style="left:670px;top:574px">Görevler</div>
+  <div class="t s" style="left:1118px;top:573px">2 / 5 tamamlandı</div>
+  <div class="hr" style="left:670px;top:588px;width:518px"></div>
+
+  <div class="tick" style="left:670px;top:598px"></div>
+  <div class="t strike" style="left:694px;top:601px;font-size:10.5px">Form alanlarını semantik etiketlerle kur</div>
+  <div class="box" style="left:694px;top:617px;width:34px;height:12px;border-radius:3px"></div>
+  <div class="t s" style="left:699px;top:620px;font-size:7.5px">html</div>
+  <div class="hr" style="left:670px;top:638px;width:518px"></div>
+
+  <div class="tick empty" style="left:670px;top:648px"></div>
+  <div class="t" style="left:694px;top:651px;font-size:10.5px">E-posta alanı için doğrulama kuralı yaz</div>
+  <div class="box" style="left:694px;top:667px;width:48px;height:12px;border-radius:3px"></div>
+  <div class="t s" style="left:699px;top:670px;font-size:7.5px">javascript</div>
+
+  <div class="box dotted" style="left:670px;top:690px;width:518px;height:18px"></div>
+  <div class="t s" style="left:680px;top:696px;font-size:8.5px;color:#b0b8b3">eşleşen görev yoksa bilgilendirme bu bölgede görünür</div>
+
+  <!-- ===== ROZETLER ===== -->
+  <div class="badge" style="left:290px;top:179px">01</div>
+  <div class="badge" style="left:290px;top:253px">02</div>
+  <div class="badge" style="left:290px;top:336px">03</div>
+  <div class="badge" style="left:290px;top:479px">04</div>
+  <div class="badge" style="left:1248px;top:422px">05</div>
+  <div class="badge" style="left:1248px;top:511px">06</div>
+  <div class="badge" style="left:1248px;top:593px">07</div>
+  <div class="badge" style="left:1248px;top:688px">08</div>
+
+  <!-- ===== AÇIKLAMALAR ===== -->
+  <div class="ann l" style="top:163px">
+    <div class="h">Üst bant</div>
+    <div class="d">Uygulama adı, ders ve dönem; sağda tema düğmesi. Sayfa boyunca sabit kalır.</div>
+  </div>
+
+  <div class="ann l" style="top:237px">
+    <div class="h">İlerleme bandı</div>
+    <div class="d">Tamamlanan / toplam görev, yüzde ve tam genişlikte dolum çubuğu.</div>
+  </div>
+
+  <div class="ann l" style="top:320px">
+    <div class="h">Araç çubuğu</div>
+    <div class="d">Arama, durum filtresi ve hafta filtresi. Üçü birlikte uygulanır; hiçbiri görevin gerçek durumunu değiştirmez.</div>
+  </div>
+
+  <div class="ann l" style="top:445px">
+    <div class="h">Patika — yapışkan sütun</div>
+    <div class="d">Haftalar durak olarak dizilir, sayfa kaydırılırken yerinde kalır. Dolu nokta = tamamlandı, vurgulu nokta = bulunulan hafta, boş nokta + kesikli çizgi = gelecek.</div>
+  </div>
+
+  <div class="ann r" style="top:403px">
+    <div class="h">Hafta başlığı</div>
+    <div class="d">Hafta numarası, başlık ve kısa açıklama. Seçime göre değişen tek bölge burasıdır.</div>
+  </div>
+
+  <div class="ann r" style="top:492px">
+    <div class="h">Öğrenme hedefleri</div>
+    <div class="d">Görevlerin hemen üstünde durur; görev, kazanım bağlamıyla okunur.</div>
+  </div>
+
+  <div class="ann r" style="top:574px">
+    <div class="h">Görev listesi</div>
+    <div class="d">Kutu + başlık + etiket. Satırlar kart içinde değil, ince ayraçlarla bölünür.</div>
+  </div>
+
+  <div class="ann r" style="top:669px">
+    <div class="h">Boş durum (koşullu)</div>
+    <div class="d">Filtre/arama eşleşmediğinde veya hafta içeriksizse burada bilgilendirme gösterilir.</div>
+  </div>
+
+  <!-- ===== ÇİZGİLER ===== -->
+  <svg class="leads" viewBox="0 0 1560 800">
+    <path d="M270 190 H290"/>
+    <path class="stub" d="M312 190 H348"/><circle cx="352" cy="190" r="2.6"/>
+
+    <path d="M270 264 H290"/>
+    <path class="stub" d="M312 264 H348"/><circle cx="352" cy="264" r="2.6"/>
+
+    <path d="M270 347 H290"/>
+    <path class="stub" d="M312 347 H348"/><circle cx="352" cy="347" r="2.6"/>
+
+    <path d="M270 490 H290"/>
+    <path class="stub" d="M312 490 H348"/><circle cx="352" cy="490" r="2.6"/>
+
+    <path d="M1286 433 H1270"/>
+    <path class="stub" d="M1248 433 H1216"/><circle cx="1212" cy="433" r="2.6"/>
+
+    <path d="M1286 522 H1270"/>
+    <path class="stub" d="M1248 522 H1216"/><circle cx="1212" cy="522" r="2.6"/>
+
+    <path d="M1286 604 H1270"/>
+    <path class="stub" d="M1248 604 H1216"/><circle cx="1212" cy="604" r="2.6"/>
+
+    <path d="M1286 699 H1270"/>
+    <path class="stub" d="M1248 699 H1216"/><circle cx="1212" cy="699" r="2.6"/>
+  </svg>
+
+</div>
+</body>
+</html>
+
