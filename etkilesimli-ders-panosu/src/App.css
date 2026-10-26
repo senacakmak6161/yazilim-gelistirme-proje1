@@ -1,0 +1,245 @@
+.page {
+  min-height: 100svh;
+  padding: 28px 48px 64px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  min-width: 0;
+}
+
+.brand-mark {
+  color: var(--gold);
+  font-size: 22px;
+  line-height: 1;
+}
+
+.brand {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.course-name {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.theme-button {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.progress-band {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 24px;
+  padding: 28px 0 22px;
+}
+
+.eyebrow,
+.week-label,
+.detail-kicker,
+.percent-label {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+.progress-count {
+  margin-top: 8px;
+  font-size: 42px;
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.progress-count span {
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.progress-week {
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.progress-percent {
+  text-align: right;
+  align-self: end;
+}
+
+.percent-value {
+  color: var(--gold);
+  font-size: 36px;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.percent-label {
+  margin-top: 6px;
+}
+
+.progress-track {
+  grid-column: 1 / -1;
+  height: 6px;
+  margin-top: 18px;
+  border-radius: 999px;
+  background: #ddd8cf;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--green-bar);
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 56px;
+  padding-top: 28px;
+  max-width: 1120px;
+}
+
+.week-rail {
+  display: flex;
+  flex-direction: column;
+  border-left: 2px solid transparent;
+}
+
+.week-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 14px;
+  width: 100%;
+  padding: 0 0 22px 4px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+
+.week-item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 16px;
+  bottom: 0;
+  border-left: 2px solid var(--green);
+}
+
+.week-item.is-upcoming:not(:last-child)::before {
+  border-left-style: dotted;
+  border-left-color: var(--dot-empty);
+}
+
+.week-dot {
+  width: 12px;
+  height: 12px;
+  margin-top: 4px;
+  border-radius: 50%;
+  border: 2px solid var(--dot-empty);
+  background: var(--bg);
+  z-index: 1;
+}
+
+.week-item.is-complete .week-dot {
+  border-color: var(--green);
+  background: var(--green);
+}
+
+.week-item.is-current .week-dot {
+  border-color: var(--gold);
+  background: var(--gold);
+}
+
+.week-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+}
+
+.week-title {
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.3;
+  color: var(--text-muted);
+}
+
+.week-item.is-complete .week-title,
+.week-item.is-selected .week-title {
+  color: var(--text);
+}
+
+.week-summary {
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+.now-badge {
+  display: inline-block;
+  margin-top: 2px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--now-bg);
+  color: var(--now-text);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.week-detail {
+  padding-top: 4px;
+}
+
+.detail-kicker {
+  margin-bottom: 10px;
+}
+
+.week-detail h1 {
+  max-width: 16ch;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.detail-description {
+  max-width: 58ch;
+  margin-top: 16px;
+  color: var(--text-muted);
+  font-size: 16px;
+}
+
+.detail-placeholder {
+  margin-top: 36px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  color: var(--text-soft);
+  font-size: 14px;
+}
