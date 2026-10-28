@@ -1,0 +1,162 @@
+/* Responsive yerleşim — YGP1-40 / P1-08 / US-08
+ *
+ * Kırılım noktaları tasarım belgesindeki (docs/tasarim) bölüm 11 ile aynıdır:
+ *   >= 1024px  iki sütun, patika sütunu kaydırmada yerinde kalır
+ *   <= 1023px  tek sütun
+ *   <=  640px  telefon: daha dar boşluk, yığılmış ilerleme bandı, büyük dokunma hedefi
+ *
+ * Hiçbir kırılımda yatay kaydırma oluşmaz; uzun başlıklar taşmaz, satır atlar.
+ */
+
+/* ---------- Masaüstü ---------- */
+@media (min-width: 1024px) {
+  /* Patika, detay sütunu kaydırılırken yerinde kalır.
+     Kullanıcı hangi haftada olduğunu kaybetmez. */
+  .week-rail {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    max-height: calc(100svh - 48px);
+    overflow-y: auto;
+  }
+}
+
+/* ---------- Tablet ve altı: tek sütun ---------- */
+@media (max-width: 1023px) {
+  .page {
+    padding: 24px 28px 56px;
+  }
+
+  .workspace {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    padding-top: 24px;
+  }
+
+  /* Tek sütunda genişlik sınırları gereksiz; metin alanı zaten dar */
+  .week-detail h1 {
+    max-width: none;
+    font-size: 28px;
+  }
+
+  .detail-description,
+  .goals-panel,
+  .task-panel {
+    max-width: none;
+  }
+
+  .progress-count {
+    font-size: 36px;
+  }
+
+  .progress-count span {
+    font-size: 22px;
+  }
+
+  .percent-value {
+    font-size: 30px;
+  }
+}
+
+/* ---------- Telefon ---------- */
+@media (max-width: 640px) {
+  .page {
+    padding: 18px 16px 48px;
+  }
+
+  /* Üst bant dar ekranda sarabilsin, taşmasın */
+  .topbar {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Tasarım kararı: dar ekranda ders adı gizlenir, uygulama adı yeterli */
+  .course-name {
+    display: none;
+  }
+
+  /* İlerleme bandı yan yana değil alt alta */
+  .progress-band {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 8px;
+    padding: 20px 0 16px;
+  }
+
+  .progress-count {
+    font-size: 30px;
+  }
+
+  .progress-count span {
+    font-size: 18px;
+  }
+
+  .progress-percent {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    text-align: left;
+  }
+
+  .percent-value {
+    font-size: 22px;
+  }
+
+  .progress-track {
+    margin-top: 14px;
+  }
+
+  .week-detail h1 {
+    font-size: 24px;
+  }
+
+  /* Dokunma hedefleri en az 44x44 px (erişilebilirlik ölçütü) */
+  .week-item {
+    padding-top: 10px;
+    padding-bottom: 24px;
+  }
+
+  .theme-button {
+    min-height: 44px;
+    padding: 10px 16px;
+  }
+
+  .task-item {
+    padding: 16px 0;
+  }
+
+  .task-check {
+    width: 22px;
+    height: 22px;
+    margin-top: 0;
+  }
+
+  .task-title {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  /* Okunabilirlik: mobilde hiçbir yazı 12 px'in altına inmez.
+     Masaüstünde küçük etiketler tasarım gereği 10-11 px kalabilir,
+     ama telefonda okunaklı olması gerekir. */
+  .eyebrow,
+  .week-label,
+  .detail-kicker,
+  .percent-label,
+  .task-tag,
+  .task-due,
+  .task-done,
+  .now-badge {
+    font-size: 12px;
+  }
+}
+
+/* ---------- Çok dar ekranlar ---------- */
+@media (max-width: 380px) {
+  .page {
+    padding: 16px 12px 40px;
+  }
+
+  .progress-count {
+    font-size: 26px;
+  }
+}

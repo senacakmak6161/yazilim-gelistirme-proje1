@@ -4,6 +4,7 @@ import TaskList from './components/TaskList.jsx'
 import { useLocalStorage } from './hooks/useLocalStorage.js'
 import courses from './data/courses.json'
 import './App.css'
+import './responsive.css'
 
 
 // Bulunulan hafta: içeriğin tamamlanma durumuna değil, dersin takvimine bağlıdır.
