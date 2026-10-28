@@ -137,6 +137,9 @@ Arayüz, geliştirmeye başlamadan önce tasarlandı. Tam tasarım belgesi — r
 hareket kuralları ve bileşen eşlemesiyle birlikte — şurada:
 **[`docs/tasarim/Tasarim-ve-Arayuz-Taslagi.pdf`](docs/tasarim/Tasarim-ve-Arayuz-Taslagi.pdf)**
 
+Geliştirmeye başlarken tasarım sisteminin nasıl uygulanacağı:
+[`docs/tasarim/iskelet-kurulum-rehberi.md`](docs/tasarim/iskelet-kurulum-rehberi.md)
+
 ### Konsept: Ders Patikası
 
 Ders dönemi bir **patika**, her hafta bu patikada bir **durak**. Tamamlanan haftalar arkada kalan

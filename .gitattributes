@@ -1,0 +1,42 @@
+# Satır sonu normalleştirmesi
+# --------------------------------------------------------------------
+# Depoda tüm metin dosyaları LF ile saklanır ve çalışma kopyasında da LF
+# kalır. Böylece Windows / macOS / Linux farkı olmadan herkes aynı dosyayı
+# görür; "LF will be replaced by CRLF" uyarıları da ortadan kalkar.
+* text=auto eol=lf
+
+# Metin dosyaları
+*.md     text
+*.txt    text
+*.html   text
+*.css    text
+*.js     text
+*.jsx    text
+*.json   text
+*.svg    text
+*.yml    text
+*.yaml   text
+
+# Windows betikleri CRLF ister
+*.bat    text eol=crlf
+*.cmd    text eol=crlf
+
+# İkili dosyalar — Git bunlara dokunmasın, diff üretmeye çalışmasın
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.webp   binary
+*.ico    binary
+*.pdf    binary
+*.docx   binary
+*.pptx   binary
+*.xlsx   binary
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+*.otf    binary
+*.zip    binary
+
+# GitHub dil istatistiklerinde dokümantasyonu sayma
+docs/** linguist-documentation
