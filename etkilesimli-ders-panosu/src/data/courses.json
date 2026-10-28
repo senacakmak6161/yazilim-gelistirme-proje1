@@ -1,0 +1,405 @@
+{
+  "course": {
+    "title": "Web Programlama",
+    "term": "2026 Güz"
+  },
+  "weeks": [
+    {
+      "id": 1,
+      "weekNumber": 1,
+      "title": "HTML ile İlk Web Sayfası",
+      "description": "Web geliştirmenin temelleri öğrenilir. HTML dosyasının yapısı, başlıklar, paragraflar, bağlantılar ve görseller adım adım incelenerek ilk web sayfası oluşturulur.",
+      "category": "Web Geliştirme",
+      "durationMinutes": 240,
+      "objectives": [
+        "HTML ve web sayfalarının temel mantığını öğrenmek",
+        "HTML belgesinin temel yapısını oluşturmak",
+        "Başlık, paragraf, bağlantı ve görsel etiketlerini kullanmak",
+        "İlk kişisel tanıtım sayfasını hazırlamak"
+      ],
+      "tasks": [
+        {
+          "id": "w1-t1",
+          "title": "HTML Belgesinin Yapısını Öğren",
+          "description": "HTML'in ne işe yaradığını öğren. DOCTYPE, html, head, title ve body etiketlerinin görevlerini incele ve boş bir HTML belgesi oluştur.",
+          "dueDate": null,
+          "tags": [
+            "okuma"
+          ],
+          "estimatedMinutes": 30
+        },
+        {
+          "id": "w1-t2",
+          "title": "Başlık ve Paragraf Etiketlerini Kullan",
+          "description": "h1-h6 başlık etiketlerini ve p paragraf etiketini öğren. Kişisel tanıtımını içeren başlıklar ve paragraflar oluştur.",
+          "dueDate": null,
+          "tags": [
+            "uygulama"
+          ],
+          "estimatedMinutes": 35
+        },
+        {
+          "id": "w1-t3",
+          "title": "Bağlantı ve Görsel Ekle",
+          "description": "a ve img etiketlerinin kullanımını öğren. Sayfana bir bağlantı ve açıklayıcı alternatif metne sahip bir görsel ekle.",
+          "dueDate": null,
+          "tags": [
+            "uygulama"
+          ],
+          "estimatedMinutes": 35
+        },
+        {
+          "id": "w1-t4",
+          "title": "İlk Web Sayfanı Oluştur",
+          "description": "Öğrendiğin etiketleri birleştirerek adını, ilgi alanlarını, bir görseli ve bir bağlantıyı içeren kişisel tanıtım sayfası hazırla.",
+          "dueDate": null,
+          "tags": [
+            "proje"
+          ],
+          "estimatedMinutes": 45
+        },
+        {
+          "id": "w1-t5",
+          "title": "HTML Temelleri Testi",
+          "description": "HTML belgesinin yapısı ve temel etiketlerle ilgili kısa testi çöz. Yanlış cevaplarının nedenlerini tekrar incele.",
+          "dueDate": null,
+          "tags": [
+            "quiz"
+          ],
+          "estimatedMinutes": 15
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "weekNumber": 2,
+      "title": "HTML Yapıları ve Formlar",
+      "description": "HTML'de semantik etiketler, listeler, tablolar ve formlar öğrenilir. Kullanıcının bilgi girebildiği basit bir kayıt formu hazırlanır.",
+      "category": "Web Geliştirme",
+      "durationMinutes": 240,
+      "objectives": [
+        "Semantik HTML etiketlerinin amacını kavramak",
+        "Sıralı ve sırasız listeler oluşturmak",
+        "Tablo ve form elemanlarını kullanmak",
+        "Kullanıcıdan bilgi alan bir form hazırlamak"
+      ],
+      "tasks": [
+        {
+          "id": "w2-t1",
+          "title": "Semantik HTML Etiketlerini Öğren",
+          "description": "header, nav, main, section, article ve footer etiketlerinin amaçlarını öğren. Bunların sayfanın anlamlı bölümlere ayrılmasını nasıl sağladığını incele.",
+          "dueDate": null,
+          "tags": [
+            "okuma"
+          ],
+          "estimatedMinutes": 30
+        },
+        {
+          "id": "w2-t2",
+          "title": "Liste ve Tablo Oluştur",
+          "description": "ul, ol, li, table, tr, th ve td etiketlerini öğren. İlgi alanlarını listele ve örnek bir haftalık program tablosu oluştur.",
+          "dueDate": null,
+          "tags": [
+            "uygulama"
+          ],
+          "estimatedMinutes": 35
+        },
+        {
+          "id": "w2-t3",
+          "title": "Form Elemanlarını Tanı",
+          "description": "form, label, input, select ve textarea elemanlarını öğren. Metin, e-posta ve seçim alanlarının nasıl kullanıldığını örneklerle incele.",
+          "dueDate": null,
+          "tags": [
+            "okuma"
+          ],
+          "estimatedMinutes": 35
+        },
+        {
+          "id": "w2-t4",
+          "title": "Kayıt Formu Hazırla",
+          "description": "Ad, e-posta, ilgi alanı ve açıklama alanları içeren bir form oluştur. Her alan için uygun label kullan ve gerekli alanları belirt.",
+          "dueDate": null,
+          "tags": [
+            "proje"
+          ],
+          "estimatedMinutes": 45
+        },
+        {
+          "id": "w2-t5",
+          "title": "HTML Yapıları Testi",
+          "description": "Semantik etiketler, listeler, tablolar ve form elemanları hakkındaki bilgini kısa bir testle kontrol et.",
+          "dueDate": null,
+          "tags": [
+            "quiz"
+          ],
+          "estimatedMinutes": 15
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "weekNumber": 3,
+      "title": "CSS ile Tasarım ve Biçimlendirme",
+      "description": "CSS'in HTML ile ilişkisi öğrenilir. Seçiciler, renkler, yazı tipleri, boşluklar, kenarlıklar ve kutu modeli kullanılarak web sayfası tasarlanır.",
+      "category": "Web Geliştirme",
+      "durationMinutes": 270,
+      "objectives": [
+        "CSS'i HTML belgesine bağlamak",
+        "Seçiciler ve temel CSS özelliklerini kullanmak",
+        "Margin, padding ve border kavramlarını anlamak",
+        "Sayfanın renklerini ve tipografisini düzenlemek"
+      ],
+      "tasks": [
+        {
+          "id": "w3-t1",
+          "title": "CSS'i HTML'e Bağla",
+          "description": "Inline, internal ve external CSS arasındaki farkları öğren. Ayrı bir CSS dosyası oluştur ve HTML belgene bağla.",
+          "dueDate": null,
+          "tags": [
+            "okuma"
+          ],
+          "estimatedMinutes": 30
+        },
+        {
+          "id": "w3-t2",
+          "title": "Seçiciler ve Renkleri Kullan",
+          "description": "Element, class ve id seçicilerini öğren. Arka plan, metin rengi ve yazı tipi özellikleriyle sayfanın görünümünü değiştir.",
+          "dueDate": null,
+          "tags": [
+            "uygulama"
+          ],
+          "estimatedMinutes": 35
+        },
+        {
+          "id": "w3-t3",
+          "title": "Kutu Modelini Öğren",
+          "description": "Content, padding, border ve margin kavramlarını örneklerle incele. Elemanların boyut ve boşluklarının yerleşimi nasıl etkilediğini gözlemle.",
+          "dueDate": null,
+          "tags": [
+            "okuma"
+          ],
+          "estimatedMinutes": 35
+        },
+        {
+          "id": "w3-t4",
+          "title": "Tanıtım Sayfanı Tasarla",
+          "description": "İlk haftada oluşturduğun sayfaya renk paleti, tipografi, kenarlıklar ve boşluklar ekle. İçeriği okunabilir ve tutarlı hâle getir.",
+          "dueDate": null,
+          "tags": [
+            "proje"
+          ],
+          "estimatedMinutes": 50
+        },
+        {
+          "id": "w3-t5",
+          "title": "CSS Temelleri Testi",
+          "description": "CSS seçicileri, renkler, yazı tipleri ve kutu modeli hakkındaki bilgini test et. Yanlış cevaplarını örneklerle tekrar çalış.",
+          "dueDate": null,
+          "tags": [
+            "quiz"
+          ],
+          "estimatedMinutes": 15
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "weekNumber": 4,
+      "title": "Flexbox ve Responsive Tasarım",
+      "description": "CSS Flexbox ile sayfa yerleşimi hazırlanır. Medya sorguları ve esnek ölçüler kullanılarak farklı ekran boyutlarına uyum sağlayan bir arayüz oluşturulur.",
+      "category": "Web Geliştirme",
+      "durationMinutes": 270,
+      "objectives": [
+        "Flexbox ile yatay ve dikey yerleşim yapmak",
+        "Kart ve içerik alanları oluşturmak",
+        "Medya sorgularını kullanmak",
+        "Web sayfasını mobil ve masaüstü ekranlara uyarlamak"
+      ],
+      "tasks": [
+        {
+          "id": "w4-t1",
+          "title": "Flexbox Mantığını Öğren",
+          "description": "Flex container, flex item, justify-content, align-items ve gap özelliklerini öğren. Elemanların nasıl hizalandığını küçük örneklerle incele.",
+          "dueDate": null,
+          "tags": [
+            "okuma"
+          ],
+          "estimatedMinutes": 35
+        },
+        {
+          "id": "w4-t2",
+          "title": "Kart Düzeni Oluştur",
+          "description": "Flexbox kullanarak yan yana duran içerik kartları oluştur. Ekran genişliği değiştiğinde elemanların yerleşimini gözlemle.",
+          "dueDate": null,
+          "tags": [
+            "uygulama"
+          ],
+          "estimatedMinutes": 40
+        },
+        {
+          "id": "w4-t3",
+          "title": "Responsive Tasarımı Öğren",
+          "description": "Yüzde, esnek genişlikler ve media query kavramlarını öğren. Mobil ve masaüstü görünüm arasındaki farkları incele.",
+          "dueDate": null,
+          "tags": [
+            "okuma"
+          ],
+          "estimatedMinutes": 35
+        },
+        {
+          "id": "w4-t4",
+          "title": "Mobil Uyumlu Sayfa Hazırla",
+          "description": "Kişisel sayfanı telefon ve masaüstü ekranlarında kullanılabilecek şekilde düzenle. İçeriğin taşmadığını ve metinlerin okunabildiğini kontrol et.",
+          "dueDate": null,
+          "tags": [
+            "proje"
+          ],
+          "estimatedMinutes": 50
+        },
+        {
+          "id": "w4-t5",
+          "title": "Responsive Tasarım Testi",
+          "description": "Flexbox, hizalama ve medya sorguları hakkındaki bilgini kısa testle değerlendir.",
+          "dueDate": null,
+          "tags": [
+            "quiz"
+          ],
+          "estimatedMinutes": 15
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "weekNumber": 5,
+      "title": "JavaScript ile Etkileşim",
+      "description": "JavaScript değişkenleri, koşullar, fonksiyonlar ve olaylar öğrenilir. DOM kullanılarak butonlara işlev kazandırılır ve form girdileri üzerinde temel kontroller yapılır.",
+      "category": "Web Geliştirme",
+      "durationMinutes": 300,
+      "objectives": [
+        "Değişken, koşul ve fonksiyonların temel mantığını anlamak",
+        "HTML elemanlarını DOM üzerinden seçmek",
+        "Tıklama gibi kullanıcı olaylarını yakalamak",
+        "Basit form kontrolleri ve etkileşimler geliştirmek"
+      ],
+      "tasks": [
+        {
+          "id": "w5-t1",
+          "title": "JavaScript Temellerini Öğren",
+          "description": "Değişkenler, veri türleri, karşılaştırmalar ve koşul ifadelerini öğren. Basit örneklerde değerlerin nasıl değiştiğini incele.",
+          "dueDate": null,
+          "tags": [
+            "okuma"
+          ],
+          "estimatedMinutes": 40
+        },
+        {
+          "id": "w5-t2",
+          "title": "Fonksiyonlar ve Olayları Öğren",
+          "description": "Fonksiyonların ne işe yaradığını ve click gibi kullanıcı olaylarının nasıl yakalandığını öğren. Küçük kod örneklerini incele.",
+          "dueDate": null,
+          "tags": [
+            "okuma"
+          ],
+          "estimatedMinutes": 40
+        },
+        {
+          "id": "w5-t3",
+          "title": "DOM ile Sayfayı Değiştir",
+          "description": "getElementById ve querySelector gibi yöntemlerle HTML elemanlarını seç. Bir butona basıldığında sayfadaki metni değiştiren bir örnek yap.",
+          "dueDate": null,
+          "tags": [
+            "uygulama"
+          ],
+          "estimatedMinutes": 45
+        },
+        {
+          "id": "w5-t4",
+          "title": "Etkileşimli Form Geliştir",
+          "description": "Form gönderimini kontrol et. Boş bırakılan alanlar için kullanıcıya uyarı göster ve başarılı girişte bilgilendirme mesajı sun.",
+          "dueDate": null,
+          "tags": [
+            "proje"
+          ],
+          "estimatedMinutes": 50
+        },
+        {
+          "id": "w5-t5",
+          "title": "JavaScript Temelleri Testi",
+          "description": "Değişkenler, koşullar, fonksiyonlar, DOM ve olaylar hakkındaki bilgini kısa bir testle kontrol et.",
+          "dueDate": null,
+          "tags": [
+            "quiz"
+          ],
+          "estimatedMinutes": 20
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "weekNumber": 6,
+      "title": "Mini Proje ve Genel Değerlendirme",
+      "description": "Önceki haftalarda öğrenilen HTML, CSS ve JavaScript bilgileri bir araya getirilir. Öğrenci responsive ve etkileşimli bir kişisel portfolyo sayfası oluşturur, test eder ve eksiklerini değerlendirir.",
+      "category": "Web Geliştirme",
+      "durationMinutes": 360,
+      "objectives": [
+        "HTML, CSS ve JavaScript'i tek projede birleştirmek",
+        "Mobil uyumlu bir portfolyo sayfası oluşturmak",
+        "Kullanıcı etkileşimi eklemek",
+        "Projeyi test edip hataları düzeltmek",
+        "Öğrenme sürecini değerlendirmek"
+      ],
+      "tasks": [
+        {
+          "id": "w6-t1",
+          "title": "Mini Projenin Planını Hazırla",
+          "description": "Kişisel portfolyo sayfanda bulunacak bölümleri belirle: tanıtım, beceriler, projeler ve iletişim. İçerik yapısını kâğıt üzerinde veya basit bir taslakta planla.",
+          "dueDate": null,
+          "tags": [
+            "uygulama"
+          ],
+          "estimatedMinutes": 30
+        },
+        {
+          "id": "w6-t2",
+          "title": "Portfolyonun HTML Yapısını Oluştur",
+          "description": "Planladığın bölümleri semantik HTML etiketleriyle oluştur. Başlıkları, bağlantıları ve içerik alanlarını uygun biçimde düzenle.",
+          "dueDate": null,
+          "tags": [
+            "uygulama"
+          ],
+          "estimatedMinutes": 45
+        },
+        {
+          "id": "w6-t3",
+          "title": "Portfolyoya CSS ve Mobil Uyum Ekle",
+          "description": "Renk, tipografi, kart ve Flexbox düzenlerini uygula. Sayfanın dar ve geniş ekranlarda kullanılabilir olmasını sağla.",
+          "dueDate": null,
+          "tags": [
+            "uygulama"
+          ],
+          "estimatedMinutes": 50
+        },
+        {
+          "id": "w6-t4",
+          "title": "Portfolyoya JavaScript Etkileşimi Ekle",
+          "description": "Bir butona işlev kazandır veya form için temel doğrulama ekle. Etkileşimin doğru çalıştığını farklı girişlerle test et.",
+          "dueDate": null,
+          "tags": [
+            "proje"
+          ],
+          "estimatedMinutes": 50
+        },
+        {
+          "id": "w6-t5",
+          "title": "Projeyi Test Et ve Değerlendir",
+          "description": "Bağlantıları, formu, butonları ve mobil görünümü kontrol et. Bulduğun hataları düzelt ve öğrendiğin konularla ilgili son değerlendirme testini tamamla.",
+          "dueDate": null,
+          "tags": [
+            "quiz"
+          ],
+          "estimatedMinutes": 30
+        }
+      ]
+    }
+  ]
+}

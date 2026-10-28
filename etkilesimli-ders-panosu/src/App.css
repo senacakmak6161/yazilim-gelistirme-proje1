@@ -236,6 +236,42 @@
   font-size: 16px;
 }
 
+.goals-panel {
+  max-width: 58ch;
+  margin-top: 32px;
+}
+
+.goals-panel h2 {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-soft);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.goals-panel ul {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.goals-panel li {
+  position: relative;
+  padding: 6px 0 6px 18px;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+/* Patika metaforunu sürdüren küçük yön işareti */
+.goals-panel li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+}
+
 .detail-placeholder {
   margin-top: 36px;
   padding-top: 16px;
