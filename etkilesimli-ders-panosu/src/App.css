@@ -236,10 +236,167 @@
   font-size: 16px;
 }
 
+.goals-panel {
+  max-width: 58ch;
+  margin-top: 32px;
+}
+
+.goals-panel h2 {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-soft);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.goals-panel ul {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.goals-panel li {
+  position: relative;
+  padding: 6px 0 6px 18px;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+/* Patika metaforunu sürdüren küçük yön işareti */
+.goals-panel li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+}
+
 .detail-placeholder {
   margin-top: 36px;
   padding-top: 16px;
   border-top: 1px solid var(--border);
   color: var(--text-soft);
   font-size: 14px;
+}
+
+/* ---------- Görev listesi ---------- */
+
+.task-panel {
+  max-width: 58ch;
+  margin-top: 36px;
+}
+
+.task-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.task-head h2 {
+  color: var(--text-soft);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.task-count {
+  color: var(--text-soft);
+  font-size: 13px;
+}
+
+.task-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Kart kutusu yok; satırlar ince ayraçla bölünür */
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.task-item:last-child {
+  border-bottom: 0;
+}
+
+.task-check {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--green);
+  cursor: pointer;
+}
+
+.task-body {
+  min-width: 0;
+}
+
+.task-title {
+  display: block;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+/* Durum yalnızca renkle değil, üstü çizili metinle de belli olur */
+.task-item.is-done .task-title {
+  color: var(--text-soft);
+  text-decoration: line-through;
+  text-decoration-color: var(--border);
+}
+
+.task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.task-tag {
+  padding: 1px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-soft);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.task-due {
+  color: var(--text-soft);
+  font-size: 12px;
+}
+
+.task-done {
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.empty-state {
+  margin-top: 16px;
+  padding: 18px 20px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* Klavye odağı her zaman görünür kalmalı */
+.task-check:focus-visible,
+.week-item:focus-visible,
+.theme-button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }

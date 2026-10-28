@@ -8,6 +8,9 @@ function WeekCard({ week, isSelected, isCurrent, isComplete, onSelect }) {
   return (
     <button
       type="button"
+      data-testid="week-card"
+      aria-pressed={isSelected}
+      aria-label={`Hafta ${week.weekNumber}: ${week.title}`}
       className={`week-item ${statusClass} ${isSelected ? 'is-selected' : ''}`}
       onClick={() => onSelect(week.id)}
     >
