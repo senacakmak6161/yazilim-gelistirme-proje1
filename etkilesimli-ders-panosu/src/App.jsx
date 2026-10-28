@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import WeekList from './components/WeekList.jsx'
+import TaskList from './components/TaskList.jsx'
+import { useLocalStorage } from './hooks/useLocalStorage.js'
 import courses from './data/courses.json'
 import './App.css'
 
@@ -9,10 +11,14 @@ import './App.css'
 const currentWeekId = 3
 
 function App() {
-  // Görev durumları tek kaynaktan yönetilir (sözleşme: ddp.taskStatus)
-  // YGP1-39 kapsamında localStorage'a bağlanacak.
-  const [taskStatus] = useState({})
+  // Görev durumları tek kaynaktan yönetilir ve sayfa yenilendiğinde korunur
+  // (sözleşme: ddp.taskStatus)
+  const [taskStatus, setTaskStatus] = useLocalStorage('ddp.taskStatus', {})
   const [selectedWeekId, setSelectedWeekId] = useState(currentWeekId)
+
+  function toggleTask(taskId) {
+    setTaskStatus((prev) => ({ ...prev, [taskId]: !prev[taskId] }))
+  }
 
   // Haftalar courses.json'dan gelir; görev sayacı veriden hesaplanır
   const weeks = courses.weeks.map((week) => {
@@ -106,9 +112,16 @@ function App() {
             )}
           </section>
 
-          <p className="detail-placeholder">
-            Görev listesi sonraki adımda bu alana gelecek.
-          </p>
+          <TaskList
+            tasks={selectedWeek.tasks}
+            taskStatus={taskStatus}
+            onToggle={toggleTask}
+            emptyMessage={
+              tumGorevler.length === 0
+                ? 'Henüz görev bulunmuyor.'
+                : 'Bu haftaya ait görev bulunmuyor.'
+            }
+          />
         </main>
       </div>
     </div>
