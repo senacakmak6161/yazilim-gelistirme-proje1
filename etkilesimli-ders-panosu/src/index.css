@@ -1,18 +1,20 @@
 :root {
-  --bg: #f4f3ef;
-  --surface: #f4f3ef;
-  --text: #1c1c1c;
-  --text-muted: #6f6c67;
-  --text-soft: #8a8680;
-  --border: #ddd9d1;
-  --green: #2f6b4f;
-  --green-bar: #3d7a5c;
-  --gold: #8a6a28;
-  --gold-soft: #c4a35a;
-  --now-bg: #efe4c8;
-  --now-text: #7a5c1e;
-  --dot-empty: #c9c4bb;
-  --sans: "Segoe UI", system-ui, sans-serif;
+  --bg: #f3f6f3;
+  --surface: #f3f6f3;
+  --text: #15201a;
+  --text-muted: #4e5d55;
+  --text-soft: #65726a;
+  --border: #d5ded7;
+  --track: #e2e9e3;
+  --green: #35714f;
+  --green-bar: #35714f;
+  --gold: #a2701f;
+  --gold-soft: #dcc08a;
+  --now-bg: #f6ecd8;
+  --now-text: #8a5e16;
+  --dot-empty: #c6d1c8;
+  --sans: "Work Sans", "Segoe UI", system-ui, sans-serif;
+  --display: "Outfit", "Segoe UI", system-ui, sans-serif;
 
   font-family: var(--sans);
   color: var(--text);
@@ -21,6 +23,7 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
 }
 
 * {
@@ -42,6 +45,19 @@ h2,
 h3,
 p {
   margin: 0;
+}
+
+h1,
+h2,
+.brand,
+.eyebrow,
+.week-label,
+.week-title,
+.detail-kicker,
+.progress-count,
+.percent-value,
+.now-badge {
+  font-family: var(--display);
 }
 
 button {
