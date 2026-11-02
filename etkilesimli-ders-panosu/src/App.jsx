@@ -2,29 +2,47 @@ import { useState } from 'react'
 import WeekList from './components/WeekList.jsx'
 import TaskList from './components/TaskList.jsx'
 import { useLocalStorage } from './hooks/useLocalStorage.js'
+import { useMediaQuery } from './hooks/useMediaQuery.js'
 import courses from './data/courses.json'
 import './App.css'
 import './responsive.css'
 
+function isWeekComplete(week, taskStatus) {
+  return week.tasks.length > 0 && week.tasks.every((task) => taskStatus[task.id])
+}
 
-// Bulunulan hafta: içeriğin tamamlanma durumuna değil, dersin takvimine bağlıdır.
-// Şimdilik sabit; ileride tarihe göre hesaplanabilir.
-const currentWeekId = 3
+function findCurrentWeek(weeks, taskStatus) {
+  return weeks.find((week) => !isWeekComplete(week, taskStatus)) ?? weeks[weeks.length - 1]
+}
 
 function App() {
   // Görev durumları tek kaynaktan yönetilir ve sayfa yenilendiğinde korunur
   // (sözleşme: ddp.taskStatus)
   const [taskStatus, setTaskStatus] = useLocalStorage('ddp.taskStatus', {})
-  const [selectedWeekId, setSelectedWeekId] = useState(currentWeekId)
+  const [selectedWeekId, setSelectedWeekId] = useState(
+    () => findCurrentWeek(courses.weeks, taskStatus).id,
+  )
+  const currentWeek = findCurrentWeek(courses.weeks, taskStatus)
+  const currentWeekId = currentWeek.id
+  const isStacked = useMediaQuery('(max-width: 1023px)')
 
   function toggleTask(taskId) {
     setTaskStatus((prev) => ({ ...prev, [taskId]: !prev[taskId] }))
   }
 
   // Haftalar courses.json'dan gelir; görev sayacı veriden hesaplanır
-  const weeks = courses.weeks.map((week) => {
+  const currentWeekIndex = courses.weeks.indexOf(currentWeek)
+  const weeks = courses.weeks.map((week, index) => {
     const tamamlanan = week.tasks.filter((task) => taskStatus[task.id]).length
-    return { ...week, summary: `${tamamlanan} / ${week.tasks.length} görev` }
+    const baslanmadi =
+      week.tasks.length === 0 || (index > currentWeekIndex && tamamlanan === 0)
+    return {
+      ...week,
+      isComplete: isWeekComplete(week, taskStatus),
+      summary: baslanmadi
+        ? `${week.tasks.length} görev`
+        : `${tamamlanan} / ${week.tasks.length} görev`,
+    }
   })
 
   const selectedWeek = weeks.find((week) => week.id === selectedWeekId)
@@ -36,6 +54,42 @@ function App() {
     tumGorevler.length === 0
       ? 0
       : Math.round((tamamlananToplam / tumGorevler.length) * 100)
+
+  const DetailTag = isStacked ? 'section' : 'main'
+  const weekDetail = (
+    <DetailTag className="week-detail">
+      <p className="detail-kicker">
+        Hafta {String(selectedWeek.weekNumber).padStart(2, '0')}
+        {selectedWeek.id === currentWeekId ? ' · Bu hafta' : ''}
+      </p>
+      <h1>{selectedWeek.title}</h1>
+      <p className="detail-description">{selectedWeek.description}</p>
+
+      <section className="goals-panel" data-testid="goals-panel">
+        <h2>Hafta {selectedWeek.weekNumber} Öğrenme Hedefleri</h2>
+        {selectedWeek.objectives.length > 0 ? (
+          <ul>
+            {selectedWeek.objectives.map((objective) => (
+              <li key={objective}>{objective}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>Bu hafta için henüz içerik eklenmemiş.</p>
+        )}
+      </section>
+
+      <TaskList
+        tasks={selectedWeek.tasks}
+        taskStatus={taskStatus}
+        onToggle={toggleTask}
+        emptyMessage={
+          tumGorevler.length === 0
+            ? 'Henüz görev bulunmuyor.'
+            : 'Bu haftaya ait görev bulunmuyor.'
+        }
+      />
+    </DetailTag>
+  )
 
   return (
     <div className="page">
@@ -59,7 +113,7 @@ function App() {
             {tamamlananToplam} / {tumGorevler.length} <span>görev tamamlandı</span>
           </p>
           <p className="progress-week">
-            Hafta {selectedWeek.weekNumber} · {selectedWeek.title}
+            Hafta {currentWeek.weekNumber} · {currentWeek.title}
           </p>
         </div>
         <div className="progress-percent">
@@ -84,47 +138,27 @@ function App() {
         </div>
       </section>
 
-      <div className="workspace">
-        <WeekList
-          weeks={weeks}
-          selectedWeekId={selectedWeekId}
-          currentWeekId={currentWeekId}
-          onSelect={setSelectedWeekId}
-        />
-
-        <main className="week-detail">
-          <p className="detail-kicker">
-            Hafta {String(selectedWeek.weekNumber).padStart(2, '0')}
-            {selectedWeek.id === currentWeekId ? ' · Bu hafta' : ''}
-          </p>
-          <h1>{selectedWeek.title}</h1>
-          <p className="detail-description">{selectedWeek.description}</p>
-
-          <section className="goals-panel" data-testid="goals-panel">
-            <h2>Hafta {selectedWeek.weekNumber} Öğrenme Hedefleri</h2>
-            {selectedWeek.objectives.length > 0 ? (
-              <ul>
-                {selectedWeek.objectives.map((objective) => (
-                  <li key={objective}>{objective}</li>
-                ))}
-              </ul>
-            ) : (
-              <p>Bu hafta için henüz içerik eklenmemiş.</p>
-            )}
-          </section>
-
-          <TaskList
-            tasks={selectedWeek.tasks}
-            taskStatus={taskStatus}
-            onToggle={toggleTask}
-            emptyMessage={
-              tumGorevler.length === 0
-                ? 'Henüz görev bulunmuyor.'
-                : 'Bu haftaya ait görev bulunmuyor.'
-            }
+      {isStacked ? (
+        <main className="workspace">
+          <WeekList
+            weeks={weeks}
+            selectedWeekId={selectedWeekId}
+            currentWeekId={currentWeekId}
+            onSelect={setSelectedWeekId}
+            detail={weekDetail}
           />
         </main>
-      </div>
+      ) : (
+        <div className="workspace">
+          <WeekList
+            weeks={weeks}
+            selectedWeekId={selectedWeekId}
+            currentWeekId={currentWeekId}
+            onSelect={setSelectedWeekId}
+          />
+          {weekDetail}
+        </div>
+      )}
     </div>
   )
 }

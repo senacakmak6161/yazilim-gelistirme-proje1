@@ -1,0 +1,12 @@
+{
+  "_aciklama": "Elle yapılan kontrollerin kaydı. sonuc: Başarılı | Başarısız. Kimin, ne zaman, neye bakarak karar verdiğini mutlaka yaz.",
+  "_ornek": {
+    "DS-1": {
+      "sonuc": "Başarılı",
+      "kontrolEden": "Tarık Kılıç",
+      "tarih": "2026-11-05",
+      "not": "3 sınıf arkadaşıyla 5 dakikalık kullanım denemesi"
+    }
+  },
+  "sonuclar": {}
+}

@@ -1,0 +1,52 @@
+{
+  "course": {
+    "title": "Yazılım Geliştirme",
+    "term": "2026 Güz"
+  },
+  "weeks": [
+    {
+      "id": 1,
+      "weekNumber": 1,
+      "title": "Kullanılabilirlik ve erişilebilirlik ilkelerine uygun, duyarlı arayüz tasarımına giriş",
+      "description": "Farklı ekran boyutlarında okunabilirliği korunan, klavyeyle ve dokunarak kullanılabilen arayüzlerin temel ilkeleri ve örnek uygulamaları",
+      "objectives": [
+        "Erişilebilirlik yönergelerindeki kontrast, odak görünürlüğü ve klavye erişimi gereksinimlerini örneklerle açıklayabilmek",
+        "Duyarlı yerleşimde esnek ızgara, göreli birimler ve medya sorgularını birlikte kullanarak taşmayan sayfalar tasarlayabilmek"
+      ],
+      "tasks": [
+        {
+          "id": "w1-t1",
+          "title": "Değerlendirme ölçütlerini karşılayan, ekran okuyucularla uyumlu ve klavyeyle eksiksiz kullanılabilen kayıt formunu hazırla",
+          "description": "Alanların etiketlerle ilişkilendirilmesi, hata mesajlarının duyurulması ve odak sırasının mantıklı olması gerekir",
+          "dueDate": null,
+          "tags": []
+        },
+        {
+          "id": "w1-t2",
+          "title": "Kontrast oranlarını ölç",
+          "description": "İki tema için",
+          "dueDate": null,
+          "tags": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "weekNumber": 2,
+      "title": "Sunucuyla iletişim",
+      "description": "İstek ve yanıt",
+      "objectives": [
+        "Yanıt durumlarını yorumlamak"
+      ],
+      "tasks": [
+        {
+          "id": "w2-t1",
+          "title": "Sunucudan gelen başarısız yanıtları kullanıcıya anlaşılır biçimde gösteren bilgilendirme mesajlarını tasarla",
+          "description": "Yeniden deneme seçeneği ve yükleniyor durumu dahil",
+          "dueDate": null,
+          "tags": []
+        }
+      ]
+    }
+  ]
+}

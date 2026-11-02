@@ -56,6 +56,18 @@
   .percent-value {
     font-size: 30px;
   }
+
+  /* Okunabilirlik: tablet ve telefonda hiçbir yazı 12 px'in altına inmez.
+     Masaüstünde küçük etiketler tasarım gereği 10-11 px kalabilir. */
+  .eyebrow,
+  .week-label,
+  .detail-kicker,
+  .task-tag,
+  .task-due,
+  .task-done,
+  .now-badge {
+    font-size: 12px;
+  }
 }
 
 /* ---------- Telefon ---------- */
@@ -133,20 +145,6 @@
   .task-title {
     font-size: 15px;
     line-height: 1.45;
-  }
-
-  /* Okunabilirlik: mobilde hiçbir yazı 12 px'in altına inmez.
-     Masaüstünde küçük etiketler tasarım gereği 10-11 px kalabilir,
-     ama telefonda okunaklı olması gerekir. */
-  .eyebrow,
-  .week-label,
-  .detail-kicker,
-  .percent-label,
-  .task-tag,
-  .task-due,
-  .task-done,
-  .now-badge {
-    font-size: 12px;
   }
 }
 

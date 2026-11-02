@@ -1,19 +1,28 @@
+import { Fragment } from 'react'
 import WeekCard from './WeekCard.jsx'
 
-function WeekList({ weeks, selectedWeekId, currentWeekId, onSelect }) {
+function WeekList({ weeks, selectedWeekId, currentWeekId, onSelect, detail }) {
+  const Rail = detail ? 'div' : 'aside'
+
   return (
-    <aside className="week-rail" aria-label="Hafta listesi">
+    <Rail className="week-rail" role={detail ? 'group' : undefined} aria-label="Hafta listesi">
       {weeks.map((week) => (
-        <WeekCard
-          key={week.id}
-          week={week}
-          isSelected={week.id === selectedWeekId}
-          isCurrent={week.id === currentWeekId}
-          isComplete={week.id < currentWeekId}
-          onSelect={onSelect}
-        />
+        <Fragment key={week.id}>
+          <WeekCard
+            week={week}
+            isSelected={week.id === selectedWeekId}
+            isCurrent={week.id === currentWeekId}
+            isComplete={week.isComplete}
+            onSelect={onSelect}
+          />
+          {detail && week.id === selectedWeekId ? (
+            <div className={`week-inline ${week.isComplete ? 'is-complete' : ''}`}>
+              {detail}
+            </div>
+          ) : null}
+        </Fragment>
       ))}
-    </aside>
+    </Rail>
   )
 }
 
