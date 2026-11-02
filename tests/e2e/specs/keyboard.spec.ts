@@ -18,30 +18,31 @@ test.describe('Klavye ile kullanım', () => {
   test('hafta kartına Tab ile ulaşılır ve Enter ile seçilir',
     { tag: ['@NFR-3', '@US-01', '@P2'] },
     async ({ dashboard }) => {
-      await dashboard.tabTo(dashboard.weekCard(1));
-      await expect(dashboard.weekCard(1)).toBeFocused();
+      await dashboard.tabTo(dashboard.weekCard(2));
+      await expect(dashboard.weekCard(2)).toBeFocused();
 
       await dashboard.press('Enter');
 
-      await expect(dashboard.weekCard(1)).toHaveAttribute('aria-pressed', 'true');
-      await expect(dashboard.goalsHeading).toHaveText(fmt.goalsHeading(1));
+      await expect(dashboard.weekCard(2)).toHaveAttribute('aria-pressed', 'true');
+      await expect(dashboard.goalsHeading).toHaveText(fmt.goalsHeading(2));
     });
 
   test('hafta kartı Boşluk tuşuyla da seçilir',
     { tag: ['@NFR-3', '@US-01', '@P2'] },
     async ({ dashboard }) => {
-      await dashboard.tabTo(dashboard.weekCard(2));
-      await expect(dashboard.weekCard(2)).toBeFocused();
+      await dashboard.tabTo(dashboard.weekCard(3));
+      await expect(dashboard.weekCard(3)).toBeFocused();
 
       await dashboard.press('Space');
 
-      await expect(dashboard.goalsHeading).toHaveText(fmt.goalsHeading(2));
+      await expect(dashboard.goalsHeading).toHaveText(fmt.goalsHeading(3));
     });
 
   test('görev kutusu Boşluk tuşuyla işaretlenir ve işareti kaldırılır',
     { tag: ['@NFR-3', '@US-03', '@P2'] },
     async ({ dashboard }) => {
       const checkbox = dashboard.taskCheckbox(titleOf(course, 'w1-t1'));
+      await dashboard.openWeekOf(titleOf(course, 'w1-t1'));
       await dashboard.tabTo(checkbox);
       await expect(checkbox).toBeFocused();
 

@@ -97,7 +97,7 @@ export const test = base.extend<Options & Fixtures>({
     }
 
     // 3) Sayfayı aç ve testi çalıştır.
-    const dashboard = new DashboardPage(page);
+    const dashboard = new DashboardPage(page, courseData);
     await dashboard.goto();
     await use(dashboard);
   },

@@ -44,6 +44,7 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
     test('görev tamamlanınca çubuk sayısal göstergeyle birlikte güncellenir',
       { tag: ['@US-07', '@AC-07.5', '@P1'] },
       async ({ dashboard }) => {
+        await dashboard.openWeekOf(titleOf(course, 'w3-t1'));
         await dashboard.toggleTask(titleOf(course, 'w3-t1'));
 
         await expect(dashboard.progressPercent).toHaveText(fmt.progressPercent(70));
@@ -100,6 +101,7 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
     async ({ dashboard }) => {
       await expect(dashboard.progressText).toHaveText(fmt.progressText(0, 10));
 
+      await dashboard.openWeekOf(titleOf(course, 'w1-t1'));
       await dashboard.toggleTask(titleOf(course, 'w1-t1'));
 
       await expect(dashboard.progressText).toHaveText(fmt.progressText(1, 10));
@@ -114,6 +116,7 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
       async ({ dashboard }) => {
         await expect(dashboard.progressText).toHaveText(fmt.progressText(2, 10));
 
+        await dashboard.openWeekOf(titleOf(course, 'w1-t2'));
         await dashboard.toggleTask(titleOf(course, 'w1-t2'));
 
         await expect(dashboard.progressText).toHaveText(fmt.progressText(1, 10));

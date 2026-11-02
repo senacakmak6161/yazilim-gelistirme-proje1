@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-import { LABELS, STORAGE_KEYS, taskStorage, themeStorage, type StatusLabel } from '../support/contract';
+import { LABELS, STORAGE_KEYS, fmt, taskStorage, themeStorage, type StatusLabel } from '../support/contract';
+import type { Course } from '../support/data';
 import { collectBoxes, findOverlaps } from '../support/layout';
 
 // PAGE OBJECT: sayfanın "nasıl" kullanıldığını bilir.
@@ -7,9 +8,11 @@ import { collectBoxes, findOverlaps } from '../support/layout';
 // Bir locator değişirse yalnızca bu dosya güncellenir.
 export class DashboardPage {
   readonly page: Page;
+  readonly course: Course;
 
   // Haftalar ve hedefler
   readonly weekCards: Locator;
+  readonly weekDetail: Locator;
   readonly goalsPanel: Locator;
   readonly goalsHeading: Locator;
   readonly goalsList: Locator;
@@ -38,10 +41,12 @@ export class DashboardPage {
   // Diğer
   readonly themeToggle: Locator;
 
-  constructor(page: Page) {
+  constructor(page: Page, course: Course) {
     this.page = page;
+    this.course = course;
 
     this.weekCards = page.getByTestId('week-card');
+    this.weekDetail = page.getByRole('main');
     this.goalsPanel = page.getByTestId('goals-panel');
     this.goalsHeading = this.goalsPanel.getByRole('heading');
     this.goalsList = this.goalsPanel.getByRole('list');
@@ -85,11 +90,15 @@ export class DashboardPage {
   // ---------- Haftalar ----------
 
   /**
-   * Numaraya göre hafta kartı. Erişilebilir ad "Hafta N: Başlık" ile başlar.
-   * Düz metin filtresi kullanmıyoruz; çünkü "Hafta 1" metni "Hafta 10"un içinde de geçer.
+   * Numaraya göre hafta kartı. Erişilebilir ad görünen etiketle ("Hafta 01") başlar.
+   * Etiketten sonra rakam gelmemesi şartı "Hafta 10" ile "Hafta 100" gibi adları ayırır.
    */
   weekCard(weekNo: number): Locator {
-    return this.page.getByRole('button', { name: new RegExp(`^Hafta ${weekNo}:`) });
+    return this.page.getByRole('button', { name: new RegExp(`^${fmt.weekTag(weekNo)}(?!\\d)`) });
+  }
+
+  nowBadge(weekNo: number): Locator {
+    return this.weekCard(weekNo).getByText(LABELS.nowBadge, { exact: true });
   }
 
   async selectWeekCard(weekNo: number) {
@@ -109,6 +118,14 @@ export class DashboardPage {
   }
 
   // ---------- Görevler ----------
+
+  /** Görev listesi seçili haftayı gösterir (A5); görevin bulunduğu hafta seçilir. */
+  async openWeekOf(title: string) {
+    const week = this.course.weeks.find((w) => w.tasks.some((t) => t.title === title));
+    if (!week) throw new Error(`Test verisinde "${title}" görevi yok`);
+    await this.selectWeekCard(week.weekNumber);
+    await expect(this.taskCheckbox(title)).toBeVisible();
+  }
 
   /** exact: true → benzer başlıklı başka bir görevle karışmaz. */
   taskCheckbox(title: string): Locator {
@@ -157,6 +174,17 @@ export class DashboardPage {
         ]),
       ),
     );
+  }
+
+  /** Tüm haftalar sırayla açılarak derlenen { id: işaretli mi } haritası. */
+  async allCheckedStates(): Promise<Record<string, boolean>> {
+    const states: Record<string, boolean> = {};
+    for (const week of this.course.weeks.filter((w) => w.tasks.length > 0)) {
+      await this.selectWeekCard(week.weekNumber);
+      await expect(this.taskTitles).toHaveText(week.tasks.map((t) => t.title));
+      Object.assign(states, await this.checkedStates());
+    }
+    return states;
   }
 
   // ---------- Filtreler ve arama ----------

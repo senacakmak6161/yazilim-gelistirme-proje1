@@ -6,15 +6,30 @@ const course = loadCourse('course.default.json');
 const weeksWithGoals = course.weeks.filter((w) => w.objectives.length > 0);
 
 test.describe('US-02 Öğrenme hedeflerini inceleme', () => {
-  test('hafta seçilmeden önce hedef panelinde seçim ipucu gösterilir',
+  test('kayıt yokken açılışta ilk hafta seçili gelir ve hedefleri gösterilir',
     {
       tag: ['@US-02', '@AC-02.2', '@P1'],
-      annotation: { type: 'karar', description: 'D1: başlangıçta hiçbir hafta seçili değil' },
+      annotation: { type: 'karar', description: 'D1: açılışta tamamlanmamış ilk hafta seçilidir' },
     },
     async ({ dashboard }) => {
-      await expect(dashboard.goalsPanel).toContainText(MESSAGES.selectWeekHint);
-      await expect(dashboard.goalItems).toHaveCount(0);
+      await expect(dashboard.weekCard(1)).toHaveAttribute('aria-pressed', 'true');
+      await expect(dashboard.goalsHeading).toHaveText(fmt.goalsHeading(1));
+      await expect(dashboard.goalItems).toHaveText(weekByNumber(course, 1).objectives);
     });
+
+  test.describe('ilk haftanın tüm görevleri tamamlanmışken', () => {
+    test.use({ seededCompleted: ['w1-t1', 'w1-t2', 'w1-t3'] });
+
+    test('açılışta tamamlanmamış ilk hafta seçili gelir',
+      {
+        tag: ['@US-02', '@AC-02.2', '@P1'],
+        annotation: { type: 'karar', description: 'D1: açılışta tamamlanmamış ilk hafta seçilidir' },
+      },
+      async ({ dashboard }) => {
+        await expect(dashboard.weekCard(2)).toHaveAttribute('aria-pressed', 'true');
+        await expect(dashboard.goalsHeading).toHaveText(fmt.goalsHeading(2));
+      });
+  });
 
   for (const week of weeksWithGoals) {
     test(`Hafta ${week.weekNumber} açılınca o haftanın hedefleri gösterilir`,

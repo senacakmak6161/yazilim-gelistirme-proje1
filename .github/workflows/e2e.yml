@@ -13,6 +13,9 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  APP_PATH: etkilesimli-ders-panosu
+
 defaults:
   run:
     working-directory: tests
@@ -44,11 +47,11 @@ jobs:
         id: app
         working-directory: .
         run: |
-          if [ -f package.json ]; then
+          if [ -f "$APP_PATH/package.json" ]; then
             echo "present=true" >> "$GITHUB_OUTPUT"
           else
             echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::Uygulama henüz yok (repo kökünde package.json bulunamadı); kabul testleri atlandı."
+            echo "::notice::Uygulama henüz yok ($APP_PATH/package.json bulunamadı); kabul testleri atlandı."
           fi
 
       - uses: actions/setup-node@v4
@@ -57,12 +60,12 @@ jobs:
           node-version: 24
           cache: npm
           cache-dependency-path: |
-            package-lock.json
+            ${{ env.APP_PATH }}/package-lock.json
             tests/package-lock.json
 
       - name: Install application
         if: steps.app.outputs.present == 'true'
-        working-directory: .
+        working-directory: ${{ env.APP_PATH }}
         run: npm ci
 
       - name: Install test dependencies
@@ -75,7 +78,7 @@ jobs:
         if: steps.app.outputs.present == 'true'
         run: npx playwright test
         env:
-          APP_DIR: ..
+          APP_DIR: ../${{ env.APP_PATH }}
 
       - name: Traceability gate
         if: steps.app.outputs.present == 'true' && !cancelled()

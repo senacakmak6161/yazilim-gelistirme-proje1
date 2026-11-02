@@ -21,13 +21,13 @@ npx playwright install --with-deps
 
 | Değişken | Varsayılan | Açıklama |
 |---|---|---|
-| `APP_DIR` | — | Uygulamanın klasörü. Verilirse Playwright uygulamayı başlatır ve testler bitince kapatır. Bu repoda `..` |
+| `APP_DIR` | — | Uygulamanın klasörü. Verilirse Playwright uygulamayı başlatır ve testler bitince kapatır. Bu repoda `../etkilesimli-ders-panosu` |
 | `APP_CMD` | `npm run dev` | Uygulamayı başlatan komut |
 | `BASE_URL` | `http://localhost:5173` | Uygulamanın adresi |
 
 ```bash
-APP_DIR=.. npx playwright test                   # uygulamayı Playwright başlatır
-BASE_URL=http://localhost:3000 npx playwright test   # uygulama zaten açıksa
+APP_DIR=../etkilesimli-ders-panosu npx playwright test   # uygulamayı Playwright başlatır
+BASE_URL=http://localhost:3000 npx playwright test       # uygulama zaten açıksa
 ```
 
 ## Komutlar

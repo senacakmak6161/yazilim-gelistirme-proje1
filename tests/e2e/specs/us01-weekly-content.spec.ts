@@ -15,14 +15,20 @@ test.describe('US-01 Haftalık ders içeriklerini görüntüleme', () => {
   // VERİ GÜDÜMLÜ TEST: her hafta için ayrı bir test üretilir.
   // Biri düşerse rapordaki başlıktan hangi hafta olduğu hemen anlaşılır.
   for (const week of course.weeks) {
-    test(`Hafta ${week.weekNumber} kartında numara, başlık ve açıklama bulunur`,
-      { tag: ['@US-01', '@AC-01.2', '@P1'] },
+    test(`Hafta ${week.weekNumber} kartında numara ve başlık, seçilince açıklaması bulunur`,
+      {
+        tag: ['@US-01', '@AC-01.2', '@P1'],
+        annotation: { type: 'karar', description: 'K12: kart numara ve başlığı, hafta detayı açıklamayı gösterir' },
+      },
       async ({ dashboard }) => {
         const card = dashboard.weekCard(week.weekNumber);
         await expect(card).toBeVisible();
         await expect(card).toContainText(fmt.weekTag(week.weekNumber));
         await expect(card).toContainText(week.title);
-        await expect(card).toContainText(week.description);
+
+        await dashboard.selectWeekCard(week.weekNumber);
+
+        await expect(dashboard.weekDetail).toContainText(week.description);
       });
   }
 
@@ -60,6 +66,34 @@ test.describe('US-01 Haftalık ders içeriklerini görüntüleme', () => {
       for (const g of otherGoals) {
         await expect(dashboard.goalsPanel).not.toContainText(g);
       }
+    });
+
+  test('kayıt yokken "şimdi" etiketi ilk haftadadır ve hiçbir hafta tamamlanmış görünmez',
+    {
+      tag: ['@US-01', '@AC-01.2', '@P1'],
+      annotation: { type: 'karar', description: 'K13: bulunulan hafta tamamlanmamış ilk haftadır' },
+    },
+    async ({ dashboard }) => {
+      await expect(dashboard.nowBadge(1)).toBeVisible();
+      for (const week of course.weeks.filter((w) => w.weekNumber !== 1)) {
+        await expect(dashboard.nowBadge(week.weekNumber)).toBeHidden();
+      }
+      await expect(dashboard.weekCard(1)).toContainText('0 / 3 görev');
+    });
+
+  test('bir haftanın tüm görevleri tamamlanınca "şimdi" etiketi sonraki haftaya geçer',
+    {
+      tag: ['@US-01', '@US-07', '@P1'],
+      annotation: { type: 'karar', description: 'K13: bulunulan hafta tamamlanmamış ilk haftadır' },
+    },
+    async ({ dashboard }) => {
+      for (const task of tasksOfWeek(course, 1)) {
+        await dashboard.toggleTask(task.title);
+      }
+
+      await expect(dashboard.weekCard(1)).toContainText('3 / 3 görev');
+      await expect(dashboard.nowBadge(1)).toBeHidden();
+      await expect(dashboard.nowBadge(2)).toBeVisible();
     });
 
   test('içerik bulunmayan hafta için bilgilendirme gösterilir',

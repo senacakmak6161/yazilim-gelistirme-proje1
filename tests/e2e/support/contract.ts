@@ -19,8 +19,8 @@ export const MESSAGES = {
   noMatch: 'Seçilen ölçütlere uygun görev bulunamadı.',    // M2
   weekNoTasks: 'Bu haftaya ait görev bulunmuyor.',         // M3
   noTasks: 'Henüz görev bulunmuyor.',                      // M4
-  selectWeekHint: 'Hedefleri görmek için bir hafta seçin.',
 } as const;
+
 
 // Erişilebilir adlar: getByRole(..., { name }) bunlarla eşleşir.
 export const LABELS = {
@@ -31,6 +31,7 @@ export const LABELS = {
   allWeeks: 'Tüm haftalar',
   statusGroup: 'Görev durumu',
   completedBadge: 'Tamamlandı',
+  nowBadge: 'Şimdi',
 } as const;
 
 export const STATUS = { all: 'Tümü', pending: 'Devam edenler', completed: /^Tamamlanan(lar)?$/ } as const;
@@ -39,13 +40,14 @@ export type StatusLabel = (typeof STATUS)[keyof typeof STATUS];
 // Biçim kuralları. Testler beklenen metni buradan üretir;
 // böylece "6 / 10" mu "6/10" mu tartışması tek yerde çözülür.
 // Not: hafta seçeneğindeki ayraç uzun tire (–), kısa tire (-) değil.
+// Hafta kartındaki etiket iki haneli yazılır (Hafta 01); kartın erişilebilir adı bu etiketle başlar.
 export const fmt = {
   progressText: (done: number, total: number) => `${done} / ${total} görev tamamlandı`,
   progressPercent: (percent: number) => `%${percent}`,
   resultCount: (n: number) => `${n} görev gösteriliyor`,
   goalsHeading: (weekNo: number) => `Hafta ${weekNo} Öğrenme Hedefleri`,
   weekOption: (weekNo: number, title: string) => `Hafta ${weekNo} – ${title}`,
-  weekTag: (weekNo: number) => `Hafta ${weekNo}`,
+  weekTag: (weekNo: number) => `Hafta ${String(weekNo).padStart(2, '0')}`,
 };
 
 export const THEMES = { light: 'light', dark: 'dark' } as const;

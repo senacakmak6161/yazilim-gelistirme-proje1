@@ -12,6 +12,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
       const title = titleOf(course, 'w1-t1');
 
       await test.step('Ön koşul: listede tamamlanmamış bir görev bulunur', async () => {
+        await dashboard.openWeekOf(title);
         await expect(dashboard.taskCheckbox(title)).not.toBeChecked();
       });
 
@@ -36,6 +37,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
         const title = titleOf(course, 'w1-t1');
 
         await test.step('Ön koşul: tamamlanmış bir görev bulunur', async () => {
+          await dashboard.openWeekOf(title);
           await expect(dashboard.taskCheckbox(title)).toBeChecked();
           await expect(dashboard.progressText).toHaveText(fmt.progressText(1, 10));
         });
@@ -106,6 +108,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
         });
 
         await test.step('İşlem: kullanıcı bir görev daha tamamlar', async () => {
+          await dashboard.openWeekOf(titleOf(course, 'w2-t2'));
           await dashboard.toggleTask(titleOf(course, 'w2-t2'));
         });
 
@@ -122,7 +125,9 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
     { tag: ['@T6', '@US-10', '@P2'] },
     async ({ dashboard }) => {
       await test.step('Ön koşul: bir veya daha fazla görev tamamlanmıştır', async () => {
+        await dashboard.openWeekOf(titleOf(course, 'w1-t2'));
         await dashboard.toggleTask(titleOf(course, 'w1-t2'));
+        await dashboard.openWeekOf(titleOf(course, 'w3-t1'));
         await dashboard.toggleTask(titleOf(course, 'w3-t1'));
         await expect(dashboard.progressText).toHaveText(fmt.progressText(2, 10));
         await expect.poll(async () => (await dashboard.storedCompletedIds()).length).toBe(2);
@@ -134,7 +139,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
 
       await test.step('Beklenen: görev durumları korunur, liste ve ilerleme kayıtlı durumla tutarlıdır', async () => {
         await expect(dashboard.progressText).toHaveText(fmt.progressText(2, 10));
-        await expect.poll(() => dashboard.checkedStates()).toEqual(completionMap(course, ['w1-t2', 'w3-t1']));
+        expect(await dashboard.allCheckedStates()).toEqual(completionMap(course, ['w1-t2', 'w3-t1']));
       });
     });
 

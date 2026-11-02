@@ -18,6 +18,7 @@ test.describe('Hızlı tepki (100 görevlik veriyle)', () => {
       annotation: { type: 'karar', description: 'D4: eşik 300 ms, yalnızca chromium' },
     },
     async ({ dashboard }) => {
+      await dashboard.openWeekOf('Görev 5.5');
       const elapsed = await dashboard.measureUpdateMs(
         () => dashboard.toggleTask('Görev 5.5'),
         () => expect(dashboard.progressText).toHaveText(fmt.progressText(2, 100)),

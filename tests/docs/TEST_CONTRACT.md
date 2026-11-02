@@ -17,7 +17,8 @@ Bir ad veya metin değişecekse önce test ekibiyle konuşulur; değişiklik yal
 
 | Öğe | Bulunma yolu | Kurallar |
 |---|---|---|
-| Hafta kartı | `role=button`, `data-testid="week-card"` | Erişilebilir ad `Hafta N: <başlık>` ile başlar. Kart hafta numarası, başlık ve açıklamayı içerir. Seçili kartta `aria-pressed="true"`. |
+| Hafta kartı | `role=button`, `data-testid="week-card"` | Kartta iki haneli hafta etiketi (`Hafta 01`), başlık ve görev sayacı bulunur; erişilebilir ad görünen metinden oluşur ve bu etiketle başlar. Seçili kartta `aria-pressed="true"`. Bulunulan haftada `Şimdi` etiketi görünür; bu hafta tamamlanmamış ilk haftadır ve açılışta seçilidir. |
+| Hafta detayı | `role=main` | Seçili haftanın başlığını ve açıklamasını içerir. 1023 px ve altında patikada seçilen haftanın altında açılır. |
 | Hedef paneli | `data-testid="goals-panel"` | İçinde tek bir başlık (`heading`) ve hedefler için tek bir liste (`ul/ol > li`). Başlık: `Hafta N Öğrenme Hedefleri`. |
 | Hafta filtresi | `role=combobox`, ad `Hafta` | Seçenekler: `Tüm haftalar`, ardından her hafta için `Hafta N – <başlık>` (uzun tire). |
 | Durum filtresi | `fieldset/legend` veya `role=radiogroup`, ad `Görev durumu` | Sırasıyla `Tümü`, `Devam edenler`, `Tamamlanan` (veya `Tamamlananlar`) radyo düğmeleri. |
@@ -40,7 +41,6 @@ Bir ad veya metin değişecekse önce test ekibiyle konuşulur; değişiklik yal
 | M2 | Görev listesi, filtre/arama sonucu boş | Seçilen ölçütlere uygun görev bulunamadı. |
 | M3 | Görev listesi, seçilen haftada görev yok | Bu haftaya ait görev bulunmuyor. |
 | M4 | Görev listesi, derste hiç görev yok | Henüz görev bulunmuyor. |
-| — | Hedef paneli, hafta seçilmemiş | Hedefleri görmek için bir hafta seçin. |
 
 ## 4. Kalıcı veri (localStorage)
 
