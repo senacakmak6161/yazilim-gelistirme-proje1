@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="tr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<title>Ders Patikası — Masaüstü</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="page">
+<div class="inner">
+
+  <header class="topbar">
+    <div class="brand">
+      <svg class="mark" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 20c0-3 3-4 6-5s6-2 6-5-2-4-4-4"/>
+        <circle cx="5" cy="20" r="1.6" fill="currentColor" stroke="none"/>
+        <circle cx="13" cy="6" r="1.6" fill="currentColor" stroke="none"/>
+      </svg>
+      <span class="name">Ders Patikası</span>
+      <span class="sep"></span>
+      <span class="course">Web Programlama · 2026 Güz</span>
+    </div>
+    <button class="iconbtn" type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8z"/>
+      </svg>
+      Karanlık tema
+    </button>
+  </header>
+
+  <section class="progress">
+    <div>
+      <p class="eyebrow">Öğrenme yolculuğun</p>
+      <div class="big">14 <span class="of">/ 23 görev</span></div>
+      <div class="sub">Hafta 3 · Form Doğrulama ve Olay Yönetimi</div>
+    </div>
+    <div class="right">
+      <div class="pct">%61</div>
+      <div class="sub">kat edilen yol</div>
+    </div>
+  </section>
+  <div class="bar"><i style="width:61%"></i></div>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/>
+      </svg>
+      <span class="ph">Görev ara…</span>
+    </div>
+    <div class="seg">
+      <button type="button" aria-pressed="false">Tümü</button>
+      <button type="button" aria-pressed="true">Devam eden</button>
+      <button type="button" aria-pressed="false">Tamamlanan</button>
+    </div>
+    <div class="select">
+      Tüm haftalar
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+  </div>
+
+  <main class="layout">
+
+    <aside class="trail">
+      <div class="rail"><span class="dot done"></span><span class="seg-line done"></span></div>
+      <div class="stop">
+        <div class="wk">Hafta 01</div>
+        <div class="ttl">HTML Yapısı ve Semantik</div>
+        <div class="meta">5 / 5 görev</div>
+      </div>
+
+      <div class="rail"><span class="dot done"></span><span class="seg-line done"></span></div>
+      <div class="stop">
+        <div class="wk">Hafta 02</div>
+        <div class="ttl">CSS Yerleşim: Flexbox ve Grid</div>
+        <div class="meta">7 / 7 görev</div>
+      </div>
+
+      <div class="rail"><span class="dot now"></span><span class="seg-line future"></span></div>
+      <div class="stop is-now">
+        <div class="wk">Hafta 03</div>
+        <div class="ttl">Form Doğrulama ve Olay Yönetimi<span class="badge-now">Şimdi</span></div>
+        <div class="meta">2 / 5 görev</div>
+      </div>
+
+      <div class="rail"><span class="dot"></span><span class="seg-line future"></span></div>
+      <div class="stop is-future">
+        <div class="wk">Hafta 04</div>
+        <div class="ttl">Modüler JavaScript</div>
+        <div class="meta">2 görev</div>
+      </div>
+
+      <div class="rail"><span class="dot"></span><span class="seg-line future"></span></div>
+      <div class="stop is-future">
+        <div class="wk">Hafta 05</div>
+        <div class="ttl">Tarayıcı Depolama</div>
+        <div class="meta">2 görev</div>
+      </div>
+
+      <div class="rail"><span class="dot"></span></div>
+      <div class="stop is-future">
+        <div class="wk">Hafta 06</div>
+        <div class="ttl">Erişilebilirlik ve Teslim</div>
+        <div class="meta">2 görev</div>
+      </div>
+    </aside>
+
+    <section class="detail">
+      <p class="eyebrow">Hafta 03 · bu hafta</p>
+      <h1>Form Doğrulama ve Olay Yönetimi</h1>
+      <p class="lead">
+        Kullanıcıdan gelen veriyi tarayıcı tarafında denetlemeyi, olay dinleyicilerini
+        düzenli biçimde kurmayı ve hata durumunu kullanıcıya anlaşılır şekilde bildirmeyi
+        çalışıyoruz.
+      </p>
+
+      <div class="block-title">
+        <h2 style="font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600">Öğrenme hedefleri</h2>
+      </div>
+      <ul class="goals">
+        <li>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+          Form verisini göndermeden önce tarayıcıda doğrulayabilmek
+        </li>
+        <li>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+          Olay dinleyicilerini bileşenin içinde toplu biçimde yönetebilmek
+        </li>
+        <li>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+          Hata mesajlarını ilgili alanın yanında, erişilebilir biçimde göstermek
+        </li>
+      </ul>
+
+      <div class="block-title">
+        <h2 style="font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600">Görevler</h2>
+        <span class="count">2 / 5 tamamlandı</span>
+      </div>
+      <ul class="tasks">
+        <li class="ok">
+          <span class="tick"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></span>
+          <div class="t-body">
+            <div class="t-title">Form alanlarını semantik etiketlerle kur</div>
+            <div class="t-meta"><span class="tag">html</span><span class="due">21 Ekim</span></div>
+          </div>
+        </li>
+        <li class="ok">
+          <span class="tick"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4.5 4.5L19 7"/></svg></span>
+          <div class="t-body">
+            <div class="t-title">Gönderim olayını yakala ve varsayılan davranışı engelle</div>
+            <div class="t-meta"><span class="tag">javascript</span><span class="due">22 Ekim</span></div>
+          </div>
+        </li>
+        <li>
+          <span class="tick"></span>
+          <div class="t-body">
+            <div class="t-title">E-posta alanı için doğrulama kuralı yaz</div>
+            <div class="t-meta"><span class="tag">javascript</span><span class="due soon">27 Ekim · 4 gün</span></div>
+          </div>
+        </li>
+        <li>
+          <span class="tick"></span>
+          <div class="t-body">
+            <div class="t-title">Hata mesajlarını alanın altında göster</div>
+            <div class="t-meta"><span class="tag">arayüz</span><span class="due">28 Ekim</span></div>
+          </div>
+        </li>
+        <li>
+          <span class="tick"></span>
+          <div class="t-body">
+            <div class="t-title">Boş form gönderimini ve geçersiz girişi test et</div>
+            <div class="t-meta"><span class="tag">test</span><span class="due">29 Ekim</span></div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+</div>
+</div>
+</body>
+</html>

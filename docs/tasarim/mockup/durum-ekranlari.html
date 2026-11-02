@@ -1,0 +1,257 @@
+﻿<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Durum Ekranları — Ders Patikası</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#fbfcfb;font-family:"Work Sans",system-ui,sans-serif;color:#2f3a35}
+  .canvas{position:relative;width:1250px;height:808px;overflow:hidden}
+
+  .doc-title{position:absolute;left:60px;top:36px;font-family:"Outfit",sans-serif;font-weight:600;font-size:23px;color:#1b241f;letter-spacing:-.015em}
+  .doc-sub{position:absolute;left:60px;top:67px;font-size:13px;color:#7d8882;width:900px;line-height:1.5}
+
+  .p{position:absolute;width:260px;height:468px;border:2px solid #333d37;border-radius:26px;background:#fff;overflow:hidden}
+  .p .notch{position:absolute;left:80px;top:10px;width:100px;height:11px;border-radius:6px;background:#333d37}
+  .p.dark{background:#151d18;border-color:#1b241f}
+
+  .t{position:absolute;font-size:9px;color:#59645f;line-height:1;white-space:nowrap}
+  .t.big{font-size:16px;font-weight:600;color:#3f4a45;font-family:"Outfit",sans-serif}
+  .t.md{font-size:9.5px;color:#4e5a54;font-weight:500}
+  .t.s{font-size:7.8px;color:#929c97}
+  .t.ph{font-size:9px;color:#a8b1ac}
+  .t.cap{font-family:"Outfit",sans-serif;font-size:6.8px;letter-spacing:.12em;
+    text-transform:uppercase;color:#a0a9a4;font-weight:700}
+  .t.acc{color:#8a5e16;font-weight:600}
+  /* karanlık tema metinleri */
+  .d .t{color:#c3cec7}
+  .d .t.big{color:#e9efe9}
+  .d .t.md{color:#d3ddd6}
+  .d .t.s{color:#8b968f}
+  .d .t.cap{color:#7f8d85}
+  .d .t.ph{color:#77837c}
+  .d .t.acc{color:#e8bb6b}
+
+  .box{position:absolute;background:#fff;border:1.2px solid #b4bdb8;border-radius:5px}
+  .box.fill{background:#e4e9e6;border-color:#c3ccc7;border-radius:0}
+  .box.acc{background:#f6ecd8;border-color:#d9bb7e;border-radius:3px}
+  .box.dotted{border-style:dashed;border-color:#c3ccc7;border-radius:7px}
+  .d .box{background:#151d18;border-color:#2f3b34}
+  .d .box.fill{background:#232e27;border-color:#2f3b34}
+  .d .box.acc{background:#261d0f;border-color:#5c4820}
+  .d .box.dotted{border-color:#2f3b34}
+
+  .bar{position:absolute;height:6px;border-radius:99px;background:#e4e9e6}
+  .bar i{display:block;height:100%;border-radius:99px;background:#9aa49f}
+  .d .bar{background:#232e27}
+  .d .bar i{background:#6cba8c}
+
+  .dot{position:absolute;width:9px;height:9px;border-radius:50%;background:#7e8a84}
+  .dot.hollow{background:#fff;border:1.8px solid #b4bdb8}
+  .dot.now{background:#a2701f;width:10px;height:10px;box-shadow:0 0 0 3px #f6ecd8}
+  .d .dot{background:#6cba8c}
+  .d .dot.hollow{background:#151d18;border-color:#2f3b34}
+  .d .dot.now{background:#dfa948;box-shadow:0 0 0 3px #261d0f}
+
+  .vl{position:absolute;width:1.6px;background:#9aa49f}
+  .vl.dash{background:repeating-linear-gradient(to bottom,#b4bdb8 0 2px,transparent 2px 6px)}
+  .d .vl{background:#6cba8c}
+  .d .vl.dash{background:repeating-linear-gradient(to bottom,#2f3b34 0 2px,transparent 2px 6px)}
+  .hr{position:absolute;height:1px;background:#e9edeb}
+  .d .hr{background:#232e27}
+  .tick{position:absolute;width:13px;height:13px;border-radius:3px;background:#8d9792}
+  .tick.empty{background:#fff;border:1.2px solid #b4bdb8}
+  .d .tick{background:#6cba8c}
+  .d .tick.empty{background:#151d18;border-color:#2f3b34}
+
+  .scr-n{position:absolute;font-family:"Outfit",sans-serif;font-size:13px;font-weight:700;color:#a2701f;letter-spacing:.08em}
+  .scr-h{position:absolute;font-family:"Outfit",sans-serif;font-size:16px;font-weight:600;color:#1b241f}
+  .cap-d{position:absolute;width:262px;font-size:12.3px;line-height:1.5;color:#4e5a54}
+  .cap-d b{color:#1b241f;font-weight:600}
+  /* ---- Wireframe metinleri bilinçli olarak nötr bir yazı tipiyle gösterilir.
+     Son tipografi (Outfit + Work Sans) yalnızca mockup'larda uygulanır. ---- */
+  .t,.t.big,.t.cap,.t.md,.t.s,.t.ph,.t.h1,.t.strike,.t.acc{
+    font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <div class="doc-title">Yan durum ekranları</div>
+  <div class="doc-sub">
+    Uygulama tek sayfadır; ayrı adresler yerine görünüm durumları vardır. Temel akış ayrı
+    sayfada gösterildi; burada o akışın dışında kalan üç durum yer alıyor.
+  </div>
+
+  <!-- ===================== E0 ===================== -->
+  <div class="scr-n" style="left:60px;top:150px">E0</div>
+  <div class="scr-h" style="left:96px;top:147px">İlk açılış</div>
+  <div class="p" style="left:60px;top:190px">
+    <div class="notch"></div>
+    <div class="box" style="left:14px;top:32px;width:12px;height:12px;border-radius:3px"></div>
+    <div class="t md" style="left:32px;top:34px;font-weight:600">Ders Patikası</div>
+    <div class="box" style="left:224px;top:30px;width:18px;height:18px"></div>
+    <div class="hr" style="left:14px;top:56px;width:228px"></div>
+
+    <div class="t cap" style="left:14px;top:66px">Öğrenme yolculuğun</div>
+    <div class="t big" style="left:14px;top:78px">0 / 23</div>
+    <div class="t s" style="left:14px;top:102px">%0 · henüz yola çıkmadın</div>
+    <div class="bar" style="left:14px;top:116px;width:228px"><i style="width:0%"></i></div>
+
+    <div class="box" style="left:14px;top:132px;width:228px;height:26px"></div>
+    <div class="box" style="left:24px;top:141px;width:9px;height:9px;border-radius:50%"></div>
+    <div class="t ph" style="left:42px;top:142px">Görev ara…</div>
+    <div class="hr" style="left:14px;top:172px;width:228px"></div>
+
+    <div class="dot now" style="left:15px;top:190px"></div>
+    <div class="vl dash" style="left:20px;top:203px;height:22px"></div>
+    <div class="t cap" style="left:38px;top:184px">Hafta 01</div>
+    <div class="t md" style="left:38px;top:194px;font-weight:600">HTML Yapısı ve Semantik</div>
+    <div class="box acc" style="left:186px;top:192px;width:34px;height:11px"></div>
+    <div class="t acc" style="left:190px;top:195px;font-size:6px;letter-spacing:.08em">ŞİMDİ</div>
+    <div class="t s" style="left:38px;top:207px">0 / 5 görev · buradan başla</div>
+
+    <div class="dot hollow" style="left:16px;top:228px"></div>
+    <div class="vl dash" style="left:20px;top:240px;height:20px"></div>
+    <div class="t cap" style="left:38px;top:222px">Hafta 02</div>
+    <div class="t s" style="left:38px;top:232px;font-size:9px">CSS Yerleşim: Flexbox</div>
+
+    <div class="dot hollow" style="left:16px;top:264px"></div>
+    <div class="vl dash" style="left:20px;top:276px;height:20px"></div>
+    <div class="t cap" style="left:38px;top:258px">Hafta 03</div>
+    <div class="t s" style="left:38px;top:268px;font-size:9px">Form Doğrulama</div>
+
+    <div class="dot hollow" style="left:16px;top:300px"></div>
+    <div class="vl dash" style="left:20px;top:312px;height:20px"></div>
+    <div class="t cap" style="left:38px;top:294px">Hafta 04</div>
+    <div class="t s" style="left:38px;top:304px;font-size:9px">Modüler JavaScript</div>
+
+    <div class="dot hollow" style="left:16px;top:336px"></div>
+    <div class="t cap" style="left:38px;top:330px">Hafta 05</div>
+    <div class="t s" style="left:38px;top:340px;font-size:9px">Tarayıcı Depolama</div>
+  </div>
+  <div class="cap-d" style="left:60px;top:680px">
+    <b>Kayıt yokken.</b> Patika tamamen kesikli, ilerleme sıfır. İlk hafta “şimdi” olarak
+    işaretlenir ki kullanıcı nereden başlayacağını bilsin. Sıfır bölme hatası oluşmaz.
+  </div>
+
+  <!-- ===================== E8 ===================== -->
+  <div class="scr-n" style="left:470px;top:150px">E8</div>
+  <div class="scr-h" style="left:506px;top:147px">İçeriksiz hafta</div>
+  <div class="p" style="left:470px;top:190px">
+    <div class="notch"></div>
+    <div class="box" style="left:14px;top:32px;width:12px;height:12px;border-radius:3px"></div>
+    <div class="t md" style="left:32px;top:34px;font-weight:600">Ders Patikası</div>
+    <div class="box" style="left:224px;top:30px;width:18px;height:18px"></div>
+    <div class="hr" style="left:14px;top:56px;width:228px"></div>
+
+    <div class="t cap" style="left:14px;top:66px">Öğrenme yolculuğun</div>
+    <div class="t big" style="left:14px;top:78px">14 / 23</div>
+    <div class="t s" style="left:14px;top:102px">%61 · kat edilen yol</div>
+    <div class="bar" style="left:14px;top:116px;width:228px"><i style="width:61%"></i></div>
+
+    <div class="box" style="left:14px;top:132px;width:228px;height:26px"></div>
+    <div class="box" style="left:24px;top:141px;width:9px;height:9px;border-radius:50%"></div>
+    <div class="t ph" style="left:42px;top:142px">Görev ara…</div>
+    <div class="hr" style="left:14px;top:172px;width:228px"></div>
+
+    <div class="dot" style="left:16px;top:190px"></div>
+    <div class="vl" style="left:20px;top:202px;height:18px"></div>
+    <div class="t cap" style="left:38px;top:184px">Hafta 06</div>
+    <div class="t md" style="left:38px;top:194px">Erişilebilirlik</div>
+
+    <div class="dot now" style="left:15px;top:224px"></div>
+    <div class="vl dash" style="left:20px;top:237px;height:132px"></div>
+    <div class="t cap" style="left:38px;top:218px">Hafta 07</div>
+    <div class="t md" style="left:38px;top:228px;font-weight:600">Performans</div>
+    <div class="box acc" style="left:186px;top:226px;width:34px;height:11px"></div>
+    <div class="t acc" style="left:190px;top:229px;font-size:6px;letter-spacing:.08em">ŞİMDİ</div>
+
+    <div class="t cap" style="left:38px;top:250px">Öğrenme hedefleri</div>
+    <div class="hr" style="left:38px;top:262px;width:204px"></div>
+    <div class="t s" style="left:42px;top:270px;font-size:8.4px">› Yükleme süresini ölçebilmek</div>
+    <div class="t s" style="left:42px;top:282px;font-size:8.4px">› Gereksiz render’ı azaltabilmek</div>
+
+    <div class="t cap" style="left:38px;top:302px">Görevler</div>
+    <div class="hr" style="left:38px;top:314px;width:204px"></div>
+    <div class="box dotted" style="left:38px;top:324px;width:204px;height:56px"></div>
+    <div class="t md" style="left:52px;top:340px;font-size:9.5px;font-weight:600;color:#3f4a45">Henüz görev eklenmedi</div>
+    <div class="t s" style="left:52px;top:356px;font-size:8.4px">Bu haftanın görevleri sonra</div>
+    <div class="t s" style="left:52px;top:367px;font-size:8.4px">yayımlanacak.</div>
+
+    <div class="dot hollow" style="left:16px;top:400px"></div>
+    <div class="t cap" style="left:38px;top:394px">Hafta 08</div>
+    <div class="t s" style="left:38px;top:404px;font-size:9px">Proje Teslimi</div>
+  </div>
+  <div class="cap-d" style="left:470px;top:680px">
+    <b>Hafta açık ama görevi yok.</b> Öğrenme hedefleri yine gösterilir; yalnızca görev
+    listesinin yerinde bilgilendirme durur. Hafta boş görünmez.
+  </div>
+
+  <!-- ===================== E5 ===================== -->
+  <div class="scr-n" style="left:880px;top:150px">E5</div>
+  <div class="scr-h" style="left:916px;top:147px">Karanlık tema</div>
+  <div class="p dark d" style="left:880px;top:190px">
+    <div class="notch" style="background:#2b3a32"></div>
+    <div class="box" style="left:14px;top:32px;width:12px;height:12px;border-radius:3px"></div>
+    <div class="t md" style="left:32px;top:34px;font-weight:600">Ders Patikası</div>
+    <div class="box" style="left:224px;top:30px;width:18px;height:18px"></div>
+    <div class="hr" style="left:14px;top:56px;width:228px"></div>
+
+    <div class="t cap" style="left:14px;top:66px">Öğrenme yolculuğun</div>
+    <div class="t big" style="left:14px;top:78px">14 / 23</div>
+    <div class="t s" style="left:14px;top:102px">%61 · kat edilen yol</div>
+    <div class="bar" style="left:14px;top:116px;width:228px"><i style="width:61%"></i></div>
+
+    <div class="box" style="left:14px;top:132px;width:228px;height:26px"></div>
+    <div class="box" style="left:24px;top:141px;width:9px;height:9px;border-radius:50%"></div>
+    <div class="t ph" style="left:42px;top:142px">Görev ara…</div>
+    <div class="hr" style="left:14px;top:172px;width:228px"></div>
+
+    <div class="dot" style="left:16px;top:190px"></div>
+    <div class="vl" style="left:20px;top:202px;height:18px"></div>
+    <div class="t cap" style="left:38px;top:184px">Hafta 02</div>
+    <div class="t md" style="left:38px;top:194px">CSS Yerleşim: Flexbox</div>
+
+    <div class="dot now" style="left:15px;top:224px"></div>
+    <div class="vl dash" style="left:20px;top:237px;height:180px"></div>
+    <div class="t cap" style="left:38px;top:218px">Hafta 03</div>
+    <div class="t md" style="left:38px;top:228px;font-weight:600">Form Doğrulama ve…</div>
+    <div class="box acc" style="left:186px;top:226px;width:34px;height:11px"></div>
+    <div class="t acc" style="left:190px;top:229px;font-size:6px;letter-spacing:.08em">ŞİMDİ</div>
+
+    <div class="t cap" style="left:38px;top:252px">Öğrenme hedefleri</div>
+    <div class="hr" style="left:38px;top:264px;width:204px"></div>
+    <div class="t s" style="left:42px;top:272px;font-size:8.4px">› Form verisini doğrulayabilmek</div>
+    <div class="t s" style="left:42px;top:284px;font-size:8.4px">› Olayları bileşende yönetmek</div>
+
+    <div class="t cap" style="left:38px;top:302px">Görevler</div>
+    <div class="t s" style="left:218px;top:301px">2 / 5</div>
+    <div class="hr" style="left:38px;top:314px;width:204px"></div>
+    <div class="tick" style="left:38px;top:322px"></div>
+    <div class="t s" style="left:58px;top:325px;font-size:8.6px;text-decoration:line-through">Form alanlarını kur</div>
+    <div class="hr" style="left:38px;top:344px;width:204px"></div>
+    <div class="tick" style="left:38px;top:352px"></div>
+    <div class="t s" style="left:58px;top:355px;font-size:8.6px;text-decoration:line-through">Gönderim olayını yakala</div>
+    <div class="hr" style="left:38px;top:374px;width:204px"></div>
+    <div class="tick empty" style="left:38px;top:382px"></div>
+    <div class="t md" style="left:58px;top:385px;font-size:8.6px">Doğrulama kuralı yaz</div>
+
+    <div class="dot hollow" style="left:16px;top:424px"></div>
+    <div class="t cap" style="left:38px;top:418px">Hafta 04</div>
+    <div class="t s" style="left:38px;top:428px;font-size:9px">Modüler JavaScript</div>
+  </div>
+  <div class="cap-d" style="left:880px;top:680px">
+    <b>Tema değişimi.</b> Yerleşim, boşluk ve tipografi birebir aynı kalır; yalnızca renk
+    değişkenleri değişir. Görev durumları etkilenmez.
+  </div>
+
+</div>
+</body>
+</html>
+
+
