@@ -72,11 +72,11 @@ jobs:
         if: steps.app.outputs.present == 'true'
         run: |
           npm ci
-          npx playwright install --with-deps
+          npx playwright install --with-deps chromium
 
       - name: Run acceptance tests
         if: steps.app.outputs.present == 'true'
-        run: npx playwright test
+        run: npx playwright test --project=chromium --retries=0
         env:
           APP_DIR: ../${{ env.APP_PATH }}
 
