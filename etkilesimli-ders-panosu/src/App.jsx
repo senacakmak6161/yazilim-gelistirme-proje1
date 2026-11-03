@@ -11,6 +11,24 @@ function resolveTheme(value) {
   return value === 'dark' ? 'dark' : 'light'
 }
 
+const GECERLI_DURUMLAR = ['all', 'active', 'completed']
+
+/**
+ * Kayıtlı filtre tercihini güvenli hâle getirir.
+ * Sözleşme: okunamayan veya beklenmeyen değer uygulamayı düşürmez,
+ * varsayılana dönülür.
+ */
+function resolveFilters(value, weeks) {
+  const ham = value && typeof value === 'object' ? value : {}
+
+  const status = GECERLI_DURUMLAR.includes(ham.status) ? ham.status : 'all'
+
+  const haftaVar = weeks.some((week) => week.id === Number(ham.week))
+  const week = haftaVar ? Number(ham.week) : 'all'
+
+  return { status, week }
+}
+
 function isWeekComplete(week, taskStatus) {
   return week.tasks.length > 0 && week.tasks.every((task) => taskStatus[task.id])
 }
@@ -22,9 +40,18 @@ function findCurrentWeek(weeks, taskStatus) {
 function App() {
   const [taskStatus, setTaskStatus] = useLocalStorage('ddp.taskStatus', {})
   const [storedTheme, setStoredTheme] = useLocalStorage('ddp.theme', 'light')
-const theme = resolveTheme(storedTheme)
-  const [selectedWeekId, setSelectedWeekId] = useState(
-    () => findCurrentWeek(courses.weeks, taskStatus).id,
+  const [storedFilters, setStoredFilters] = useLocalStorage('ddp.filters', {
+    status: 'all',
+    week: 'all',
+  })
+
+  const theme = resolveTheme(storedTheme)
+  const filters = resolveFilters(storedFilters, courses.weeks)
+
+  const [selectedWeekId, setSelectedWeekId] = useState(() =>
+    filters.week === 'all'
+      ? findCurrentWeek(courses.weeks, taskStatus).id
+      : filters.week,
   )
   useLayoutEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -36,6 +63,22 @@ const theme = resolveTheme(storedTheme)
 
   function toggleTask(taskId) {
     setTaskStatus((prev) => ({ ...prev, [taskId]: !prev[taskId] }))
+  }
+
+  function setStatusFilter(status) {
+    setStoredFilters((prev) => ({ ...resolveFilters(prev, courses.weeks), status }))
+  }
+
+  /** Hafta filtresi ve hafta kartı aynı durumu paylaşır. */
+  function setWeekFilter(value) {
+    const week = value === 'all' ? 'all' : Number(value)
+    setStoredFilters((prev) => ({ ...resolveFilters(prev, courses.weeks), week }))
+    if (week !== 'all') setSelectedWeekId(week)
+  }
+
+  function selectWeek(weekId) {
+    setSelectedWeekId(weekId)
+    setWeekFilter(weekId)
   }
 
   const currentWeekIndex = courses.weeks.indexOf(currentWeek)
@@ -56,6 +99,13 @@ const theme = resolveTheme(storedTheme)
 
   const selectedWeek = weeks.find((week) => week.id === selectedWeekId) ?? weeks[0]
 
+  // Hafta filtresi listeyi belirler: "Tüm haftalar" ise bütün görevler sırayla
+  const listelenecekGorevler =
+    filters.week === 'all'
+      ? weeks.flatMap((week) => week.tasks)
+      : (weeks.find((week) => week.id === filters.week)?.tasks ?? [])
+
+  // K8: ilerleme her zaman tüm görevler üzerinden hesaplanır, filtreden etkilenmez
   const tumGorevler = courses.weeks.flatMap((week) => week.tasks)
   const tamamlananToplam = tumGorevler.filter((task) => taskStatus[task.id]).length
 
@@ -91,13 +141,18 @@ const theme = resolveTheme(storedTheme)
       </section>
 
       <TaskList
-        tasks={selectedWeek.tasks}
+        tasks={listelenecekGorevler}
         taskStatus={taskStatus}
         onToggle={toggleTask}
         weeks={weeks}
-        selectedWeekId={selectedWeekId}
-        onWeekChange={setSelectedWeekId}
-        emptyMessage="Bu haftaya ait görev bulunmuyor."
+        filters={filters}
+        onStatusChange={setStatusFilter}
+        onWeekChange={setWeekFilter}
+        emptyMessage={
+          tumGorevler.length === 0
+            ? 'Henüz görev bulunmuyor.'
+            : 'Bu haftaya ait görev bulunmuyor.'
+        }
       />
     </DetailTag>
   )
@@ -152,10 +207,12 @@ const theme = resolveTheme(storedTheme)
           aria-valuemin={0}
           aria-valuemax={100}
         >
+          {/* Dolum genişlikle değil transform ile değişir: daha akıcı,
+              tarayıcıda yeniden yerleşim (reflow) tetiklemez */}
           <div
             className="progress-fill"
             data-testid="progress-fill"
-            style={{ width: `${yuzde}%` }}
+            style={{ transform: `scaleX(${yuzde / 100})` }}
           />
         </div>
       </section>
@@ -166,7 +223,7 @@ const theme = resolveTheme(storedTheme)
             weeks={weeks}
             selectedWeekId={selectedWeekId}
             currentWeekId={currentWeekId}
-            onSelect={setSelectedWeekId}
+            onSelect={selectWeek}
             detail={weekDetail}
           />
         </main>
@@ -176,7 +233,7 @@ const theme = resolveTheme(storedTheme)
             weeks={weeks}
             selectedWeekId={selectedWeekId}
             currentWeekId={currentWeekId}
-            onSelect={setSelectedWeekId}
+            onSelect={selectWeek}
           />
           {weekDetail}
         </div>
