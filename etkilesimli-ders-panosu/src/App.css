@@ -441,3 +441,64 @@
 .week-inline .detail-description {
   margin-top: 0;
 }
+
+
+
+/* ---------- Görev arama ve filtreleme ---------- */
+
+.task-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 18px 0;
+}
+
+.task-search,
+.task-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.task-search label,
+.task-filter label {
+  color: var(--text-soft);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.task-search input,
+.task-filter select {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+}
+
+.task-search input:focus,
+.task-filter select:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.task-filter-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.task-search input::placeholder {
+  color: var(--text-soft);
+  opacity: 0.8;
+}
+
+@media (max-width: 480px) {
+  .task-filter-row {
+    grid-template-columns: 1fr;
+  }
+}
