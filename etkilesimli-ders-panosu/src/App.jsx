@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import WeekList from './components/WeekList.jsx'
 import TaskList from './components/TaskList.jsx'
 import { useLocalStorage } from './hooks/useLocalStorage.js'
@@ -6,6 +6,10 @@ import { useMediaQuery } from './hooks/useMediaQuery.js'
 import courses from './data/courses.json'
 import './App.css'
 import './responsive.css'
+
+function resolveTheme(value) {
+  return value === 'dark' ? 'dark' : 'light'
+}
 
 function isWeekComplete(week, taskStatus) {
   return week.tasks.length > 0 && week.tasks.every((task) => taskStatus[task.id])
@@ -19,9 +23,16 @@ function App() {
   // Görev durumları tek kaynaktan yönetilir ve sayfa yenilendiğinde korunur
   // (sözleşme: ddp.taskStatus)
   const [taskStatus, setTaskStatus] = useLocalStorage('ddp.taskStatus', {})
+  const [storedTheme, setStoredTheme] = useLocalStorage('ddp.theme', 'light')
+  const theme = resolveTheme(storedTheme)
   const [selectedWeekId, setSelectedWeekId] = useState(
     () => findCurrentWeek(courses.weeks, taskStatus).id,
   )
+
+  useLayoutEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+  }, [theme])
+
   const currentWeek = findCurrentWeek(courses.weeks, taskStatus)
   const currentWeekId = currentWeek.id
   const isStacked = useMediaQuery('(max-width: 1023px)')
@@ -101,7 +112,12 @@ function App() {
           <strong className="brand">Ders Patikası</strong>
           <span className="course-name">Web Programlama · 2026 Güz</span>
         </div>
-        <button type="button" className="theme-button">
+        <button
+          type="button"
+          className="theme-button"
+          aria-pressed={theme === 'dark'}
+          onClick={() => setStoredTheme(theme === 'dark' ? 'light' : 'dark')}
+        >
           Karanlık tema
         </button>
       </header>
