@@ -26,6 +26,24 @@
   font-variant-numeric: tabular-nums;
 }
 
+html[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0e1411;
+  --surface: #151d18;
+  --text: #e4ece6;
+  --text-muted: #b7c4bc;
+  --text-soft: #9aaba2;
+  --border: #2a3831;
+  --track: #1e2a24;
+  --green: #6cba8c;
+  --green-bar: #6cba8c;
+  --gold: #dfa948;
+  --gold-soft: #c49a4a;
+  --now-bg: #261d0f;
+  --now-text: #e8bb6b;
+  --dot-empty: #3d4a43;
+}
+
 * {
   box-sizing: border-box;
 }
