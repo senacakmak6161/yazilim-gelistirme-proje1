@@ -74,9 +74,13 @@ jobs:
           npm ci
           npx playwright install --with-deps chromium
 
+      # mobile-chrome de koşulur: AC-08.2, AC-08.3 ve T7 yalnızca mobil
+      # profilde çalışan testlerle kapanıyor. Yalnızca masaüstü koşulduğunda
+      # bu maddeler "test edilmedi" kalıyor ve izlenebilirlik kapısı düşüyor.
+      # Pixel 7 profili de Chromium kullandığı için ek tarayıcı indirilmez.
       - name: Run acceptance tests
         if: steps.app.outputs.present == 'true'
-        run: npx playwright test --project=chromium --retries=0
+        run: npx playwright test --project=chromium --project=mobile-chrome --retries=0
         env:
           APP_DIR: ../${{ env.APP_PATH }}
 
