@@ -49,6 +49,10 @@
   --tree-trunk: #7f8d82;
   --tree-shade: rgba(20, 42, 28, 0.16);
 
+  /* Abajurun iç ağzı: yanıkken sıcak, sönükken nötr koyu */
+  --lamba-ic-yanik: #d9a441;
+  --lamba-ic-sonuk: #6e7a73;
+
   /* Yaprak renkleri: hafta ilerledikçe yazdan sonbahara.
      Ders 2026 Güz dönemi, yani mevsim gerçekten dönüyor. */
   --leaf-0: #6e9c63;
@@ -84,6 +88,10 @@
   --gap: 20px;
   --pad: 24px;
   --control-height: 36px;
+
+  /* Sahne ölçüleri; dar ekranda küçültülür */
+  --kalkis: 1.045; /* gerilim anında panelin büyümesi */
+  --vurgu: 1.26; /* çarpma anında sayının vurgusu */
 
   /* Hareket — yalnızca geri bildirim, giriş animasyonu yok */
   --ease: cubic-bezier(0.2, 0.8, 0.3, 1);
@@ -133,6 +141,8 @@ html[data-theme='dark'] {
   --hill-near: #27332b;
   --tree-trunk: #4d5d52;
   --tree-shade: rgba(0, 0, 0, 0.3);
+  --lamba-ic-yanik: #e0b35c;
+  --lamba-ic-sonuk: #2b3630;
 
   --tur-okuma: #7fb2d4;
   --tur-uygulama: #6cba8c;
@@ -218,4 +228,26 @@ select {
 .icon {
   flex: none;
   display: block;
+}
+
+/**
+ * Tema geçişi: düğmeden dışa açılan daire.
+ *
+ * Tarayıcının varsayılan çapraz solmasını kapatıyoruz; yeni görünüm eskinin
+ * üstünde durup JavaScript'ten sürülen bir daireyle açılıyor. Çapraz solma
+ * açık kalsaydı iki tema bir süre üst üste binip metinleri okunmaz hâle
+ * getirirdi — tam da daha önce kontrast ihlaline yol açan durum.
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
 }

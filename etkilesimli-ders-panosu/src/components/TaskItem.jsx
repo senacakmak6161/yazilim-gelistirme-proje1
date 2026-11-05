@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Icon from './Icon.jsx'
 import { ETIKET_IKONU } from '../lib/ders.js'
+import { gorevVurgula, vurguyuKaldir } from '../lib/vurgu.js'
 
 /**
  * Tek bir görev satırı.
@@ -33,6 +34,9 @@ function TaskItem({ task, isDone, onToggle, zorlaAcik }) {
       className={`task-item ${isDone ? 'is-done' : ''} ${gorunur ? 'is-open' : ''}`}
       data-testid="task-item"
       data-task-id={task.id}
+      // Satıra gelince bu görevin patikadaki adım izi parlar
+      onMouseEnter={() => gorevVurgula(task.id)}
+      onMouseLeave={vurguyuKaldir}
     >
       <span className="check-slot">
         <input

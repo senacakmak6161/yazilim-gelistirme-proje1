@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react'
  *
  * Hareket azaltma tercihi açıkken ilk karede hedefe oturur.
  */
-export function useSayac(hedef, sure = 520) {
+export function useSayac(hedef, sure = 520, orantili = true) {
   const [deger, setDeger] = useState(hedef)
 
   // En son gösterilen değer. Yalnızca animasyon karesi içinde yazılır;
@@ -29,7 +29,11 @@ export function useSayac(hedef, sure = 520) {
      * için sayı hedefe yedinci karede ancak varıyor ve tepki ölçülebilir
      * biçimde gecikiyordu. Uzun atlayışlarda tavan yine aynı.
      */
-    const gercekSure = azHareket ? 0 : Math.min(sure, 120 + Math.abs(fark) * 45)
+    const gercekSure = azHareket
+      ? 0
+      : orantili
+        ? Math.min(sure, 120 + Math.abs(fark) * 45)
+        : sure // sahne anlarında süre bilerek uzun tutulur
     const baslangic = performance.now()
     let kare = 0
 
@@ -47,7 +51,7 @@ export function useSayac(hedef, sure = 520) {
 
     kare = requestAnimationFrame(adim)
     return () => cancelAnimationFrame(kare)
-  }, [hedef, sure])
+  }, [hedef, sure, orantili])
 
   return deger
 }

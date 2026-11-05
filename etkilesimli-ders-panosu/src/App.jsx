@@ -1,10 +1,12 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
 import WeekList from './components/WeekList.jsx'
 import TaskList from './components/TaskList.jsx'
 import TrailProfile from './components/TrailProfile.jsx'
 import Logo from './components/Logo.jsx'
-import Icon from './components/Icon.jsx'
 import Celebration from './components/Celebration.jsx'
+import TemaIpi from './components/TemaIpi.jsx'
+import Lamba from './components/Lamba.jsx'
 import ProgressBand from './components/ProgressBand.jsx'
 import ProgressMini from './components/ProgressMini.jsx'
 import { haftaYuku, sureMetni } from './lib/ders.js'
@@ -33,6 +35,47 @@ function resolveFilters(value, weeks) {
   const week = haftaVar ? Number(ham.week) : 'all'
 
   return { status, week }
+}
+
+/**
+ * Kaydırma durduğunda haber verir ve *durduğu anı* bildirir.
+ *
+ * Sabit bir gecikme yerine bu kullanılıyor: kaydırma mesafesi duruma göre
+ * değişiyor ve sabit süre bazen kaydırma bitmeden doluyordu.
+ *
+ * Durduğunu anlamak altı kare sürüyor; bekleme o doğrulama anından
+ * başlatılsaydı araya yüz milisaniyelik görünmez bir fazlalık giriyordu.
+ * Bu yüzden konumun son değiştiği an da geri veriliyor.
+ */
+function kaydirmaBitince(geriCagir) {
+  const baslangic = performance.now()
+  let sonY = window.scrollY
+  let sonHareket = baslangic
+  let sabitKare = 0
+  let kare = 0
+
+  const bak = () => {
+    const y = window.scrollY
+    if (y === sonY) sabitKare += 1
+    else {
+      sabitKare = 0
+      sonY = y
+      sonHareket = performance.now()
+    }
+
+    // En az 180 ms beklenir: yumuşak kaydırma hemen başlamıyor, ilk birkaç
+    // kare konum değişmeden geçiyor ve "durdu" sanılabiliyor.
+    const yeterliSure = performance.now() - baslangic >= 180
+
+    if (sabitKare >= 6 && yeterliSure) {
+      geriCagir(sonHareket)
+      return
+    }
+    kare = requestAnimationFrame(bak)
+  }
+
+  kare = requestAnimationFrame(bak)
+  return () => cancelAnimationFrame(kare)
 }
 
 function isWeekComplete(week, taskStatus) {
@@ -70,10 +113,26 @@ function App() {
    * onay işareti aynı anda çizilip giriş animasyonuna dönüşüyordu.
    */
   useEffect(() => {
-    const kare = requestAnimationFrame(() => {
-      document.documentElement.setAttribute('data-ready', 'true')
-    })
-    return () => cancelAnimationFrame(kare)
+    const kok = document.documentElement
+
+    /**
+     * Açılış animasyonu yalnızca bu işaret dururken geçerli; işaret kısa
+     * süre sonra kaldırılıyor.
+     *
+     * Kalıcı bırakılamaz: sahne animasyonları da .trail-panel üzerinde
+     * çalışıyor ve aynı `animation` özelliğini geçersiz kılıyor. Sahne
+     * bitip sınıf kalkınca açılış animasyonu yeniden geçerli oluyor ve
+     * baştan oynuyordu — patika tam kutlama kartı açılırken 16 piksel
+     * zıplıyordu.
+     */
+    kok.setAttribute('data-entering', 'true')
+    const kare = requestAnimationFrame(() => kok.setAttribute('data-ready', 'true'))
+    const bitis = setTimeout(() => kok.removeAttribute('data-entering'), 760)
+
+    return () => {
+      cancelAnimationFrame(kare)
+      clearTimeout(bitis)
+    }
   }, [])
 
   /**
@@ -98,6 +157,77 @@ function App() {
 
   const currentWeek = findCurrentWeek(courses.weeks, taskStatus)
   const currentWeekId = currentWeek.id
+
+  /**
+   * Tema değişimi, düğmenin bulunduğu noktadan dışa doğru açılan bir
+   * daireyle yapılır.
+   *
+   * Tarayıcının kendi View Transitions API'si kullanılıyor: eski ve yeni
+   * görünümün anlık görüntüsünü alıp aralarında geçiş yapıyor. Kütüphane
+   * gerekmiyor. Destekleyemeyen tarayıcıda ya da hareket azaltma tercihi
+   * açıkken tema doğrudan değişiyor — işlev aynı, yalnızca gösteri yok.
+   *
+   * flushSync şart: React güncellemeyi geçişin içinde uygulamalı, yoksa
+   * anlık görüntü eski temayla alınıyor.
+   */
+  function temayiUygula() {
+    const yeni = theme === 'dark' ? 'light' : 'dark'
+    const azHareket = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+
+    if (azHareket || typeof document.startViewTransition !== 'function') {
+      setStoredTheme(yeni)
+      return
+    }
+
+    const kutu = temaDugmesiRef.current?.getBoundingClientRect()
+    const x = kutu ? kutu.left + kutu.width / 2 : window.innerWidth / 2
+    const y = kutu ? kutu.top + kutu.height / 2 : 0
+
+    // Dairenin ekranın en uzak köşesine ulaşması için gereken yarıçap
+    const yaricap = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y),
+    )
+
+    const gecis = document.startViewTransition(() => {
+      flushSync(() => setStoredTheme(yeni))
+    })
+
+    gecis.ready
+      .then(() => {
+        document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${yaricap}px at ${x}px ${y}px)`,
+            ],
+          },
+          {
+            duration: 620,
+            easing: 'cubic-bezier(0.3, 0, 0.2, 1)',
+            pseudoElement: '::view-transition-new(root)',
+          },
+        )
+      })
+      .catch(() => {
+        // Geçiş atlandıysa tema zaten değişmiş olur; yapacak bir şey yok
+      })
+  }
+
+  /** Düğmeye tıklama. Tema ipi çekildiyse arkasından gelen tıklama yutulur. */
+  function temayaTikla() {
+    if (ipleCekildiRef.current) {
+      ipleCekildiRef.current = false
+      return
+    }
+    temayiUygula()
+  }
+
+  /** İp eşiği aşacak kadar çekildi. */
+  function ipCekildi() {
+    ipleCekildiRef.current = true
+    temayiUygula()
+  }
 
   function toggleTask(taskId) {
     setTaskStatus((prev) => ({ ...prev, [taskId]: !prev[taskId] }))
@@ -129,8 +259,12 @@ function App() {
     return {
       ...week,
       isComplete: isWeekComplete(week, taskStatus),
-      // Profil çiziminin altındaki hücreler: her görev için bir hücre
-      cells: week.tasks.map((task) => Boolean(taskStatus[task.id])),
+      // Her görev için bir hücre. Kimlik de taşınıyor: patikadaki adım
+      // izini listedeki satırla eşleştirebilmek için gerekli.
+      cells: week.tasks.map((task) => ({
+        id: task.id,
+        tamam: Boolean(taskStatus[task.id]),
+      })),
       summary: baslanmadi
         ? `${week.tasks.length} görev`
         : `${tamamlanan} / ${week.tasks.length} görev`,
@@ -196,6 +330,12 @@ function App() {
 
   const oncekiTamamlar = useRef(null)
   const [kutlama, setKutlama] = useState(null)
+  const temaDugmesiRef = useRef(null)
+  const ipleCekildiRef = useRef(false)
+  const [odakta, setOdakta] = useState(false)
+  // Sahnenin ilk evresi: yol ve sayılar geride tutulur, patika titrer
+  const [tutuluyor, setTutuluyor] = useState(false)
+  const panelRef = useRef(null)
 
   useEffect(() => {
     const simdi = new Set(tamamAnahtari === '' ? [] : tamamAnahtari.split(',').map(Number))
@@ -212,25 +352,69 @@ function App() {
     const hepsiBitti = simdi.size === courses.weeks.length
     const hafta = courses.weeks.find((week) => week.id === yeniId)
 
-    setKutlama(
-      hepsiBitti
-        ? {
-            tip: 'patika',
-            weekId: yeniId,
-            baslik: 'Patikayı tamamladın!',
-            alt: `${courses.weeks.length} durak · ${tumGorevler.length} görev · ${sureMetni(
-              tumGorevler.reduce((t, task) => t + (task.estimatedMinutes ?? 0), 0),
-            )} yol`,
-          }
-        : {
-            tip: 'hafta',
-            weekId: yeniId,
-            baslik: `Hafta ${hafta.weekNumber} tamam`,
-            alt: `${hafta.title} · ${hafta.tasks.length} görev bitti`,
-          },
-    )
+    const sonuc = hepsiBitti
+      ? {
+          tip: 'patika',
+          weekId: yeniId,
+          baslik: 'Patikayı tamamladın!',
+          alt: `${courses.weeks.length} durak · ${tumGorevler.length} görev · ${sureMetni(
+            tumGorevler.reduce((t, task) => t + (task.estimatedMinutes ?? 0), 0),
+          )} yol`,
+        }
+      : {
+          tip: 'hafta',
+          weekId: yeniId,
+          baslik: `Hafta ${hafta.weekNumber} tamam`,
+          alt: `${hafta.title} · ${hafta.tasks.length} görev bitti`,
+        }
 
-    return undefined
+    const azHareket = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+
+    if (azHareket) {
+      setKutlama(sonuc)
+      return undefined
+    }
+
+    /**
+     * Sahne: önce patikaya dön, ilerlemeyi ağır çekimde doldur, sonra kartı
+     * aç. Kart hemen açılırsa asıl olayı — yolun uzamasını ve sayının
+     * yerine oturmasını — kimse görmüyor.
+     */
+    /**
+     * Sahnenin zamanlaması.
+     *
+     * Kaydırma ile gerilim aynı anda başlarsa, sayfa hâlâ yukarı kayarken
+     * patika titremeye başlıyor ve ikisi birbirine karışıyor. Önce kısa bir
+     * nefes: kaydırma otursun, sonra gerilim başlasın.
+     */
+    const NEFES = 750 // kaydırma oturduktan sonraki bekleme
+    const GERILIM = 560 // kalkış ve titreme
+    const VURUS = 820 // çarpmadan kartın açılmasına
+
+    // Yol ve sayı daha ilk andan itibaren geride tutulur; kayarken
+    // ilerlemenin çoktan değişmiş olması sürprizi harcıyor.
+    setTutuluyor(true)
+    panelRef.current?.scrollIntoView?.({ behavior: 'smooth', block: 'center' })
+
+    const zamanlayicilar = []
+    const iptal = kaydirmaBitince((durmaAni) => {
+      // Bekleme kaydırmanın durduğu andan sayılır, doğrulandığı andan değil
+      const kalan = Math.max(0, NEFES - (performance.now() - durmaAni))
+
+      zamanlayicilar.push(setTimeout(() => setOdakta(true), kalan))
+      zamanlayicilar.push(setTimeout(() => setTutuluyor(false), kalan + GERILIM))
+      zamanlayicilar.push(
+        setTimeout(() => {
+          setOdakta(false)
+          setKutlama(sonuc)
+        }, kalan + GERILIM + VURUS),
+      )
+    })
+
+    return () => {
+      iptal()
+      zamanlayicilar.forEach(clearTimeout)
+    }
     // tumGorevler her render yeniden üretiliyor; tetikleyici anahtar yeterli
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tamamAnahtari])
@@ -290,11 +474,15 @@ function App() {
           <button
             type="button"
             className="theme-button"
+            ref={temaDugmesiRef}
             aria-pressed={theme === 'dark'}
-            onClick={() => setStoredTheme(theme === 'dark' ? 'light' : 'dark')}
+            onClick={temayaTikla}
           >
-            <Icon name={theme === 'dark' ? 'gunes' : 'hilal'} />
+            <Lamba yanik={theme !== 'dark'} />
             <span className="theme-label">Karanlık tema</span>
+
+            {/* Fareyle gelenlere ek bir yol; düğmenin kendisi değişmiyor */}
+            <TemaIpi karanlik={theme === 'dark'} onCek={ipCekildi} />
           </button>
         </header>
       </div>
@@ -306,12 +494,21 @@ function App() {
         </div>
 
         {/* Patika: dersin yükselti profili, altında haftalar */}
-        <section className="trail-panel" aria-label="Öğrenme yolculuğu">
+        <section
+          className={`trail-panel ${odakta ? 'is-odakta' : ''} ${tutuluyor ? 'is-geriliyor' : ''}`}
+          aria-label="Öğrenme yolculuğu"
+          ref={panelRef}
+        >
           <ProgressBand
-            tamamlanan={tamamlananToplam}
+            tamamlanan={tutuluyor ? Math.max(0, tamamlananToplam - 1) : tamamlananToplam}
             toplam={tumGorevler.length}
-            yuzde={yuzde}
+            yuzde={
+              tutuluyor && tumGorevler.length > 0
+                ? Math.round(((tamamlananToplam - 1) / tumGorevler.length) * 100)
+                : yuzde
+            }
             basRef={bandRef}
+            yavas={odakta}
           >
             <div>
               <p className="panel-title">Patika</p>
@@ -332,6 +529,7 @@ function App() {
               yuzde={yuzde}
               selectedIndex={weeks.findIndex((week) => week.id === selectedWeek.id)}
               kutlanan={kutlama?.weekId ?? null}
+              geriTut={tutuluyor}
             />
             <WeekList
               weeks={weeks}
@@ -344,8 +542,13 @@ function App() {
 
         <div className="workspace">
           <main className="week-detail">
-            <h2>{selectedWeek.title}</h2>
-            <p className="detail-description">{selectedWeek.description}</p>
+            {/* key haftayla değişiyor: React başlığı yeniden kuruyor, o da
+                geçiş animasyonunu baştan başlatıyor. Eskiden içerik anında
+                takla atıyordu. */}
+            <div className="detail-head" key={selectedWeek.id}>
+              <h2>{selectedWeek.title}</h2>
+              <p className="detail-description">{selectedWeek.description}</p>
+            </div>
 
             <TaskList
               gruplar={listeGruplari}
