@@ -1,160 +1,229 @@
-/* Responsive yerleşim — YGP1-40 / P1-08 / US-08
+/**
+ * Kırılım noktaları.
  *
- * Kırılım noktaları tasarım belgesindeki (docs/tasarim) bölüm 11 ile aynıdır:
- *   >= 1024px  iki sütun, patika sütunu kaydırmada yerinde kalır
- *   <= 1023px  tek sütun
- *   <=  640px  telefon: daha dar boşluk, yığılmış ilerleme bandı, büyük dokunma hedefi
- *
- * Hiçbir kırılımda yatay kaydırma oluşmaz; uzun başlıklar taşmaz, satır atlar.
+ * Patika yatay olduğu için üç genişlikte de aynı metaforu koruyor; yalnızca
+ * durakların biçimi değişiyor. Dar ekranda altı durak yan yana sığmaz, bu
+ * yüzden patika kendi çerçevesi içinde yana kayar — sayfa yana kaymaz.
  */
 
-/* ---------- Masaüstü ---------- */
-@media (min-width: 1024px) {
-  /* Patika, detay sütunu kaydırılırken yerinde kalır.
-     Kullanıcı hangi haftada olduğunu kaybetmez. */
-  .week-rail {
-    position: sticky;
-    top: 24px;
-    align-self: start;
-    max-height: calc(100svh - 48px);
-    overflow-y: auto;
-  }
-}
+/* ---------- Tablet ve altı ---------- */
 
-/* ---------- Tablet ve altı: tek sütun ---------- */
 @media (max-width: 1023px) {
   .page {
-    padding: 24px 28px 56px;
+    padding: 0 16px 24px;
   }
 
+  /**
+   * Üst şerit yalnızca masaüstünde yapışkan.
+   *
+   * Telefon ve tablette ekran zaten kısa; 64 piksellik kalıcı bir şerit
+   * görünür alanın altıda birini yiyor ve kaydırırken hafta kartlarının
+   * üstüne biniyor. Dar ekranda şerit içerikle birlikte kayar.
+   */
+  .topbar-wrap {
+    position: static;
+    margin: 0 -16px;
+    padding: 0 16px;
+  }
+
+  .progress-mini {
+    display: none;
+  }
+
+  .task-group-head {
+    top: 0;
+  }
+
+  .week-aside {
+    position: static;
+  }
+
+  .canvas {
+    padding: 20px;
+  }
+
+  /* Tek sütun: yan panel ana içeriğin altına iner */
   .workspace {
     grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
-    padding-top: 24px;
   }
 
-  /* Tek sütunda genişlik sınırları gereksiz; metin alanı zaten dar */
-  .week-detail h1 {
-    max-width: none;
-    font-size: 28px;
+  /* Yan panel görev listesinden sonra gelir. Önceye alındığında görev
+     listesi telefonda ekranın çok altına düşüyordu; oysa görevler bu
+     ekranın işi, hedefler yalnızca bağlam. */
+  .week-aside {
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
-  .detail-description,
-  .goals-panel,
-  .task-panel {
-    max-width: none;
+  .goals-panel {
+    flex: 1 1 320px;
   }
 
-  .progress-count {
-    font-size: 36px;
+  .facts-panel {
+    flex: 1 1 200px;
   }
 
-  .progress-count span {
-    font-size: 22px;
-  }
-
-  .percent-value {
-    font-size: 30px;
-  }
-
-  /* Okunabilirlik: tablet ve telefonda hiçbir yazı 12 px'in altına inmez.
-     Masaüstünde küçük etiketler tasarım gereği 10-11 px kalabilir. */
-  .eyebrow,
+  /* Hiçbir yazı 12 px'in altına düşmez */
   .week-label,
-  .detail-kicker,
+  .week-summary,
+  .now-badge,
   .task-tag,
-  .task-due,
-  .task-done,
-  .now-badge {
+  .task-time,
+  .task-done {
     font-size: 12px;
   }
 }
 
-/* ---------- Telefon ---------- */
-@media (max-width: 640px) {
-  .page {
-    padding: 18px 16px 48px;
+/* ---------- Dar tablet: patika kaymaya başlar ---------- */
+
+@media (max-width: 860px) {
+  .trail-figure {
+    /* Patika kendi içinde kayar, sayfa yana kaymaz */
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
   }
 
-  /* Üst bant dar ekranda sarabilsin, taşmasın */
-  .topbar {
-    flex-wrap: wrap;
-    gap: 10px;
+  .trail-map,
+  .week-rail {
+    min-width: 620px;
   }
 
-  /* Tasarım kararı: dar ekranda ders adı gizlenir, uygulama adı yeterli */
-  .course-name {
-    display: none;
+  .trail-head {
+    flex-direction: column;
+    gap: 12px;
   }
 
-  /* İlerleme bandı yan yana değil alt alta */
-  .progress-band {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 8px;
-    padding: 20px 0 16px;
-  }
-
-  .progress-count {
-    font-size: 30px;
-  }
-
-  .progress-count span {
-    font-size: 18px;
-  }
-
-  .progress-percent {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
+  .trail-figures {
+    align-self: flex-start;
     text-align: left;
-  }
-
-  .percent-value {
-    font-size: 22px;
-  }
-
-  .progress-track {
-    margin-top: 14px;
-  }
-
-  .week-detail h1 {
-    font-size: 24px;
-  }
-
-  /* Dokunma hedefleri en az 44x44 px (erişilebilirlik ölçütü) */
-  .week-item {
-    padding-top: 10px;
-    padding-bottom: 24px;
-  }
-
-  .theme-button {
-    min-height: 44px;
-    padding: 10px 16px;
-  }
-
-  .task-item {
-    padding: 16px 0;
-  }
-
-  .task-check {
-    width: 22px;
-    height: 22px;
-    margin-top: 0;
-  }
-
-  .task-title {
-    font-size: 15px;
-    line-height: 1.45;
   }
 }
 
-/* ---------- Çok dar ekranlar ---------- */
-@media (max-width: 380px) {
+/* ---------- Telefon ---------- */
+
+@media (max-width: 640px) {
   .page {
-    padding: 16px 12px 40px;
+    padding: 0 12px 20px;
+  }
+
+  .topbar-wrap {
+    margin: 0 -12px;
+    padding: 0 12px;
+  }
+
+  .canvas {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  /**
+   * Tema düğmesi ikona iner.
+   *
+   * Etiket yazı boyutu sıfırlanarak değil, düzenden tamamen çıkarılarak
+   * gizlenir: sıfır boyutlu bir metin düğümü kalsa bile aradaki flex
+   * boşluğu duruyor ve ikonu birkaç piksel sola kaydırıyordu. Etiket
+   * ekran okuyucuda kalıyor, düğmenin erişilebilir adı değişmiyor.
+   */
+  .theme-button {
+    width: var(--control-height);
+    padding: 0;
+    gap: 0;
+    justify-content: center;
+  }
+
+  .theme-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .title-row h1 {
+    font-size: 22px;
+  }
+
+  .trail-panel {
+    padding: 18px 16px;
+  }
+
+
+  /* Kontroller: arama tam satır, altında durum ve hafta */
+  .task-controls {
+    flex-wrap: wrap;
+  }
+
+  .search-control {
+    flex: 1 0 100%;
+  }
+
+  .task-status {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .segmented {
+    width: 100%;
+  }
+
+  .segment {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .segment label {
+    justify-content: center;
+    width: 100%;
+    padding: 0 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .select-control {
+    flex: 1 1 120px;
+  }
+
+  .task-controls select {
+    width: 100%;
+    max-width: none;
+  }
+
+  /* Dokunma hedefleri en az 44 px */
+  .task-item {
+    padding: 12px 0;
+  }
+
+  .check-slot {
+    width: 22px;
+    height: 22px;
+  }
+
+  .task-check {
+    inset: -11px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .week-item {
+    padding: 12px 10px;
+  }
+}
+
+/* ---------- Dar telefon ---------- */
+
+@media (max-width: 380px) {
+  .canvas {
+    padding: 14px 12px;
   }
 
   .progress-count {
     font-size: 26px;
+  }
+
+  .trail-figures {
+    gap: 12px;
   }
 }

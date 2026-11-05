@@ -1,28 +1,27 @@
-import { Fragment } from 'react'
 import WeekCard from './WeekCard.jsx'
 
-function WeekList({ weeks, selectedWeekId, currentWeekId, onSelect, detail }) {
-  const Rail = detail ? 'div' : 'aside'
-
+/**
+ * Patikanın durak sırası.
+ *
+ * Eskiden sol kenarda dikey bir şeritti; yatağa çevrildi çünkü dikey şerit
+ * masaüstünde sağda 500 px ölü alan bırakıyordu ve haftalar arasındaki
+ * tırmanış görünmüyordu. Yatay dizilim, üstündeki yükselti profiliyle aynı
+ * ızgarayı paylaşır: her durak kendi tepesinin altında durur.
+ */
+function WeekList({ weeks, selectedWeekId, currentWeekId, onSelect }) {
   return (
-    <Rail className="week-rail" role={detail ? 'group' : undefined} aria-label="Hafta listesi">
+    <div className="week-rail" role="group" aria-label="Hafta listesi">
       {weeks.map((week) => (
-        <Fragment key={week.id}>
-          <WeekCard
-            week={week}
-            isSelected={week.id === selectedWeekId}
-            isCurrent={week.id === currentWeekId}
-            isComplete={week.isComplete}
-            onSelect={onSelect}
-          />
-          {detail && week.id === selectedWeekId ? (
-            <div className={`week-inline ${week.isComplete ? 'is-complete' : ''}`}>
-              {detail}
-            </div>
-          ) : null}
-        </Fragment>
+        <WeekCard
+          key={week.id}
+          week={week}
+          isSelected={week.id === selectedWeekId}
+          isCurrent={week.id === currentWeekId}
+          isComplete={week.isComplete}
+          onSelect={onSelect}
+        />
       ))}
-    </Rail>
+    </div>
   )
 }
 

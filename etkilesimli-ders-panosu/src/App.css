@@ -1,305 +1,602 @@
+/**
+ * Yerleşim.
+ *
+ * Izgara aritmetiği (yazılı olması işin kuralı):
+ *   içerik      1180 = 12 sütun × 80 + 11 oluk × 20
+ *   ana sütun      8 sütun = 8×80 + 7×20 = 780
+ *   yan sütun      4 sütun = 4×80 + 3×20 = 380
+ *   780 + 20 + 380 = 1180  ✔
+ *   kanvas  = 1180 + 2×28 kenar boşluğu = 1236
+ *
+ * Patika paneli tüm genişliği kaplar; içindeki altı durak eşit sütunlara
+ * bölünür ve üstündeki yükselti profili tam olarak o sütunların merkezlerine
+ * oturur. Boşluk yerine 1 px ayraç kullanıldı ki hizalama kaymasın.
+ */
+
 .page {
   min-height: 100svh;
-  padding: 28px 48px 64px;
+  padding: 0 24px 32px;
+  background: var(--chrome);
+}
+
+/* ---------- Üst şerit ---------- */
+
+/**
+ * Yapışkan sarmalayıcı. Negatif kenar boşluğu sayfanın yan dolgusunu aşar:
+ * yoksa içerik şeridin iki yanından görünerek altından kayıyordu.
+ */
+.topbar-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  margin: 0 -24px;
+  padding: 0 24px;
+  background: var(--chrome);
 }
 
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 18px;
+  gap: 16px;
+  max-width: 1236px;
+  height: 64px;
+  margin: 0 auto;
+}
+
+/* Asıl band ekrandan çıkınca şerit altına ince bir ayraç alır */
+.topbar.is-compact {
   border-bottom: 1px solid var(--border);
 }
 
-.topbar-left {
+.brand {
   display: flex;
-  align-items: baseline;
-  gap: 14px;
+  align-items: center;
+  gap: 10px;
   min-width: 0;
 }
 
-.brand-mark {
-  color: var(--gold);
-  font-size: 22px;
-  line-height: 1;
+.logo-mark {
+  flex: none;
 }
 
-.brand {
-  font-size: 17px;
+.brand-name {
+  font-size: var(--fs-base);
   font-weight: 700;
-}
-
-.course-name {
-  color: var(--text-muted);
-  font-size: 14px;
-}
-
-.theme-button {
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text);
-  border-radius: 999px;
-  padding: 8px 14px;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.progress-band {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  column-gap: 24px;
-  padding: 28px 0 22px;
-}
-
-.eyebrow,
-.week-label,
-.detail-kicker {
-  margin: 0;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-soft);
-  font-weight: 600;
-}
-
-.progress-count {
-  margin-top: 8px;
-  font-size: 42px;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1;
-}
-
-.progress-count span {
-  color: var(--text-muted);
-  font-size: 28px;
-  font-weight: 600;
   letter-spacing: -0.01em;
 }
 
-.progress-week {
-  margin-top: 10px;
+.theme-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--control-height);
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface);
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  transition:
+    background var(--fast) var(--ease),
+    border-color var(--fast) var(--ease),
+    transform var(--fast) var(--ease);
 }
 
-.progress-percent {
+.theme-button:hover {
+  border-color: var(--control);
+  color: var(--text);
+}
+
+.theme-button:active {
+  transform: translateY(1px);
+}
+
+/* Üst şeritteki küçük ilerleme */
+.progress-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  margin-left: auto;
+  margin-right: 16px;
+  animation: mini-gel 240ms var(--ease) both;
+}
+
+@keyframes mini-gel {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mini-count {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.mini-track {
+  width: 120px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--profile-rest);
+  overflow: hidden;
+}
+
+.mini-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--moss);
+  transform-origin: left center;
+}
+
+.mini-percent {
+  color: var(--ochre);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ---------- Beyaz sayfa ---------- */
+
+.canvas {
+  max-width: 1236px;
+  margin: 0 auto;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+}
+
+.title-row {
+  margin-bottom: 24px;
+}
+
+.title-row h1 {
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+/* Bulgu satırı: bugünün verisinden çıkan tek cümle */
+.finding {
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: var(--fs-base);
+}
+
+/* ---------- Patika paneli ---------- */
+
+.trail-panel {
+  padding: var(--pad);
+  border-radius: var(--radius-panel);
+  background: var(--raised);
+}
+
+.trail-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.panel-title {
+  font-size: var(--fs-base);
+  font-weight: 600;
+}
+
+.panel-note {
+  margin-top: 2px;
+  color: var(--text-soft);
+  font-size: var(--fs-sm);
+}
+
+.trail-figures {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
   text-align: right;
-  align-self: end;
+}
+
+.progress-count {
+  font-size: var(--fs-figure);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.progress-count span {
+  color: var(--text-soft);
+  font-size: var(--fs-sm);
+  font-weight: 400;
+  letter-spacing: 0;
 }
 
 .percent-value {
-  color: var(--gold);
-  font-size: 36px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  color: var(--ochre);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  letter-spacing: -0.02em;
   line-height: 1;
 }
 
-.percent-label {
-  margin-top: 6px;
-  color: var(--text-muted);
-  font-size: 14px;
-}
-
 .progress-track {
-  grid-column: 1 / -1;
-  height: 6px;
-  margin-top: 18px;
+  height: 5px;
   border-radius: 999px;
-  background: var(--track);
+  background: var(--profile-rest);
   overflow: hidden;
 }
 
 .progress-fill {
   width: 100%;
   height: 100%;
-  background: var(--green-bar);
   border-radius: inherit;
+  background: var(--moss);
   transform-origin: left center;
-  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.3, 1);
+  /* Dolum JS sayacından geliyor; ayrıca CSS geçişi verilirse iki kez
+     yumuşatılıyor ve sayı ile çubuk birbirinden kopuyor */
 }
 
-/* Hareket azaltma tercihi açıkken geçiş kapatılır */
-@media (prefers-reduced-motion: reduce) {
-  .progress-fill {
-    transition: none;
-  }
+/* ---------- Yükselti profili ---------- */
+
+.trail-figure {
+  margin-top: 12px;
 }
 
-.workspace {
-  display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
-  gap: 56px;
-  padding-top: 28px;
-  max-width: 1120px;
+/* Oranı korunarak ölçeklenir: daireler daire kalsın */
+.trail-map {
+  display: block;
+  width: 100%;
+  height: auto;
 }
+
+/* Dolgu sıfırlaması yalnızca yolun kendisine: tüm <path>'lere uygulanırsa
+   tepeleri ve zirve bayrağını da görünmez yapıyor */
+/* Çerçevenin dışından gelen süs kuyruğu */
+.path-tail {
+  stroke: var(--profile-line);
+  stroke-width: 5;
+  stroke-dasharray: 1 13;
+  opacity: 0.6;
+}
+
+.path-tail,
+.path-rest,
+.path-done {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---- Manzara ---- */
+
+.hill-far {
+  fill: var(--hill-far);
+}
+
+.hill-mid {
+  fill: var(--hill-mid);
+}
+
+.hill-near {
+  fill: var(--hill-near);
+}
+
+/* Dönem güz: patika ilerledikçe yapraklar sonbahara döner */
+.sezon-0 { --leaf: var(--leaf-0); }
+.sezon-1 { --leaf: var(--leaf-1); }
+.sezon-2 { --leaf: var(--leaf-2); }
+.sezon-3 { --leaf: var(--leaf-3); }
+.sezon-4 { --leaf: var(--leaf-4); }
+.sezon-5 { --leaf: var(--leaf-5); }
+
+.tree-trunk {
+  stroke: var(--tree-trunk);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.tree-crown {
+  fill: var(--leaf);
+  stroke: none;
+}
+
+/* Işık sol üstten gelir; gölge hep sağ yarıda. Düz dolgunun üstüne
+   konan tek bir koyu yarım, degradeye gerek kalmadan hacim veriyor. */
+.tree-shade {
+  fill: var(--tree-shade);
+  stroke: none;
+}
+
+/* Uzak kuşak: küçük ve soluk. Gövdeleri duruyor — gövdesiz bırakıldığında
+   ağaç değil, havada duran yaprak lekeleri gibi görünüyorlardı. */
+.tree.is-far {
+  opacity: 0.5;
+}
+
+.tree.is-far .tree-trunk {
+  stroke-width: 1.5;
+}
+
+/* ---- Zirve ---- */
+
+.summit-pole {
+  stroke: var(--text-soft);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.summit-flag {
+  fill: var(--profile-line);
+  stroke: none;
+}
+
+.summit.is-reached .summit-flag {
+  fill: var(--ochre);
+}
+
+.summit.is-reached .summit-pole {
+  stroke: var(--ochre);
+}
+
+/* Kalan yol */
+.path-rest {
+  stroke: var(--profile-rest);
+  stroke-width: 9;
+}
+
+/* Yürünen yol */
+.path-done {
+  stroke: var(--moss);
+  stroke-width: 9;
+  transition: stroke-dashoffset var(--slow) var(--ease);
+}
+
+/* Adım izleri */
+.path-step {
+  fill: var(--surface);
+  stroke: var(--profile-line);
+  stroke-width: 1.4;
+  transition:
+    fill var(--fast) var(--ease),
+    stroke var(--fast) var(--ease);
+}
+
+/* Tamamlanan adım yürünen yolun üstünde dolu bir basamak taşıdır.
+   Halka bırakıldığında yolun ortasında delik gibi duruyordu. */
+.path-step.is-done {
+  fill: var(--surface);
+  stroke: none;
+  r: 3.8;
+}
+
+/* Duraklar */
+.path-stop circle {
+  fill: var(--surface);
+  stroke: var(--profile-line);
+  stroke-width: 2.2;
+  transition:
+    stroke var(--fast) var(--ease),
+    fill var(--fast) var(--ease);
+}
+
+.path-stop text {
+  fill: var(--text-soft);
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.path-stop.is-complete circle {
+  fill: var(--moss);
+  stroke: var(--moss);
+}
+
+.path-stop.is-complete text {
+  fill: var(--surface);
+}
+
+.path-stop.is-selected circle {
+  stroke: var(--text);
+  stroke-width: 2.6;
+}
+
+.path-stop.is-selected text {
+  fill: var(--text);
+}
+
+/* Yürüyen işaret — patikada bulunduğun nokta */
+.path-walker {
+  transition: transform var(--slow) var(--ease);
+}
+
+.walker-stem {
+  stroke: var(--ochre);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.walker-halo {
+  fill: var(--ochre);
+  opacity: 0.16;
+}
+
+.walker-dot {
+  fill: var(--ochre);
+  stroke: var(--surface);
+  stroke-width: 2.4;
+}
+
+/* ---------- Duraklar ---------- */
 
 .week-rail {
-  display: flex;
-  flex-direction: column;
-  border-left: 2px solid transparent;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  border-top: 1px solid var(--border);
 }
 
+/* Altı durak aynı satırı paylaştığı için satırları sabitlendi: başlık iki
+   satır yer ayırır, böylece hücreler ve sayaç altı durakta da aynı hizada
+   biter. Değişken yükseklik satırın altını tırtıklı bırakıyordu. */
 .week-item {
-  position: relative;
   display: grid;
-  grid-template-columns: 16px 1fr;
-  gap: 14px;
-  width: 100%;
-  padding: 0 0 22px 4px;
+  grid-template-rows: auto 34px auto auto;
+  justify-items: start;
+  gap: 6px;
+  min-width: 0;
+  padding: 14px 12px 12px;
   border: 0;
+  border-left: 1px solid var(--border);
   background: transparent;
+  color: inherit;
   text-align: left;
   cursor: pointer;
-  color: inherit;
+  transition: background var(--fast) var(--ease);
 }
 
-.week-item:not(:last-of-type)::before {
-  content: '';
-  position: absolute;
-  left: 7px;
-  top: 16px;
-  bottom: 0;
-  border-left: 2px solid var(--green);
+.week-item:first-child {
+  border-left: 0;
 }
 
-.week-item.is-current:not(:last-of-type)::before,
-.week-item.is-upcoming:not(:last-of-type)::before {
-  border-left-style: dashed;
-  border-left-color: var(--dot-empty);
+.week-item:hover {
+  background: var(--active);
 }
 
-.week-dot {
-  width: 12px;
-  height: 12px;
-  margin-top: 4px;
-  border-radius: 50%;
-  border: 2px solid var(--dot-empty);
-  background: var(--bg);
-  z-index: 1;
+/* Seçili durak: zemin değişimi, renkli şerit değil */
+.week-item.is-selected {
+  background: var(--surface);
+  box-shadow: inset 0 2px 0 var(--moss);
 }
 
-.week-item.is-complete .week-dot {
-  border-color: var(--green);
-  background: var(--green);
+.week-item.is-current.is-selected {
+  box-shadow: inset 0 2px 0 var(--ochre);
 }
 
-.week-item.is-current .week-dot {
-  border-color: var(--gold);
-  background: var(--gold);
-}
-
-.week-copy {
+.week-head {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
+  align-items: center;
+  gap: 8px;
   min-width: 0;
 }
 
-.week-title {
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.3;
-  color: var(--text-muted);
-}
-
-.week-item.is-complete .week-title,
-.week-item.is-selected .week-title {
-  color: var(--text);
-}
-
-.week-summary {
-  font-size: 12px;
+.week-label {
   color: var(--text-soft);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.week-item.is-selected .week-label {
+  color: var(--text-muted);
 }
 
 .now-badge {
-  display: inline-block;
-  margin-top: 2px;
-  padding: 2px 8px;
+  padding: 1px 7px;
   border-radius: 999px;
   background: var(--now-bg);
   color: var(--now-text);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-.week-detail {
-  padding-top: 4px;
+.week-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  line-height: 1.3;
 }
 
-.detail-kicker {
-  margin-bottom: 10px;
+.week-item.is-selected .week-title,
+.week-item.is-complete .week-title {
+  color: var(--text);
 }
 
-.week-detail h1 {
-  max-width: 16ch;
-  font-size: 34px;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
+/* Haftanın görevleri: beş hücre */
+.week-cells {
+  display: flex;
+  gap: 3px;
+  margin-top: 2px;
+}
+
+.week-cell {
+  width: 13px;
+  height: 5px;
+  border-radius: 2px;
+  background: var(--dot-empty);
+  transition: background var(--fast) var(--ease);
+}
+
+.week-cell.is-done {
+  background: var(--moss);
+}
+
+.week-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px;
+  color: var(--text-soft);
+  font-size: var(--fs-xs);
+}
+
+/* Tepenin yüksekliğinin sayısal karşılığı */
+.week-load::before {
+  content: '·';
+  margin-right: 4px;
+}
+
+.week-item.is-selected .week-load {
+  color: var(--ochre);
+  font-weight: 600;
+}
+
+/* ---------- Çalışma alanı ---------- */
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 780fr) minmax(0, 380fr);
+  align-items: start;
+  gap: var(--gap);
+  margin-top: 28px;
+}
+
+.week-detail h2 {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
 }
 
 .detail-description {
-  max-width: 58ch;
-  margin-top: 16px;
+  max-width: 62ch;
+  margin-top: 8px;
   color: var(--text-muted);
-  font-size: 16px;
-}
-
-.goals-panel {
-  max-width: 58ch;
-  margin-top: 32px;
-}
-
-.goals-panel h2 {
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border);
-  color: var(--text-soft);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.goals-panel ul {
-  margin: 14px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.goals-panel li {
-  position: relative;
-  padding: 6px 0 6px 18px;
-  color: var(--text-muted);
-  font-size: 15px;
-}
-
-/* Patika metaforunu sürdüren küçük yön işareti */
-.goals-panel li::before {
-  content: '›';
-  position: absolute;
-  left: 0;
-  color: var(--gold);
-}
-
-.detail-placeholder {
-  margin-top: 36px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-  color: var(--text-soft);
-  font-size: 14px;
 }
 
 /* ---------- Görev listesi ---------- */
 
 .task-panel {
-  max-width: 58ch;
-  margin-top: 36px;
+  margin-top: 26px;
 }
 
 .task-head {
@@ -311,17 +608,124 @@
   border-bottom: 1px solid var(--border);
 }
 
-.task-head h2 {
-  color: var(--text-soft);
-  font-size: 12px;
+.task-head h3 {
+  font-size: var(--fs-base);
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .task-count {
   color: var(--text-soft);
-  font-size: 13px;
+  font-size: var(--fs-sm);
+}
+
+/* Üç kontrol tek satırda */
+.task-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0 4px;
+}
+
+.control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.search-control {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.search-icon {
+  position: absolute;
+  left: 11px;
+  color: var(--text-soft);
+  pointer-events: none;
+}
+
+.task-controls input[type='search'] {
+  width: 100%;
+  height: var(--control-height);
+  padding: 0 12px 0 34px;
+  border: 1px solid var(--control);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--fs-sm);
+}
+
+.task-controls input[type='search']::placeholder {
+  color: var(--text-soft);
+}
+
+/* Tarayıcı bir <select>'i en uzun seçeneğine göre genişletir; uzun hafta
+   başlıklarında bu, dar ekranda sayfayı yana taşırıyordu. min-width: 0
+   olmadan flex öğesi de küçülmeyi reddediyor. */
+.task-controls select {
+  height: var(--control-height);
+  min-width: 0;
+  max-width: 200px;
+  text-overflow: ellipsis;
+  padding: 0 10px;
+  border: 1px solid var(--control);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+/* Durum filtresi: üç bölmeli şerit */
+.task-status {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.segmented {
+  display: flex;
+  height: var(--control-height);
+  padding: 3px;
+  border-radius: var(--radius-control);
+  background: var(--active);
+}
+
+.segment {
+  display: flex;
+}
+
+.segment input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.segment label {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background var(--fast) var(--ease),
+    color var(--fast) var(--ease);
+}
+
+.segment input:checked + label {
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.segment input:focus-visible + label {
+  outline: 2px solid var(--ochre);
+  outline-offset: 1px;
 }
 
 .task-list {
@@ -336,20 +740,61 @@
   align-items: flex-start;
   gap: 12px;
   padding: 14px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--rule);
 }
 
 .task-item:last-child {
   border-bottom: 0;
 }
 
-.task-check {
+/* Özel çizilmiş onay kutusu; altında gerçek bir checkbox duruyor */
+.check-slot {
+  position: relative;
   flex: none;
-  width: 18px;
-  height: 18px;
+  width: 19px;
+  height: 19px;
   margin-top: 2px;
-  accent-color: var(--green);
+}
+
+.task-check {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
   cursor: pointer;
+}
+
+.check-face {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border: 1.5px solid var(--control);
+  border-radius: 6px;
+  background: var(--surface);
+  color: transparent;
+  pointer-events: none;
+  transition:
+    background var(--fast) var(--ease),
+    border-color var(--fast) var(--ease),
+    color var(--fast) var(--ease);
+}
+
+.task-check:hover + .check-face {
+  border-color: var(--moss);
+}
+
+.task-check:checked + .check-face {
+  border-color: var(--moss);
+  background: var(--moss);
+  color: var(--surface);
+}
+
+.task-check:focus-visible + .check-face {
+  outline: 2px solid var(--ochre);
+  outline-offset: 2px;
 }
 
 .task-body {
@@ -358,8 +803,7 @@
 
 .task-title {
   display: block;
-  color: var(--text);
-  font-size: 15px;
+  font-size: var(--fs-base);
   line-height: 1.4;
   cursor: pointer;
 }
@@ -368,212 +812,663 @@
 .task-item.is-done .task-title {
   color: var(--text-soft);
   text-decoration: line-through;
-  text-decoration-color: var(--border);
+  text-decoration-color: var(--control);
+}
+
+.task-description {
+  max-width: 68ch;
+  margin-top: 3px;
+  color: var(--text-soft);
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+}
+
+.task-item.is-done .task-description {
+  opacity: 0.65;
 }
 
 .task-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  margin-top: 6px;
+  gap: 6px 10px;
+  margin-top: 8px;
 }
 
 .task-tag {
-  padding: 1px 8px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  color: var(--text-soft);
-  font-size: 11px;
-  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px 2px 6px;
+  border-radius: var(--radius-chip);
+  background: var(--active);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
 }
 
-.task-due {
+.task-time,
+.task-done {
+  font-size: var(--fs-xs);
+}
+
+.task-time {
   color: var(--text-soft);
-  font-size: 12px;
 }
 
 .task-done {
-  color: var(--green);
-  font-size: 12px;
+  color: var(--moss);
   font-weight: 600;
 }
 
 .empty-state {
-  margin-top: 16px;
-  padding: 18px 20px;
-  border: 1px dashed var(--border);
-  border-radius: 8px;
-  color: var(--text-muted);
-  font-size: 14px;
-}
-
-/* Klavye odağı her zaman görünür kalmalı */
-.task-check:focus-visible,
-.week-item:focus-visible,
-.theme-button:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 2px;
-}
-
-.week-inline {
-  position: relative;
-  padding: 0 0 28px 34px;
-}
-
-.week-inline::before {
-  content: '';
-  position: absolute;
-  left: 7px;
-  top: 0;
-  bottom: 0;
-  border-left: 2px dashed var(--dot-empty);
-}
-
-.week-inline.is-complete::before {
-  border-left-style: solid;
-  border-left-color: var(--green);
-}
-
-.week-inline:last-child::before {
-  display: none;
-}
-
-.week-inline .detail-kicker,
-.week-inline .week-detail h1 {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-.week-inline .detail-description {
-  margin-top: 0;
-}
-
-
-
-/* ---------- Görev arama ve filtreleme ---------- */
-
-.task-filters {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin: 18px 0;
-}
-
-.task-search,
-.task-filter {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.task-search label,
-.task-filter label {
-  color: var(--text-soft);
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.task-search input,
-.task-filter select {
-  width: 100%;
-  min-width: 0;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  background: var(--bg);
-  color: var(--text);
-  font: inherit;
-  font-size: 13px;
-}
-
-.task-search input:focus,
-.task-filter select:focus {
-  outline: 2px solid var(--gold);
-  outline-offset: 2px;
-}
-
-.task-filter-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  align-items: start;
-}
-
-/* Durum filtresi — sözleşme gereği radyo grubu */
-.task-status {
-  min-width: 0;
-  padding: 0;
-  border: 0;
-  margin: 0;
-}
-
-.task-status legend {
-  padding: 0;
-  margin-bottom: 6px;
-  color: var(--text-soft);
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.task-status-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.task-status-option {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  background: var(--bg);
-}
-
-.task-status-option input {
-  width: 15px;
-  height: 15px;
-  margin: 0;
-  accent-color: var(--gold);
-  cursor: pointer;
-}
-
-.task-status-option label {
+  gap: 10px;
+  margin-top: 18px;
+  padding: 16px 18px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-control);
   color: var(--text-muted);
-  font-size: 13px;
-  cursor: pointer;
-  white-space: nowrap;
+  font-size: var(--fs-sm);
 }
 
-/* Seçili durum, yalnızca renkle değil kenarlıkla da belli olur */
-.task-status-option:has(input:checked) {
-  border-color: var(--gold-soft);
-  background: var(--now-bg);
+/* ---------- Yan sütun ---------- */
+
+/* Görev listesi birkaç bin piksel sürebiliyor; yan sütun üç satırda bitip
+   yanında koca bir ölü şerit bırakıyordu. Yapışkan yapılınca liste boyunca
+   görünür kalıyor. */
+.week-aside {
+  position: sticky;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
 }
 
-.task-status-option:has(input:checked) label {
-  color: var(--now-text);
+.goals-panel,
+.facts-panel {
+  padding: 20px;
+  border-radius: var(--radius-panel);
+  background: var(--raised);
+}
+
+.goals-panel h3,
+.facts-panel h3 {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.goals-panel ul {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.goals-panel li {
+  position: relative;
+  padding: 7px 0 7px 18px;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+}
+
+/* Patika metaforunu sürdüren küçük yön işareti */
+.goals-panel li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 14px;
+  width: 7px;
+  height: 7px;
+  border-top: 1.5px solid var(--ochre);
+  border-right: 1.5px solid var(--ochre);
+  transform: rotate(45deg);
+}
+
+.aside-empty {
+  margin-top: 10px;
+  color: var(--text-soft);
+  font-size: var(--fs-sm);
+}
+
+.facts {
+  margin-top: 12px;
+}
+
+.facts > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.facts > div:first-child {
+  border-top: 0;
+}
+
+.facts dt {
+  color: var(--text-soft);
+  font-size: var(--fs-sm);
+}
+
+.facts dd {
+  font-size: var(--fs-sm);
   font-weight: 600;
 }
 
-.task-status-option:has(input:focus-visible) {
-  outline: 2px solid var(--gold);
-  outline-offset: 2px;
+/* ---------- Odak ---------- */
+
+.week-item:focus-visible,
+.theme-button:focus-visible,
+.task-controls input:focus-visible,
+.task-controls select:focus-visible {
+  outline: 2px solid var(--ochre);
+  outline-offset: -1px;
 }
 
-.task-search input::placeholder {
+.task-controls input:focus-visible,
+.task-controls select:focus-visible {
+  outline-offset: 1px;
+}
+
+/* ---------- Hareket tercihi ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Hafta grupları ---------- */
+
+/**
+ * Birden fazla haftanın görevleri listelendiğinde her hafta kendi başlığını
+ * alır. Başlık listeyle birlikte kayar ve üstte asılı kalır: otuz görev
+ * arasında kaybolunca hangi haftada olduğun görünmüyordu.
+ */
+.task-group + .task-group {
+  margin-top: 26px;
+}
+
+.task-group-head {
+  position: sticky;
+  /* Üst şerit yapışkan olduğu için hafta başlığı onun altında durur */
+  top: 64px;
+  z-index: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 10px 0 8px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.task-group-week {
   color: var(--text-soft);
-  opacity: 0.8;
+  font-family: var(--display);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
-@media (max-width: 480px) {
-  .task-filter-row {
-    grid-template-columns: 1fr;
+.task-group-title {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+/* ---------- Görev türü renkleri ---------- */
+
+.task-tag {
+  color: var(--tur);
+}
+
+.tur-okuma,
+.task-tag.okuma { --tur: var(--tur-okuma); }
+.tur-uygulama,
+.task-tag.uygulama { --tur: var(--tur-uygulama); }
+.tur-proje,
+.task-tag.proje { --tur: var(--tur-proje); }
+.tur-quiz,
+.task-tag.quiz { --tur: var(--tur-quiz); }
+
+/* ---------- Yan sütundaki tür dökümü ---------- */
+
+.types {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.types li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 0;
+  border-top: 1px solid var(--rule);
+  font-size: var(--fs-sm);
+}
+
+.types li:first-child {
+  border-top: 0;
+}
+
+.type-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--tur);
+}
+
+.type-name {
+  color: var(--text-muted);
+}
+
+.type-count {
+  margin-left: auto;
+  color: var(--text-soft);
+  font-size: var(--fs-xs);
+}
+
+/* ---------- Hareket: hepsi geri bildirim, giriş animasyonu yok ---------- */
+
+/* Tema geçişi ani sıçrama yerine yumuşak bir dönüşüm */
+.page,
+.canvas,
+.trail-panel,
+.goals-panel,
+.facts-panel,
+.task-group-head {
+  transition:
+    background-color var(--slow) var(--ease),
+    border-color var(--slow) var(--ease);
+}
+
+/* Görev satırı: üzerine gelince okunabilirliği artar */
+.task-item {
+  transition: opacity var(--fast) var(--ease);
+}
+
+.task-item:hover .task-title {
+  color: var(--text);
+}
+
+/* İşaretleme anı: kutu hafifçe büyüyüp yerine oturur */
+.check-face {
+  transform-origin: center;
+}
+
+html[data-ready] .task-check:checked + .check-face {
+  animation: kutu-onay 260ms var(--ease);
+}
+
+@keyframes kutu-onay {
+  0% { transform: scale(1); }
+  45% { transform: scale(0.86); }
+  100% { transform: scale(1); }
+}
+
+/* Onay işareti çizilerek gelir */
+.task-check:checked + .check-face .icon path {
+  stroke-dasharray: 16;
+  stroke-dashoffset: 0;
+}
+
+html[data-ready] .task-check:checked + .check-face .icon path {
+  animation: onay-ciz 220ms var(--ease) 60ms forwards;
+}
+
+@keyframes onay-ciz {
+  from { stroke-dashoffset: 16; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* Hafta durağı ve zirve bayrağı durum değişiminde yumuşak geçer */
+.path-stop circle,
+.path-stop text,
+.summit-flag,
+.summit-pole {
+  transition:
+    fill var(--slow) var(--ease),
+    stroke var(--slow) var(--ease);
+}
+
+/* ---------- Hafta tamamlama kutlaması ---------- */
+
+/**
+ * Yeni biten durakta bir kez açılıp sönen halka. Yalnızca görev
+ * işaretlendiği anda çizilir; sayfa açılışında hiç görünmez.
+ */
+.stop-celebrate {
+  fill: none;
+  stroke: var(--moss);
+  stroke-width: 2.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: durak-kutlama 1100ms var(--ease) forwards;
+  pointer-events: none;
+}
+
+@keyframes durak-kutlama {
+  0% { transform: scale(1); opacity: 0.75; }
+  70% { transform: scale(2.4); opacity: 0; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* ---------- Zirve bayrağı ---------- */
+
+/* Patika bitince bayrak ağır ağır dalgalanır. Yalnızca varış durumunda
+   çalışır; tek ödül anı olduğu için genlik bilerek küçük tutuldu. */
+html[data-ready] .summit.is-reached .summit-flag {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: bayrak-dalga 2800ms ease-in-out infinite;
+}
+
+@keyframes bayrak-dalga {
+  0%, 100% { transform: scaleX(1) skewY(0deg); }
+  50% { transform: scaleX(0.9) skewY(-4deg); }
+}
+
+/* ---------- Sayaç geçişi ---------- */
+
+html[data-ready] .task-count {
+  animation: sayac-degis 240ms var(--ease);
+}
+
+@keyframes sayac-degis {
+  from { opacity: 0; transform: translateY(-3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Katlanır açıklama ---------- */
+
+.task-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.task-line .task-title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Açma düğmesi yalnızca satırın üstüne gelince veya odakta belirir:
+   her satırda duran otuz düğme listeyi gürültüye boğuyordu. */
+.task-disclose {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-top: -3px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-soft);
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity var(--fast) var(--ease),
+    background var(--fast) var(--ease),
+    color var(--fast) var(--ease);
+}
+
+.task-item:hover .task-disclose,
+.task-disclose:focus-visible,
+.task-disclose[aria-expanded='true'] {
+  opacity: 1;
+}
+
+.task-disclose:hover {
+  background: var(--active);
+  color: var(--text);
+}
+
+.task-disclose:focus-visible {
+  outline: 2px solid var(--ochre);
+  outline-offset: 1px;
+}
+
+/* Ok açıkken aşağı döner */
+.task-disclose .icon {
+  transition: transform var(--fast) var(--ease);
+}
+
+.task-disclose[aria-expanded='true'] .icon {
+  transform: rotate(90deg);
+}
+
+/* Dokunmatikte üzerine gelme yok; düğme hep görünür kalır */
+@media (hover: none) {
+  .task-disclose {
+    opacity: 1;
+  }
+}
+
+/* ---------- Kutlama ---------- */
+
+/**
+ * Tüm ekranı kaplar ama tıklamaları geçirir: kutlama sürerken listeyle
+ * çalışmaya devam edilebilir ve hiçbir denetim engellenmez.
+ */
+.celebration {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.fall {
+  position: absolute;
+  inset: -10% 0 0;
+}
+
+.fall-piece {
+  position: absolute;
+  top: 0;
+  display: block;
+  animation-name: yaprak-dus;
+  animation-timing-function: cubic-bezier(0.3, 0.1, 0.5, 1);
+  animation-fill-mode: forwards;
+}
+
+.fall-dot {
+  display: block;
+  border-radius: 50%;
+}
+
+@keyframes yaprak-dus {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -8vh, 0) rotate(0deg);
+  }
+  12% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--kayma), 108vh, 0) rotate(var(--donus));
+  }
+}
+
+.celebration-card {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  width: min(420px, calc(100vw - 48px));
+  padding: 38px 44px 30px;
+  border-radius: 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  /* Gerçekten yüzen bir öğe; gölge burada yerinde */
+  box-shadow: 0 24px 60px rgba(16, 32, 24, 0.22);
+  text-align: center;
+  animation: kart-gel 460ms cubic-bezier(0.2, 1.1, 0.4, 1) both;
+}
+
+.celebration.is-big .celebration-card {
+  width: min(480px, calc(100vw - 48px));
+  padding: 44px 48px 34px;
+}
+
+@keyframes kart-gel {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Simge: önce yuvası yaylanarak gelir, sonra içindeki çizgi çizilir */
+.celebration-mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  background: var(--now-bg);
+  color: var(--ochre);
+  animation: isaret-gel 520ms cubic-bezier(0.2, 1.35, 0.4, 1) both;
+}
+
+.celebration.is-big .celebration-mark {
+  width: 74px;
+  height: 74px;
+  background: var(--moss);
+  color: var(--surface);
+}
+
+@keyframes isaret-gel {
+  from {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Yuvadan dışa açılan tek bir halka */
+.mark-halo {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  animation: isaret-halka 1400ms var(--ease) 420ms both;
+}
+
+@keyframes isaret-halka {
+  from {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+
+/* İçindeki çizgi, yuva oturduktan sonra çizilir */
+.celebration-mark svg path {
+  stroke-dasharray: 52;
+  stroke-dashoffset: 52;
+  animation: isaret-ciz 620ms var(--ease) 320ms forwards;
+}
+
+@keyframes isaret-ciz {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.celebration-title {
+  font-family: var(--display);
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.celebration.is-big .celebration-title {
+  font-size: 30px;
+}
+
+.celebration-note {
+  color: var(--text-muted);
+  font-size: var(--fs-base);
+}
+
+/**
+ * Kapatma düğmesi. Katmandaki tek tıklanabilir öğe: kartın geri kalanı ve
+ * yaprak alanı tıklamaları geçirir, böylece kutlama açıkken altındaki
+ * listeyle çalışmaya devam edilebilir.
+ */
+.celebration-close {
+  pointer-events: auto;
+  margin-top: 18px;
+  height: 40px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--text);
+  color: var(--surface);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform var(--fast) var(--ease),
+    opacity var(--fast) var(--ease);
+}
+
+.celebration-close:hover {
+  opacity: 0.88;
+}
+
+.celebration-close:active {
+  transform: translateY(1px);
+}
+
+.celebration-close:focus-visible {
+  outline: 2px solid var(--ochre);
+  outline-offset: 3px;
+}
+
+/* Hareket azaltma: kart yerinde belirir, yaprak dökülmez */
+@media (prefers-reduced-motion: reduce) {
+  .fall {
+    display: none;
+  }
+
+  .celebration-card,
+  .celebration-mark,
+  .mark-halo {
+    animation: none;
+  }
+
+  .celebration-mark svg path {
+    stroke-dashoffset: 0;
+    animation: none;
   }
 }
