@@ -17,6 +17,13 @@
   min-height: 100svh;
   padding: 0 24px 32px;
   background: var(--chrome);
+  /**
+   * Tema ipi sağ kenara yakın sarkıyor ve salınırken çizimi sayfanın
+   * dışına taşabiliyor; dar ekranda bu yatay kaydırma yaratıyordu.
+   * `clip` kullanıldı, `hidden` değil: clip bir kaydırma kabı oluşturmaz,
+   * bu yüzden içerideki yapışkan üst şerit çalışmaya devam eder.
+   */
+  overflow-x: clip;
 }
 
 /* ---------- Üst şerit ---------- */
@@ -66,31 +73,102 @@
   letter-spacing: -0.01em;
 }
 
+/**
+ * Tema düğmesi artık bir kutu değil, tavandan sarkan bir lamba.
+ *
+ * Kenarlık, zemin ve görünen etiket kaldırıldı; etiket ekran okuyucuda
+ * duruyor, yani düğmenin erişilebilir adı değişmedi. Odak halkası
+ * lambanın çevresine çiziliyor.
+ */
 .theme-button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: var(--control-height);
-  padding: 0 14px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-control);
-  background: var(--surface);
+  position: relative;
+  display: grid;
+  place-items: center;
+  /* Tavana değsin: çubuk üst şeridin tepesinden başlıyor */
+  align-self: flex-start;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
   color: var(--text-muted);
-  font-size: var(--fs-sm);
   cursor: pointer;
-  transition:
-    background var(--fast) var(--ease),
-    border-color var(--fast) var(--ease),
-    transform var(--fast) var(--ease);
 }
 
-.theme-button:hover {
-  border-color: var(--control);
-  color: var(--text);
+.theme-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
-.theme-button:active {
-  transform: translateY(1px);
+/* ---- Lamba ---- */
+
+.lamba {
+  display: block;
+  overflow: visible;
+}
+
+ /* Asma çubuğu kalın ve sert; aşağıdaki ip ondan ince, böylece biri
+    metal biri ip gibi okunuyor */
+.lamba-tavan {
+  fill: var(--text-muted);
+}
+
+/* Asma çubuğu kalın ve sert; aşağıdaki ip ondan ince, böylece biri
+   metal biri ip gibi okunuyor */
+.lamba-cubuk {
+  stroke: var(--text-muted);
+  stroke-width: 2.4;
+}
+
+.lamba-govde {
+  fill: var(--text-muted);
+  transition: fill var(--slow) var(--ease);
+}
+
+/* Işık sol üstten; sağ yarı tek bir düz koyu katmanla gölgeleniyor —
+   patikadaki ağaçlarla aynı yöntem */
+.lamba-golge {
+  fill: var(--tree-shade);
+}
+
+/* Alt kenar çıtası, gövdeyi bitiriyor */
+.lamba-cita {
+  stroke: var(--tree-shade);
+  stroke-width: 1.6;
+  fill: none;
+}
+
+/**
+ * Abajurun iç ağzı. Açık/kapalı durumu buradan okunuyor: yanıkken
+ * içerisi sıcak, sönükken nötr koyu. Dışarıya hale vermek yapay
+ * duruyordu.
+ */
+.lamba-ic {
+  fill: var(--lamba-ic-sonuk);
+  transition: fill var(--slow) var(--ease);
+}
+
+.lamba.is-yanik .lamba-govde {
+  fill: var(--moss);
+}
+
+.lamba.is-yanik .lamba-ic {
+  fill: var(--lamba-ic-yanik);
+}
+
+.theme-button:hover .lamba-govde {
+  fill: var(--text);
+}
+
+.theme-button:hover .lamba.is-yanik .lamba-govde {
+  fill: var(--moss);
 }
 
 /* Üst şeritteki küçük ilerleme */
@@ -860,14 +938,39 @@
   font-weight: 600;
 }
 
-.empty-state {
+/* Boş durum: listenin yerini dolduran bir durak işareti. Tek satırlık kesik
+   çizgili kutu, ekranın geri kalanı doluyken yarım kalmış gibi duruyordu. */
+.empty-box {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin-top: 18px;
-  padding: 16px 18px;
-  border: 1px dashed var(--border);
-  border-radius: var(--radius-control);
+  padding: 40px 24px;
+  border-radius: var(--radius-panel);
+  background: var(--raised);
+  text-align: center;
+}
+
+.empty-mark {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 4px;
+  border: 2px dashed var(--border);
+  border-radius: 50%;
+  color: var(--text-soft);
+}
+
+.empty-state {
+  color: var(--text);
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+
+.empty-hint {
+  max-width: 34ch;
   color: var(--text-muted);
   font-size: var(--fs-sm);
 }
@@ -1080,17 +1183,15 @@
 
 /* ---------- Hareket: hepsi geri bildirim, giriş animasyonu yok ---------- */
 
-/* Tema geçişi ani sıçrama yerine yumuşak bir dönüşüm */
-.page,
-.canvas,
-.trail-panel,
-.goals-panel,
-.facts-panel,
-.task-group-head {
-  transition:
-    background-color var(--slow) var(--ease),
-    border-color var(--slow) var(--ease);
-}
+/**
+ * Tema geçişinde zemin animasyonu yok.
+ *
+ * Yumuşak geçiş denendi ve bırakıldı: zemin 380 ms boyunca ara tonda
+ * kalırken metin rengi anında değişiyor, o aralıkta gri yazılar gerçekten
+ * kontrast eşiğinin altına düşüyor (axe-core .task-count, hafta başlıkları
+ * ve durak bilgilerinde ihlal raporladı). Renkleri birlikte geçirmek de
+ * ara tonlardaki düşüşü ortadan kaldırmıyor.
+ */
 
 /* Görev satırı: üzerine gelince okunabilirliği artar */
 .task-item {
@@ -1470,5 +1571,431 @@ html[data-ready] .task-count {
   .celebration-mark svg path {
     stroke-dashoffset: 0;
     animation: none;
+  }
+}
+
+/* ---------- Açılış ---------- */
+
+/**
+ * Sayfa açılırken bölümler sırayla yerine oturur. Toplam 440 ms.
+ *
+ * Yalnızca konum değişir, saydamlık değil. Solarak gelme denendi ve
+ * bırakıldı: yarı saydam gri metinler o 460 ms boyunca gerçekten kontrast
+ * eşiğinin altına düşüyor, axe-core 25 öğede ihlal raporluyordu. Konum
+ * animasyonu kontrastı hiç etkilemiyor.
+ *
+ * Bitiş karesinde transform "none" — translateY(0) bırakılsaydı öğe
+ * dönüştürülmüş sayılmaya devam eder ve içindeki yapışkan yan sütun
+ * çalışmazdı.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-entering] .title-row {
+    animation: giris 400ms var(--ease) both;
+  }
+
+  html[data-entering] .trail-panel {
+    animation: giris 400ms var(--ease) 60ms both;
+  }
+
+  /* Çalışma alanı bilerek animasyonsuz: içinde arama kutusu, filtreler ve
+     görev satırları var. Onlar açılışta kıpırdarsa sayfaya ilk dokunuş
+     yerleşme bitene kadar bekliyor. Başlık ve patika yeterli. */
+}
+
+@keyframes giris {
+  from {
+    transform: translateY(16px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* ---------- Sahne anı ---------- */
+
+/**
+ * Sahne üç evreli:
+ *   1) gerilim  — yol ve sayılar bir adım geride tutulur, patika titrer
+ *   2) varış    — yol tek hamlede hedefe atlar, sayı vurguyla yerine oturur
+ *   3) kart     — kutlama açılır
+ *
+ * Yolun beklemesi CSS'ten değil veriden geliyor: sahnenin ilk evresinde
+ * bileşene bir adım eksik veri veriliyor. Değer gerçekten geç değiştiği
+ * için geçiş de o anda başlıyor.
+ */
+/**
+ * Sahne, kitabı yavaşça kaldırıp masaya vurmak gibi kurgulandı:
+ *
+ *   1) gerilim — panel giderek büyür, titreme giderek şiddetlenir,
+ *                yol ve sayı geride tutulur
+ *   2) çarpma — büyüme bir anda geri döner, titreme kesilir, yol hedefe
+ *                sertçe oturur, sayı vurgulanır
+ *   3) kart   — kutlama açılır
+ *
+ * Büyüme panelde, titreme içerideki haritada: ikisi aynı öğede olsaydı
+ * tek bir transform için yarışırlardı.
+ */
+.trail-panel {
+  transition: box-shadow 200ms var(--ease);
+}
+
+/* 1) Gerilim: yavaş başlayıp hızlanan bir kalkış */
+.trail-panel.is-odakta.is-geriliyor {
+  animation: patika-kalkis 560ms cubic-bezier(0.45, 0, 0.95, 0.42) forwards;
+}
+
+@keyframes patika-kalkis {
+  from {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--ochre-soft);
+  }
+  to {
+    transform: scale(var(--kalkis));
+    box-shadow: 0 0 0 5px var(--ochre-soft);
+  }
+}
+
+/**
+ * Titremenin dozu zamanla artar; son anda en şiddetli hâlini alır.
+ *
+ * İki sınıf da aranıyor: is-geriliyor tıklama anında konuyor (yol ve sayıyı
+ * geride tutmak için), is-odakta ise kaydırma oturduktan bir saniye sonra.
+ * Yalnızca is-geriliyor aransaydı titreme kaydırma sırasında oynayıp
+ * biterdi ve kalkış bir saniye sonra tek başına başlardı.
+ */
+.trail-panel.is-odakta.is-geriliyor .trail-figure {
+  animation: patika-titre 560ms linear;
+}
+
+@keyframes patika-titre {
+  0% { transform: translate3d(0, 0, 0); }
+  7% { transform: translate3d(-0.4px, 0.2px, 0); }
+  14% { transform: translate3d(0.5px, -0.2px, 0); }
+  22% { transform: translate3d(-0.8px, 0.3px, 0); }
+  30% { transform: translate3d(1px, -0.3px, 0); }
+  38% { transform: translate3d(-1.4px, 0.5px, 0); }
+  46% { transform: translate3d(1.7px, -0.5px, 0); }
+  54% { transform: translate3d(-2.1px, 0.7px, 0); }
+  62% { transform: translate3d(2.5px, -0.7px, 0); }
+  70% { transform: translate3d(-3px, 0.9px, 0); }
+  78% { transform: translate3d(3.4px, -0.9px, 0); }
+  86% { transform: translate3d(-3.9px, 1.1px, 0); }
+  94% { transform: translate3d(4.2px, -1.1px, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* 2) Çarpma: büyüme bir anda geri döner, panel masaya vurup yerine oturur */
+.trail-panel.is-odakta:not(.is-geriliyor) {
+  animation: patika-carpma 620ms cubic-bezier(0.22, 1.3, 0.32, 1);
+}
+
+@keyframes patika-carpma {
+  0% {
+    transform: scale(var(--kalkis));
+    box-shadow: 0 0 0 5px var(--ochre-soft);
+  }
+  16% {
+    transform: scale(0.991);
+    box-shadow: 0 0 0 12px var(--ochre-soft);
+  }
+  42% {
+    transform: scale(1.006);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--ochre-soft);
+  }
+}
+
+/* Yol ve yürüyen işaret çarpma anında sertçe yerine oturur */
+.trail-panel.is-odakta .path-done {
+  transition: stroke-dashoffset 420ms cubic-bezier(0.14, 1.2, 0.3, 1);
+}
+
+.trail-panel.is-odakta .path-walker {
+  transition: transform 420ms cubic-bezier(0.14, 1.2, 0.3, 1);
+}
+
+/* Sayılar çarpmayla birlikte bir kez vurgu alır */
+.progress-count,
+.percent-value {
+  transform-origin: right center;
+}
+
+.trail-panel.is-odakta:not(.is-geriliyor) .progress-count,
+.trail-panel.is-odakta:not(.is-geriliyor) .percent-value {
+  animation: sayi-vurgu 620ms cubic-bezier(0.22, 1.35, 0.32, 1);
+}
+
+@keyframes sayi-vurgu {
+  0% { transform: scale(1); }
+  22% { transform: scale(var(--vurgu)); }
+  100% { transform: scale(1); }
+}
+
+/* Varılan durak çarpma anında parlar */
+.trail-panel.is-odakta:not(.is-geriliyor) .path-stop.is-complete circle {
+  animation: durak-varis 620ms var(--ease);
+}
+
+@keyframes durak-varis {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.5); }
+  100% { transform: scale(1); }
+}
+
+.path-stop circle {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ---------- Tıklama tepkileri ---------- */
+
+.week-item {
+  transition:
+    background var(--fast) var(--ease),
+    transform var(--fast) var(--ease);
+}
+
+.week-item:active {
+  transform: scale(0.985);
+}
+
+/* Filtre seçeneklerinde basma dönüşümü yok: tıklama anında öğe küçülünce
+   hareketli sayılıyor ve etkileşim ölçülebilir biçimde gecikiyordu
+   (durum filtresi tepkisi 300 ms yerine 480-580 ms). Geri bildirim
+   zaten seçili bölmenin zemin değişiminden geliyor. */
+.task-disclose:active {
+  transform: scale(0.94);
+}
+
+/* Hareket azaltma: sahne hiç oynamaz, kutlama doğrudan açılır */
+@media (prefers-reduced-motion: reduce) {
+  .trail-panel.is-odakta,
+  .trail-panel.is-odakta.is-geriliyor,
+  .trail-panel.is-odakta.is-geriliyor .trail-figure,
+  .trail-panel.is-odakta:not(.is-geriliyor) .progress-count,
+  .trail-panel.is-odakta:not(.is-geriliyor) .percent-value,
+  .trail-panel.is-odakta:not(.is-geriliyor) .path-stop.is-complete circle {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* ---------- Tema ipi ---------- */
+
+/**
+ * Düğmenin altından sarkan ip. Katman tıklamaları geçirir; yalnızca
+ * tutamaç yakalar, böylece ipin kapladığı alan sayfanın geri kalanını
+ * engellemiyor.
+ */
+.tema-ipi {
+  position: absolute;
+  /**
+   * İp abajurun alt kenarının tam ortasından sarkar. Önce sağ köşeden
+   * sarkıyordu; ortadaki ampulle yarışıp ayrı bir çubuk gibi duruyordu.
+   *
+   * Sayılar lamba çiziminden: abajurun alt kenarı y=33,5, ortası x=32.
+   * İp iç ağzın içinden çıksın diye birkaç piksel aşağıdan başlar.
+   */
+  top: 36px;
+  left: var(--ip-x, 32px);
+  width: 150px;
+  height: 180px;
+  margin-left: -75px;
+  pointer-events: none;
+}
+
+.ip-cizim {
+  display: block;
+  overflow: visible;
+}
+
+ /* İpin abajura tutunduğu küçük nokta */
+.ip-kanca {
+  fill: var(--text-soft);
+}
+
+/**
+ * Gerildikçe incelir — gerçek bir ipin gerilim altındaki hâli.
+ *
+ * Renk bilerek koyu: ilk hâli --control idi ve kirli beyaz zemin üzerinde
+ * görünmüyordu bile.
+ */
+.ip-hat {
+  fill: none;
+  stroke: var(--text-soft);
+  stroke-width: calc(1.7px - var(--gerginlik, 0) * 0.4px);
+  stroke-linecap: round;
+}
+
+.ip-tutamac {
+  pointer-events: auto;
+  cursor: grab;
+  fill: var(--ochre);
+  stroke: var(--surface);
+  stroke-width: 2;
+  filter: drop-shadow(0 1px 2px rgba(20, 42, 28, 0.3));
+  transition:
+    fill var(--fast) var(--ease),
+    r var(--fast) var(--ease);
+}
+
+.tema-ipi:has(.ip-tutamac:hover) .ip-tutamac {
+  r: 7;
+}
+
+.tema-ipi.is-basili .ip-tutamac {
+  cursor: grabbing;
+  fill: var(--now-text);
+}
+
+.tema-ipi:has(.ip-tutamac:hover) .ip-hat,
+.theme-button:hover .ip-hat,
+.tema-ipi.is-basili .ip-hat {
+  stroke: var(--text-soft);
+}
+
+/* Sürükleme sırasında sayfa metni seçilmesin */
+html.ip-cekiliyor,
+html.ip-cekiliyor * {
+  user-select: none;
+}
+
+/* İpucu yalnızca ipe yaklaşınca belirir ve tutamacı izler.
+   Tutamaç düğmenin kutusunun dışında kaldığı için .theme-button:hover
+   burada tutmuyor; ipin kendi içindeki hover'a bakılıyor. */
+.ip-ipucu {
+  position: absolute;
+  top: 0;
+  left: 75px;
+  margin: 14px 0 0 -40px;
+  width: 80px;
+  color: var(--text-soft);
+  font-size: var(--fs-xs);
+  text-align: center;
+  opacity: 0;
+  transition: opacity var(--fast) var(--ease);
+}
+
+.tema-ipi:has(.ip-tutamac:hover) .ip-ipucu,
+.theme-button:hover .ip-ipucu,
+.tema-ipi.is-basili .ip-ipucu {
+  opacity: 1;
+}
+
+/* Dokunmatikte ve dar ekranda ip yok: sürükleme jesti parmakla kötü
+   çalışıyor ve ip içeriğin üstüne biniyor */
+@media (max-width: 1023px), (hover: none) {
+  .tema-ipi {
+    display: none;
+  }
+}
+
+/* ---------- Liste ile harita bağlantısı ---------- */
+
+/**
+ * Görev satırının üstüne gelince o görevin patikadaki adım izi büyüyüp
+ * okra rengine döner. Liste ile harita arasındaki tek görsel köprü bu;
+ * olmayınca "bu görev nerede" sorusu cevapsız kalıyordu.
+ */
+/* Durak üstüne gelince o haftanın yol parçası okra bir bantla belirir;
+   "bu hafta patikanın neresi" sorusunun cevabı. */
+.path-bolum {
+  fill: none;
+  stroke: var(--ochre);
+  stroke-width: 11;
+  stroke-linecap: round;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--fast) var(--ease);
+  vector-effect: non-scaling-stroke;
+}
+
+.path-bolum.is-vurgulu {
+  opacity: 0.28;
+}
+
+.path-step.is-vurgulu {
+  fill: var(--ochre);
+  stroke: var(--ochre);
+  stroke-width: 3;
+  r: 6;
+}
+
+.path-step {
+  transition:
+    fill var(--fast) var(--ease),
+    stroke var(--fast) var(--ease),
+    r var(--fast) var(--ease);
+}
+
+/* ---------- Yürüyen işaretin nefesi ---------- */
+
+/**
+ * Bulunduğun nokta çok hafif soluk alır. Genlik bir pikselin altında;
+ * amaç hareket değil, haritanın donmuş görünmemesi.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-ready] .walker-dot,
+  html[data-ready] .walker-halo {
+    animation: yuruyen-nefes 3200ms ease-in-out infinite;
+  }
+}
+
+@keyframes yuruyen-nefes {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1.4px); }
+}
+
+
+/* ---------- Hafta değişince başlık yumuşak geçsin ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-ready] .detail-head {
+    animation: detay-gecis 240ms var(--ease) both;
+  }
+}
+
+@keyframes detay-gecis {
+  from {
+    opacity: 0.85;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Tepeler kaydırmayla hafif kayar ---------- */
+
+/* Kaydırmaya bağlı animasyon; JS yok. Destekleyen tarayıcıda uzak tepeler
+   yakındakilerden daha yavaş kayıyor, bu da derinlik hissi veriyor.
+   Desteklemeyen tarayıcıda hiçbir şey olmuyor, çizim aynen duruyor. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .hill-far,
+    .hill-mid {
+      animation: tepe-kay linear both;
+      animation-timeline: view();
+    }
+
+    .hill-far {
+      --kay: 9;
+    }
+
+    .hill-mid {
+      --kay: 4;
+    }
+  }
+}
+
+@keyframes tepe-kay {
+  from {
+    transform: translateY(calc(var(--kay) * 1px));
+  }
+  to {
+    transform: translateY(calc(var(--kay) * -1px));
   }
 }

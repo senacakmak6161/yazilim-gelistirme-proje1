@@ -210,16 +210,39 @@ _Mobil · 390 px_
 
 ## Ekran görüntüleri
 
-<!-- TODO: Uygulama çalışır hâle geldiğinde görseller docs/screenshots/ altına eklenip buraya bağlanacak -->
+Çalışan uygulamadan alınmıştır; hepsi [`docs/screenshots/`](docs/screenshots/) altındadır.
 
-Çalışan uygulamanın ekran görüntüleri geliştirme tamamlandığında bu bölüme eklenecektir.
+### Masaüstü — aydınlık tema
 
-| Görünüm | Durum |
-|---|---|
-| Masaüstü — aydınlık tema | _bekliyor_ |
-| Masaüstü — karanlık tema | _bekliyor_ |
-| Mobil görünüm | _bekliyor_ |
-| Boş durum ekranı | _bekliyor_ |
+![Masaüstü aydınlık tema](docs/screenshots/masaustu-aydinlik.png)
+
+Ekranın ortasındaki patika haritası: durakların yüksekliği o haftanın çalışma
+yükünden, yolun dolu kısmı tamamlanan görev sayısından, yoldaki noktalar tek
+tek görevlerden geliyor. Ağaçlar hafta ilerledikçe yazdan sonbahara dönüyor.
+
+### Masaüstü — karanlık tema
+
+![Masaüstü karanlık tema](docs/screenshots/masaustu-karanlik.png)
+
+### Mobil görünüm
+
+<img src="docs/screenshots/mobil.png" alt="Mobil görünüm" width="320">
+
+Dar ekranda patika kendi çerçevesi içinde yana kayar; sayfa yana kaymaz.
+
+### Boş durum
+
+![Boş durum](docs/screenshots/bos-durum.png)
+
+Hiçbir görev ölçütlere uymadığında ekran boş bırakılmaz, ne olduğunu
+açıklayan bir mesaj gösterilir.
+
+### Hafta tamamlama
+
+![Hafta tamamlama kutlaması](docs/screenshots/kutlama.png)
+
+Bir haftanın son görevi işaretlendiğinde ekran patikaya döner, harita
+gerilerek titrer, yol bir hamlede sonraki durağa varır ve kutlama açılır.
 
 ---
 
@@ -990,6 +1013,7 @@ Kullanılabilirliğe dair öznel maddeler (içeriğin "anlaşılır" sunulması 
 | Kaynak kod | [`etkilesimli-ders-panosu/src/`](etkilesimli-ders-panosu/src/) |
 | **Tasarım belgesi** | [`docs/tasarim/Tasarim-ve-Arayuz-Taslagi.pdf`](docs/tasarim/Tasarim-ve-Arayuz-Taslagi.pdf) |
 | Tasarım görselleri | [`docs/tasarim/img/`](docs/tasarim/img/) |
+| Ekran görüntüleri | [`docs/screenshots/`](docs/screenshots/) |
 | Kurulum talimatları ve kullanıcı rehberi | Bu dosya — [Kurulum](#kurulum) ve [Kullanıcı rehberi](#kullanıcı-rehberi) bölümleri |
 | Kabul testleri | [`tests/e2e/`](tests/e2e/) |
 | Test raporu | [`tests/docs/TEST_RAPORU.md`](tests/docs/TEST_RAPORU.md) |
@@ -1009,7 +1033,8 @@ Kullanılabilirliğe dair öznel maddeler (içeriğin "anlaşılır" sunulması 
 - [ ] Issue kayıtları iş bölümünü yansıtıyor
 - [ ] Proje raporu ve sunum hazır
 - [ ] Demo senaryoları önceden test edildi
-- [ ] Ekran görüntüleri ve demo bağlantısı README'de güncel
+- [x] Ekran görüntüleri README'de güncel
+- [ ] Demo bağlantısı README'de güncel
 - [x] Depoda API anahtarı, parola veya gizli bilgi bulunmuyor
 
 ---

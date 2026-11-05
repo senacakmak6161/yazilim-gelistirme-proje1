@@ -8,6 +8,8 @@
  * seçiliyken aria-pressed="true", erişilebilir ad görünen metinden oluşur ve
  * "Hafta 01" etiketiyle başlar.
  */
+import { haftaVurgula, haftaVurgusunuKaldir } from '../lib/vurgu.js'
+
 function WeekCard({ week, isSelected, isCurrent, isComplete, onSelect }) {
   const statusClass = isComplete
     ? 'is-complete'
@@ -22,6 +24,8 @@ function WeekCard({ week, isSelected, isCurrent, isComplete, onSelect }) {
       aria-pressed={isSelected}
       className={`week-item ${statusClass} ${isSelected ? 'is-selected' : ''}`}
       onClick={() => onSelect(week.id)}
+      onMouseEnter={() => haftaVurgula(week.id)}
+      onMouseLeave={haftaVurgusunuKaldir}
     >
       <span className="week-head">
         <span className="week-label">
@@ -35,8 +39,8 @@ function WeekCard({ week, isSelected, isCurrent, isComplete, onSelect }) {
       {/* Haftanın görevleri, birer hücre. Durum yalnızca renkle değil,
           dolu/boş biçimiyle de ayırt edilir. */}
       <span className="week-cells" aria-hidden="true">
-        {week.cells.map((tamam, index) => (
-          <span key={index} className={`week-cell ${tamam ? 'is-done' : ''}`} />
+        {week.cells.map((hucre) => (
+          <span key={hucre.id} className={`week-cell ${hucre.tamam ? 'is-done' : ''}`} />
         ))}
       </span>
 

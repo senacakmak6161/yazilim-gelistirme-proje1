@@ -312,7 +312,7 @@ function Agac({ boy, tip, detayli }) {
  * koşulsuz çalışmak zorunda, bu yüzden "hafta yoksa çık" kontrolü
  * kancalardan sonraya kalmalı.
  */
-function haritaVerisi(weeks) {
+function haritaVerisi(weeks, geriTut) {
   const pts = duraklar(weeks)
 
   /**
@@ -346,14 +346,25 @@ function haritaVerisi(weeks) {
     const p1 = yolNoktalari[haftaIndex + 1]
     const [c1, c2] = denetim(p0, p1, egim(haftaIndex), egim(haftaIndex + 1))
 
-    return gorevler.map((tamam, gorevIndex) => {
+    return gorevler.map((hucre, gorevIndex) => {
       const t = (gorevIndex + 1) / (gorevler.length + 1)
       const nokta = bezier(p0, c1, c2, p1, t)
-      return { ...nokta, tamam, key: `${haftaIndex}-${gorevIndex}` }
+      return { ...nokta, tamam: hucre.tamam, key: hucre.id }
     })
   })
 
   const adimlar = haftaAdimlari.flat()
+
+  // Her haftanın kendi yol parçası; durak üstüne gelince vurgulanır
+  const bolumYollari = weeks.map((week, index) => {
+    const p0 = yolNoktalari[index]
+    const p1 = yolNoktalari[index + 1]
+    const [c1, c2] = denetim(p0, p1, egim(index), egim(index + 1))
+    return {
+      id: week.id,
+      d: `M${p0.x.toFixed(1)} ${p0.y.toFixed(1)} C${c1.x.toFixed(1)} ${c1.y.toFixed(1)} ${c2.x.toFixed(1)} ${c2.y.toFixed(1)} ${p1.x.toFixed(1)} ${p1.y.toFixed(1)}`,
+    }
+  })
 
   /**
    * Yolun nereye kadar yürünmüş sayılacağı.
@@ -366,7 +377,12 @@ function haritaVerisi(weeks) {
    * Hangi görevin işaretlendiği değil, kaç tanesinin işaretlendiği önemli —
    * böylece yol her zaman üstteki "n / 30" sayısıyla tutarlı kalıyor.
    */
-  const tamamlananAdim = adimlar.filter((a) => a.tamam).length
+  /**
+   * geriTut: sahne sırasında yol bir adım geride tutulur. Böylece titreme
+   * bitince yol o son adımı bir hamlede atıyor — olayın görünür olması
+   * için değişimin beklemesi gerekiyor.
+   */
+  const tamamlananAdim = Math.max(0, adimlar.filter((a) => a.tamam).length - (geriTut ? 1 : 0))
 
   let kalan = tamamlananAdim
   let hedef = yolNoktalari[yolNoktalari.length - 1] // hepsi bitmişse zirve
@@ -418,10 +434,10 @@ function haritaVerisi(weeks) {
 
   const hepsiTamam = weeks.every((week) => week.isComplete)
 
-  return { pts, yolNoktalari, d, kuyruk, adimlar, yurunen, uzakAgaclar, yakinAgaclar, zirve, hepsiTamam }
+  return { pts, yolNoktalari, d, kuyruk, adimlar, bolumYollari, yurunen, uzakAgaclar, yakinAgaclar, zirve, hepsiTamam }
 }
 
-function TrailProfile({ weeks, yuzde, selectedIndex, kutlanan }) {
+function TrailProfile({ weeks, yuzde, selectedIndex, kutlanan, geriTut }) {
   const yolRef = useRef(null)
   const [yuruyen, setYuruyen] = useState(null)
 
@@ -432,12 +448,16 @@ function TrailProfile({ weeks, yuzde, selectedIndex, kutlanan }) {
    * Anahtar yalnızca görev durumları değişince değişir.
    */
   const anahtar = weeks
-    .map((week) => `${week.id}:${(week.cells ?? []).map((t) => (t ? 1 : 0)).join('')}`)
+    .map((week) => `${week.id}:${(week.cells ?? []).map((h) => (h.tamam ? 1 : 0)).join('')}`)
     .join('|')
 
-  // Anahtar weeks'in çizimi etkileyen bütün alanlarını kapsıyor
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const veri = useMemo(() => (weeks.length === 0 ? null : haritaVerisi(weeks)), [anahtar])
+  const veri = useMemo(
+    () => (weeks.length === 0 ? null : haritaVerisi(weeks, geriTut)),
+    // Anahtar, weeks'in çizimi etkileyen bütün alanlarını kapsıyor; weeks
+    // her render yeniden üretildiği için doğrudan bağımlılık olamaz
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [anahtar, geriTut],
+  )
   const yurunen = veri ? veri.yurunen : 0
 
   // Yürüyen işaretin yeri, yolun kendi uzunluğundan ölçülüyor
@@ -452,7 +472,8 @@ function TrailProfile({ weeks, yuzde, selectedIndex, kutlanan }) {
 
   if (!veri) return null
 
-  const { pts, yolNoktalari, d, kuyruk, adimlar, uzakAgaclar, yakinAgaclar, zirve, hepsiTamam } = veri
+  const { pts, yolNoktalari, d, kuyruk, adimlar, bolumYollari, uzakAgaclar, yakinAgaclar, zirve, hepsiTamam } =
+    veri
 
   return (
     <svg
@@ -503,10 +524,16 @@ function TrailProfile({ weeks, yuzde, selectedIndex, kutlanan }) {
         strokeDashoffset={(100 - yurunen * 100).toFixed(2)}
       />
 
+      {/* Hafta parçaları: normalde görünmez, durak üstüne gelince belirir */}
+      {bolumYollari.map((bolum) => (
+        <path key={bolum.id} className="path-bolum" data-hafta={bolum.id} d={bolum.d} />
+      ))}
+
       {/* Adım izleri: her görev bir nokta */}
       {adimlar.map((adim) => (
         <circle
           key={adim.key}
+          data-gorev={adim.key}
           className={`path-step ${adim.tamam ? 'is-done' : ''}`}
           cx={adim.x.toFixed(1)}
           cy={adim.y.toFixed(1)}

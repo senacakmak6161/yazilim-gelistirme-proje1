@@ -97,6 +97,23 @@
     align-self: flex-start;
     text-align: left;
   }
+
+  /**
+   * Dar ekranda sayılar sola hizalı; vurgu sağdan büyürse sol kenarı
+   * ekranın dışına taşıyordu (ölçülen: sol kenar -5 piksel). Büyüme
+   * yönü hizalamayla aynı olmalı.
+   */
+  .progress-count,
+  .percent-value {
+    transform-origin: left center;
+  }
+
+  /* Sahne ölçüleri dar ekranda küçültülür: aynı oran burada çok daha
+     büyük bir yer kaplıyor */
+  :root {
+    --kalkis: 1.022;
+    --vurgu: 1.14;
+  }
 }
 
 /* ---------- Telefon ---------- */
@@ -124,23 +141,7 @@
    * boşluğu duruyor ve ikonu birkaç piksel sola kaydırıyordu. Etiket
    * ekran okuyucuda kalıyor, düğmenin erişilebilir adı değişmiyor.
    */
-  .theme-button {
-    width: var(--control-height);
-    padding: 0;
-    gap: 0;
-    justify-content: center;
-  }
-
-  .theme-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
+  /* Lamba zaten ikon boyutunda; dar ekranda ek bir şey gerekmiyor */
 
   .title-row h1 {
     font-size: 22px;

@@ -18,9 +18,14 @@ import { useSayac } from '../hooks/useSayac.js'
  *   - role=progressbar, ad "Genel ilerleme", aria-valuenow = yüzde
  *   - data-testid="progress-fill"    → dolgu, genişliği yüzdeyle orantılı
  */
-function ProgressBand({ tamamlanan, toplam, yuzde, children, basRef }) {
-  const gosterilenTamam = useSayac(tamamlanan)
-  const gosterilenYuzde = useSayac(yuzde)
+function ProgressBand({ tamamlanan, toplam, yuzde, children, basRef, yavas }) {
+  /**
+   * Sahnede sayım mesafeye göre kısalmaz; çarpma anıyla aynı ritimde
+   * oturması için sabit tutulur. Uzun tutmak çarpma hissini dağıtıyordu —
+   * vuruş kısa olmalı.
+   */
+  const gosterilenTamam = useSayac(tamamlanan, yavas ? 600 : 520, !yavas)
+  const gosterilenYuzde = useSayac(yuzde, yavas ? 600 : 520, !yavas)
 
   return (
     <>
