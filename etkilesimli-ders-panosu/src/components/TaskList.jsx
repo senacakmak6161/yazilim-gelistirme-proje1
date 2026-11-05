@@ -1,13 +1,21 @@
 import { useState } from 'react'
 import TaskItem from './TaskItem.jsx'
 import EmptyState from './EmptyState.jsx'
+import Icon from './Icon.jsx'
 
 /**
  * Görev listesi, arama ve filtreler.
  *
+ * Birden fazla haftanın görevleri listelendiğinde liste hafta hafta
+ * bölünür. Otuz görev ayrımsız alt alta aktığında hangi haftanın nerede
+ * başladığı görünmüyor ve liste 3800 piksel boyunca tekdüze uzuyordu.
+ *
+ * Kontroller tek satırda toplandı; etiketleri görsel olarak gizli ama ekran
+ * okuyucuda duruyor — her kontrolün biçimi ne olduğunu zaten söylüyor.
+ *
  * Sözleşme (tests/docs/TEST_CONTRACT.md §2):
  *   - durum filtresi: fieldset/legend "Görev durumu", sırayla
- *     Tümü / Devam edenler / Tamamlanan radyo düğmeleri
+ *     Tümü / Devam edenler / Tamamlanan
  *   - hafta filtresi: combobox "Hafta", ilk seçenek "Tüm haftalar",
  *     ardından "Hafta N – <başlık>" (uzun tire)
  *   - arama: role=searchbox, ad "Görev ara"
@@ -27,7 +35,7 @@ function kucult(text) {
 }
 
 function TaskList({
-  tasks,
+  gruplar,
   taskStatus,
   onToggle,
   emptyMessage,
@@ -40,7 +48,7 @@ function TaskList({
 
   const aranan = kucult(searchTerm.trim())
 
-  const filteredTasks = tasks.filter((task) => {
+  function uyuyorMu(task) {
     // A2: arama hem başlıkta hem açıklamada
     const matchesSearch =
       aranan === '' ||
@@ -56,92 +64,128 @@ function TaskList({
 
     // K3: tüm ölçütler birlikte (VE) uygulanır
     return matchesSearch && matchesStatus
-  })
+  }
 
-  const tamamlanan = tasks.filter((task) => taskStatus[task.id]).length
+  const suzulmus = gruplar
+    .map((week) => ({ week, tasks: week.tasks.filter(uyuyorMu) }))
+    .filter((grup) => grup.tasks.length > 0)
+
+  const tumGorevler = gruplar.flatMap((week) => week.tasks)
+  const gosterilen = suzulmus.reduce((toplam, grup) => toplam + grup.tasks.length, 0)
+  const tamamlanan = tumGorevler.filter((task) => taskStatus[task.id]).length
+  const suzuldu = gosterilen !== tumGorevler.length
+
+  // Hafta başlığı yalnızca birden fazla hafta listeleniyorsa anlamlı
+  const basliklarGerekli = gruplar.length > 1
 
   return (
     <section className="task-panel">
       <div className="task-head">
-        <h2>Görevler</h2>
+        <h3>Görevler</h3>
 
-        {tasks.length > 0 && (
-          <span className="task-count">
-            {tamamlanan} / {tasks.length} tamamlandı
-          </span>
-        )}
+        {tumGorevler.length > 0 &&
+          (() => {
+            const metin = suzuldu
+              ? `${gosterilen} / ${tumGorevler.length} gösteriliyor`
+              : `${tamamlanan} / ${tumGorevler.length} tamamlandı`
+            // Anahtar metinle birlikte değişir: React öğeyi yeniden kurar,
+            // böylece sayaç her güncellemede kısa bir geçişle belirir
+            return (
+              <span className="task-count" key={metin}>
+                {metin}
+              </span>
+            )
+          })()}
       </div>
 
-      <div className="task-filters">
-        <div className="task-search">
-          <label htmlFor="task-search">Görev ara</label>
+      <div className="task-controls">
+        <div className="control search-control">
+          <label className="sr-only" htmlFor="task-search">
+            Görev ara
+          </label>
+          <Icon name="ara" className="search-icon" />
           <input
             id="task-search"
             type="search"
-            placeholder="Görev başlığı veya açıklaması yaz..."
+            placeholder="Görev ara"
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
           />
         </div>
 
-        <div className="task-filter-row">
-          <fieldset className="task-status">
-            <legend>Görev durumu</legend>
+        <fieldset className="task-status">
+          <legend className="sr-only">Görev durumu</legend>
 
-            <div className="task-status-options">
-              {STATUS_SECENEKLERI.map((secenek) => (
-                <div className="task-status-option" key={secenek.value}>
-                  <input
-                    type="radio"
-                    id={`status-${secenek.value}`}
-                    name="task-status"
-                    value={secenek.value}
-                    checked={filters.status === secenek.value}
-                    onChange={() => onStatusChange(secenek.value)}
-                  />
-                  <label htmlFor={`status-${secenek.value}`}>{secenek.label}</label>
-                </div>
-              ))}
-            </div>
-          </fieldset>
-
-          <div className="task-filter">
-            <label htmlFor="task-week">Hafta</label>
-            <select
-              id="task-week"
-              value={filters.week === 'all' ? 'all' : String(filters.week)}
-              onChange={(event) => onWeekChange(event.target.value)}
-            >
-              <option value="all">Tüm haftalar</option>
-              {weeks.map((week) => (
-                <option key={week.id} value={String(week.id)}>
-                  {`Hafta ${week.weekNumber} – ${week.title}`}
-                </option>
-              ))}
-            </select>
+          <div className="segmented">
+            {STATUS_SECENEKLERI.map((secenek) => (
+              <div className="segment" key={secenek.value}>
+                <input
+                  type="radio"
+                  id={`status-${secenek.value}`}
+                  name="task-status"
+                  value={secenek.value}
+                  checked={filters.status === secenek.value}
+                  onChange={() => onStatusChange(secenek.value)}
+                />
+                <label htmlFor={`status-${secenek.value}`}>{secenek.label}</label>
+              </div>
+            ))}
           </div>
+        </fieldset>
+
+        <div className="control select-control">
+          <label className="sr-only" htmlFor="task-week">
+            Hafta
+          </label>
+          <select
+            id="task-week"
+            value={filters.week === 'all' ? 'all' : String(filters.week)}
+            onChange={(event) => onWeekChange(event.target.value)}
+          >
+            <option value="all">Tüm haftalar</option>
+            {weeks.map((week) => (
+              <option key={week.id} value={String(week.id)}>
+                {`Hafta ${week.weekNumber} – ${week.title}`}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
-      {filteredTasks.length === 0 ? (
+      {gosterilen === 0 ? (
         <EmptyState
           message={
-            // M3 / M4: listelenecek görev hiç yok
-            // M2: görev var ama ölçütlere uyan yok
-            tasks.length === 0 ? emptyMessage : 'Seçilen ölçütlere uygun görev bulunamadı.'
+            // Listelenecek görev hiç yok / ölçütlere uyan yok
+            tumGorevler.length === 0
+              ? emptyMessage
+              : 'Seçilen ölçütlere uygun görev bulunamadı.'
           }
         />
       ) : (
-        <ul className="task-list">
-          {filteredTasks.map((task) => (
-            <TaskItem
-              key={task.id}
-              task={task}
-              isDone={Boolean(taskStatus[task.id])}
-              onToggle={onToggle}
-            />
-          ))}
-        </ul>
+        suzulmus.map((grup) => (
+          <div className="task-group" key={grup.week.id}>
+            {basliklarGerekli ? (
+              <p className="task-group-head">
+                <span className="task-group-week">
+                  Hafta {String(grup.week.weekNumber).padStart(2, '0')}
+                </span>
+                <span className="task-group-title">{grup.week.title}</span>
+              </p>
+            ) : null}
+
+            <ul className="task-list">
+              {grup.tasks.map((task) => (
+                <TaskItem
+                  key={task.id}
+                  task={task}
+                  isDone={Boolean(taskStatus[task.id])}
+                  onToggle={onToggle}
+                  zorlaAcik={aranan !== ''}
+                />
+              ))}
+            </ul>
+          </div>
+        ))
       )}
     </section>
   )

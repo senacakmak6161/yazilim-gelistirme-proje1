@@ -1,12 +1,18 @@
-
-import { useLayoutEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import WeekList from './components/WeekList.jsx'
 import TaskList from './components/TaskList.jsx'
+import TrailProfile from './components/TrailProfile.jsx'
+import Logo from './components/Logo.jsx'
+import Icon from './components/Icon.jsx'
+import Celebration from './components/Celebration.jsx'
+import ProgressBand from './components/ProgressBand.jsx'
+import ProgressMini from './components/ProgressMini.jsx'
+import { haftaYuku, sureMetni } from './lib/ders.js'
 import { useLocalStorage } from './hooks/useLocalStorage.js'
-import { useMediaQuery } from './hooks/useMediaQuery.js'
 import courses from './data/courses.json'
 import './App.css'
 import './responsive.css'
+
 function resolveTheme(value) {
   return value === 'dark' ? 'dark' : 'light'
 }
@@ -53,13 +59,45 @@ function App() {
       ? findCurrentWeek(courses.weeks, taskStatus).id
       : filters.week,
   )
+
   useLayoutEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
+  /**
+   * İlk boyamadan sonra işaretlenen bayrak. Geri bildirim animasyonları
+   * yalnızca buna bağlı; aksi hâlde kayıtlı görevlerle açılan sayfada otuz
+   * onay işareti aynı anda çizilip giriş animasyonuna dönüşüyordu.
+   */
+  useEffect(() => {
+    const kare = requestAnimationFrame(() => {
+      document.documentElement.setAttribute('data-ready', 'true')
+    })
+    return () => cancelAnimationFrame(kare)
+  }, [])
+
+  /**
+   * İlerleme sayıları ekranda mı? Değilse üst şeritte küçüğü belirir.
+   * Kaydırma olayını dinlemek yerine kesişim gözlemcisi kullanıldı: her
+   * kaydırma karesinde hesap yapmıyor.
+   */
+  const bandRef = useRef(null)
+  const [bandGorunur, setBandGorunur] = useState(true)
+
+  useEffect(() => {
+    const oge = bandRef.current
+    if (!oge || typeof IntersectionObserver === 'undefined') return undefined
+
+    const gozlemci = new IntersectionObserver(
+      ([giris]) => setBandGorunur(giris.isIntersecting),
+      { threshold: 0 },
+    )
+    gozlemci.observe(oge)
+    return () => gozlemci.disconnect()
+  }, [])
+
   const currentWeek = findCurrentWeek(courses.weeks, taskStatus)
   const currentWeekId = currentWeek.id
-  const isStacked = useMediaQuery('(max-width: 1023px)')
 
   function toggleTask(taskId) {
     setTaskStatus((prev) => ({ ...prev, [taskId]: !prev[taskId] }))
@@ -69,7 +107,7 @@ function App() {
     setStoredFilters((prev) => ({ ...resolveFilters(prev, courses.weeks), status }))
   }
 
-  /** Hafta filtresi ve hafta kartı aynı durumu paylaşır. */
+  /** Hafta filtresi ve hafta durağı aynı durumu paylaşır. */
   function setWeekFilter(value) {
     const week = value === 'all' ? 'all' : Number(value)
     setStoredFilters((prev) => ({ ...resolveFilters(prev, courses.weeks), week }))
@@ -91,21 +129,26 @@ function App() {
     return {
       ...week,
       isComplete: isWeekComplete(week, taskStatus),
+      // Profil çiziminin altındaki hücreler: her görev için bir hücre
+      cells: week.tasks.map((task) => Boolean(taskStatus[task.id])),
       summary: baslanmadi
         ? `${week.tasks.length} görev`
         : `${tamamlanan} / ${week.tasks.length} görev`,
+      // Üstündeki tepenin yüksekliği bu sayıdan geliyor; yazılı olmazsa
+      // çizim "neden yükseliyor" sorusunu cevapsız bırakıyor.
+      // Süre tahmini girilmemişse hiç yazılmaz, "0 dk" yazılmaz.
+      yuk: haftaYuku(week) > 0 ? sureMetni(haftaYuku(week)) : null,
     }
   })
 
   const selectedWeek = weeks.find((week) => week.id === selectedWeekId) ?? weeks[0]
 
-  // Hafta filtresi listeyi belirler: "Tüm haftalar" ise bütün görevler sırayla
-  const listelenecekGorevler =
-    filters.week === 'all'
-      ? weeks.flatMap((week) => week.tasks)
-      : (weeks.find((week) => week.id === filters.week)?.tasks ?? [])
+  // Hafta filtresi listeyi belirler. "Tüm haftalar" ise liste hafta hafta
+  // bölünerek gösterilir; tek hafta seçiliyse tek grup.
+  const listeGruplari =
+    filters.week === 'all' ? weeks : weeks.filter((week) => week.id === filters.week)
 
-  // K8: ilerleme her zaman tüm görevler üzerinden hesaplanır, filtreden etkilenmez
+  // İlerleme her zaman tüm görevler üzerinden hesaplanır, filtreden etkilenmez
   const tumGorevler = courses.weeks.flatMap((week) => week.tasks)
   const tamamlananToplam = tumGorevler.filter((task) => taskStatus[task.id]).length
 
@@ -114,130 +157,268 @@ function App() {
       ? 0
       : Math.round((tamamlananToplam / tumGorevler.length) * 100)
 
-  const DetailTag = isStacked ? 'section' : 'main'
+  // Bulgu satırı: kalan yol, gerçek tahmini sürelerden toplanır
+  const kalanDakika = tumGorevler
+    .filter((task) => !taskStatus[task.id])
+    .reduce((toplam, task) => toplam + (task.estimatedMinutes ?? 0), 0)
 
-  const weekDetail = (
-    <DetailTag className="week-detail">
-      <p className="detail-kicker">
-        Hafta {String(selectedWeek.weekNumber).padStart(2, '0')}
-        {selectedWeek.id === currentWeekId ? ' · Bu hafta' : ''}
-      </p>
+  const kalanGorev = tumGorevler.length - tamamlananToplam
 
-      <h1>{selectedWeek.title}</h1>
-      <p className="detail-description">{selectedWeek.description}</p>
+  /**
+   * Sayı zaten panelde duruyor; bu satır onu tekrarlamak yerine nerede
+   * olduğunu ve ne kadar kaldığını söyler.
+   *
+   * Bitiş ölçütü kalan görev sayısıdır, kalan süre değil: her derste görev
+   * süresi girilmiş olmayabilir ve süre sıfırken iş bitmiş sanılıyordu.
+   */
+  const bulgu =
+    tumGorevler.length === 0
+      ? 'Bu derse henüz görev eklenmemiş.'
+      : kalanGorev === 0
+        ? `Bütün patikayı yürüdün — ${weeks.length} durağın hepsi tamam.`
+        : `Patikanın ${currentWeek.weekNumber}. durağındasın · ${
+            kalanDakika > 0
+              ? `yaklaşık ${sureMetni(kalanDakika)} yol kaldı`
+              : `${kalanGorev} görev kaldı`
+          }`
 
-      <section className="goals-panel" data-testid="goals-panel">
-        <h2>Hafta {selectedWeek.weekNumber} Öğrenme Hedefleri</h2>
+  /**
+   * Kutlama tespiti. Yeni tamamlanan hafta varsa kısa bir kutlama açılır;
+   * son hafta da bitmişse kutlama patika kutlamasına yükselir.
+   *
+   * İlk turda yalnızca mevcut durum kaydedilir: kayıtlı ilerlemeyle açılan
+   * sayfada bitmiş bütün haftalar aynı anda kutlanırdı.
+   */
+  const tamamAnahtari = weeks
+    .filter((week) => week.isComplete)
+    .map((week) => week.id)
+    .join(',')
 
-        {selectedWeek.objectives.length > 0 ? (
-          <ul>
-            {selectedWeek.objectives.map((objective) => (
-              <li key={objective}>{objective}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>Bu hafta için henüz içerik eklenmemiş.</p>
-        )}
-      </section>
+  const oncekiTamamlar = useRef(null)
+  const [kutlama, setKutlama] = useState(null)
 
-      <TaskList
-        tasks={listelenecekGorevler}
-        taskStatus={taskStatus}
-        onToggle={toggleTask}
-        weeks={weeks}
-        filters={filters}
-        onStatusChange={setStatusFilter}
-        onWeekChange={setWeekFilter}
-        emptyMessage={
-          tumGorevler.length === 0
-            ? 'Henüz görev bulunmuyor.'
-            : 'Bu haftaya ait görev bulunmuyor.'
-        }
-      />
-    </DetailTag>
-  )
+  useEffect(() => {
+    const simdi = new Set(tamamAnahtari === '' ? [] : tamamAnahtari.split(',').map(Number))
+
+    if (oncekiTamamlar.current === null) {
+      oncekiTamamlar.current = simdi
+      return undefined
+    }
+
+    const yeniId = [...simdi].find((id) => !oncekiTamamlar.current.has(id))
+    oncekiTamamlar.current = simdi
+    if (yeniId === undefined) return undefined
+
+    const hepsiBitti = simdi.size === courses.weeks.length
+    const hafta = courses.weeks.find((week) => week.id === yeniId)
+
+    setKutlama(
+      hepsiBitti
+        ? {
+            tip: 'patika',
+            weekId: yeniId,
+            baslik: 'Patikayı tamamladın!',
+            alt: `${courses.weeks.length} durak · ${tumGorevler.length} görev · ${sureMetni(
+              tumGorevler.reduce((t, task) => t + (task.estimatedMinutes ?? 0), 0),
+            )} yol`,
+          }
+        : {
+            tip: 'hafta',
+            weekId: yeniId,
+            baslik: `Hafta ${hafta.weekNumber} tamam`,
+            alt: `${hafta.title} · ${hafta.tasks.length} görev bitti`,
+          },
+    )
+
+    return undefined
+    // tumGorevler her render yeniden üretiliyor; tetikleyici anahtar yeterli
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tamamAnahtari])
+
+  const haftaYukuDakika = haftaYuku(selectedWeek)
+
+  /**
+   * Seçili haftanın görev türü dağılımı. Yan sütun üç satırda bitip
+   * uzun listenin yanında yüzlerce piksel boşluk bırakıyordu; bu döküm
+   * uydurma bir dolgu değil, görevlerin kendi etiketlerinden geliyor.
+   */
+  const turDagilimi = ['okuma', 'uygulama', 'proje', 'quiz']
+    .map((tur) => {
+      const ait = selectedWeek.tasks.filter((task) => task.tags?.includes(tur))
+      return {
+        tur,
+        toplam: ait.length,
+        biten: ait.filter((task) => taskStatus[task.id]).length,
+      }
+    })
+    .filter((satir) => satir.toplam > 0)
+
+  // Profil ölçeğinin iki ucu; alt başlıkta yazıyla veriliyor
+  const tumYukler = weeks.map(haftaYuku)
+  const enHafifHafta = Math.min(...tumYukler)
+  const enAgirHafta = Math.max(...tumYukler)
+  const sureVar = enAgirHafta > 0
 
   return (
     <div className="page">
-      <header className="topbar">
-        <div className="topbar-left">
-          <span className="brand-mark" aria-hidden="true">
-            ↷
-          </span>
-          <strong className="brand">Ders Patikası</strong>
-          <span className="course-name">Web Programlama · 2026 Güz</span>
+      {kutlama ? (
+        <Celebration
+          key={kutlama.baslik}
+          tip={kutlama.tip}
+          baslik={kutlama.baslik}
+          alt={kutlama.alt}
+          onKapat={() => setKutlama(null)}
+        />
+      ) : null}
+
+      <div className="topbar-wrap">
+        <header className={`topbar ${bandGorunur ? '' : 'is-compact'}`}>
+          <div className="brand">
+            <Logo />
+            <strong className="brand-name">Ders Patikası</strong>
+          </div>
+
+          {/* Asıl band ekrandan çıkınca ilerleme buraya taşınır */}
+          {bandGorunur ? null : (
+            <ProgressMini
+              tamamlanan={tamamlananToplam}
+              toplam={tumGorevler.length}
+              yuzde={yuzde}
+            />
+          )}
+
+          <button
+            type="button"
+            className="theme-button"
+            aria-pressed={theme === 'dark'}
+            onClick={() => setStoredTheme(theme === 'dark' ? 'light' : 'dark')}
+          >
+            <Icon name={theme === 'dark' ? 'gunes' : 'hilal'} />
+            <span className="theme-label">Karanlık tema</span>
+          </button>
+        </header>
+      </div>
+
+      <div className="canvas">
+        <div className="title-row">
+          <h1>{courses.course.title}</h1>
+          <p className="finding">{bulgu}</p>
         </div>
 
-        <button
-  type="button"
-  className="theme-button"
-  aria-pressed={theme === 'dark'}
-  onClick={() => setStoredTheme(theme === 'dark' ? 'light' : 'dark')}
->
-  Karanlık tema
-</button>
-      </header>
+        {/* Patika: dersin yükselti profili, altında haftalar */}
+        <section className="trail-panel" aria-label="Öğrenme yolculuğu">
+          <ProgressBand
+            tamamlanan={tamamlananToplam}
+            toplam={tumGorevler.length}
+            yuzde={yuzde}
+            basRef={bandRef}
+          >
+            <div>
+              <p className="panel-title">Patika</p>
+              {/* Ölçeğin iki ucu yazıyla veriliyor: çizim yakınlaştırılmış
+                  bir aralık gösteriyor, sıfır tabanlı değil. Derste süre
+                  tahmini yoksa sayı uydurmak yerine cümle sadeleşiyor. */}
+              <p className="panel-note">
+                {sureVar
+                  ? `Her durak bir hafta · yol ${sureMetni(enHafifHafta)}'dan ${sureMetni(enAgirHafta)}'ya tırmanıyor`
+                  : 'Her durak bir hafta; dolu kısım kat ettiğin yol'}
+              </p>
+            </div>
+          </ProgressBand>
 
-      <section className="progress-band" aria-label="Öğrenme yolculuğu">
-        <div className="progress-copy">
-          <p className="eyebrow">Öğrenme yolculuğun</p>
+          <div className="trail-figure">
+            <TrailProfile
+              weeks={weeks}
+              yuzde={yuzde}
+              selectedIndex={weeks.findIndex((week) => week.id === selectedWeek.id)}
+              kutlanan={kutlama?.weekId ?? null}
+            />
+            <WeekList
+              weeks={weeks}
+              selectedWeekId={selectedWeekId}
+              currentWeekId={currentWeekId}
+              onSelect={selectWeek}
+            />
+          </div>
+        </section>
 
-          <p className="progress-count" data-testid="progress-text">
-            {tamamlananToplam} / {tumGorevler.length}{' '}
-            <span>görev tamamlandı</span>
-          </p>
-
-          <p className="progress-week">
-            Hafta {currentWeek.weekNumber} · {currentWeek.title}
-          </p>
-        </div>
-
-        <div className="progress-percent">
-          <p className="percent-value" data-testid="progress-percent">
-            %{yuzde}
-          </p>
-          <p className="percent-label">kat edilen yol</p>
-        </div>
-
-        <div
-          className="progress-track"
-          role="progressbar"
-          aria-label="Genel ilerleme"
-          aria-valuenow={yuzde}
-          aria-valuemin={0}
-          aria-valuemax={100}
-        >
-          {/* Dolum genişlikle değil transform ile değişir: daha akıcı,
-              tarayıcıda yeniden yerleşim (reflow) tetiklemez */}
-          <div
-            className="progress-fill"
-            data-testid="progress-fill"
-            style={{ transform: `scaleX(${yuzde / 100})` }}
-          />
-        </div>
-      </section>
-
-      {isStacked ? (
-        <main className="workspace">
-          <WeekList
-            weeks={weeks}
-            selectedWeekId={selectedWeekId}
-            currentWeekId={currentWeekId}
-            onSelect={selectWeek}
-            detail={weekDetail}
-          />
-        </main>
-      ) : (
         <div className="workspace">
-          <WeekList
-            weeks={weeks}
-            selectedWeekId={selectedWeekId}
-            currentWeekId={currentWeekId}
-            onSelect={selectWeek}
-          />
-          {weekDetail}
+          <main className="week-detail">
+            <h2>{selectedWeek.title}</h2>
+            <p className="detail-description">{selectedWeek.description}</p>
+
+            <TaskList
+              gruplar={listeGruplari}
+              taskStatus={taskStatus}
+              onToggle={toggleTask}
+              weeks={weeks}
+              filters={filters}
+              onStatusChange={setStatusFilter}
+              onWeekChange={setWeekFilter}
+              emptyMessage={
+                tumGorevler.length === 0
+                  ? 'Henüz görev bulunmuyor.'
+                  : 'Bu haftaya ait görev bulunmuyor.'
+              }
+            />
+          </main>
+
+          <aside className="week-aside">
+            <section className="goals-panel" data-testid="goals-panel">
+              <h3>Hafta {selectedWeek.weekNumber} Öğrenme Hedefleri</h3>
+
+              {selectedWeek.objectives.length > 0 ? (
+                <ul>
+                  {selectedWeek.objectives.map((objective) => (
+                    <li key={objective}>{objective}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="aside-empty">Bu hafta için henüz içerik eklenmemiş.</p>
+              )}
+            </section>
+
+            {turDagilimi.length > 0 ? (
+              <section className="facts-panel">
+                <h3>Görev türleri</h3>
+                <ul className="types">
+                  {turDagilimi.map((satir) => (
+                    <li key={satir.tur} className={`tur-${satir.tur}`}>
+                      <span className="type-dot" aria-hidden="true" />
+                      <span className="type-name">{satir.tur}</span>
+                      <span className="type-count">
+                        {satir.biten} / {satir.toplam}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
+            <section className="facts-panel">
+              <h3>Bu durak</h3>
+              <dl className="facts">
+                {haftaYukuDakika > 0 ? (
+                  <div>
+                    <dt>Çalışma yükü</dt>
+                    <dd>{sureMetni(haftaYukuDakika)}</dd>
+                  </div>
+                ) : null}
+                <div>
+                  <dt>Görev</dt>
+                  <dd>{selectedWeek.summary}</dd>
+                </div>
+                <div>
+                  <dt>Patikadaki yeri</dt>
+                  <dd>
+                    {selectedWeek.weekNumber} / {weeks.length}
+                  </dd>
+                </div>
+              </dl>
+            </section>
+          </aside>
         </div>
-      )}
+      </div>
     </div>
   )
 }
