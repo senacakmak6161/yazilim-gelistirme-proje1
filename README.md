@@ -4,16 +4,17 @@
 
 **Haftalık ders içeriklerini, öğrenme hedeflerini ve görevleri tek ekrandan takip eden, ilerlemeyi görünür kılan etkileşimli web uygulaması.**
 
-[![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev)
-[![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES2022-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/docs/Web/JavaScript)
 [![CSS](https://img.shields.io/badge/CSS-Custom%20Properties-1572B6?style=flat-square&logo=css3&logoColor=white)](https://developer.mozilla.org/docs/Web/CSS)
+[![Testler](https://img.shields.io/badge/kabul%20testleri-Playwright-2EAD33?style=flat-square&logo=playwright&logoColor=white)](#test-senaryoları)
 [![Durum](https://img.shields.io/badge/durum-geliştiriliyor-orange?style=flat-square)](#yol-haritası)
 [![Lisans](https://img.shields.io/badge/lisans-eğitim%20amaçlı-lightgrey?style=flat-square)](#lisans)
 
 Yazılım Geliştirme dersi · Proje 1 · **Grup 2**
 
-[Canlı Demo](#demo) · [Kurulum](#kurulum) · [Tasarım](#tasarım) · [Mimari](#mimari) · [Ekip](#ekip-ve-roller)
+[Canlı Demo](#demo) · [Kurulum](#kurulum) · [Kullanıcı rehberi](#kullanıcı-rehberi) · [Tasarım](#tasarım) · [Mimari](#mimari) · [Ekip](#ekip-ve-roller)
 
 </div>
 
@@ -31,7 +32,7 @@ Yazılım Geliştirme dersi · Proje 1 · **Grup 2**
 - [Akış diyagramları](#akış-diyagramları)
 - [Veri modeli](#veri-modeli)
 - [Kurulum](#kurulum)
-- [Kullanım](#kullanım)
+- [Kullanıcı rehberi](#kullanıcı-rehberi)
 - [Gereksinim izlenebilirlik matrisi](#gereksinim-izlenebilirlik-matrisi)
 - [Test senaryoları](#test-senaryoları)
 - [Erişilebilirlik ve responsive tasarım](#erişilebilirlik-ve-responsive-tasarım)
@@ -114,7 +115,7 @@ Canlı sunumda uçtan uca gösterilecek akışlar:
 | 📊 | **İlerleme göstergesi** | Tamamlanan / toplam görev sayısı ve yüzde oranı; sayısal değer ile görsel ilerleme çubuğu her zaman birbiriyle tutarlıdır. |
 | 🌓 | **Karanlık / aydınlık tema** | CSS değişkenleri üzerinden anlık tema geçişi; tercih kalıcı olarak saklanır. |
 | 📱 | **Responsive tasarım** | Telefon, tablet ve masaüstünde kullanılabilir; mobilde yatay kaydırma gerekmez. |
-| 💾 | **Veri kalıcılığı** | Görev durumları ve tema tercihi `localStorage` üzerinden saklanır, sayfa yenilendiğinde geri yüklenir. |
+| 💾 | **Veri kalıcılığı** | Görev durumları, tema ve filtre tercihi `localStorage` üzerinden saklanır, sayfa yenilendiğinde geri yüklenir. Okunamayan bir kayıt uygulamayı düşürmez, varsayılana dönülür. |
 | ♿ | **Erişilebilirlik** | Anlamlı etiketler, yeterli renk kontrastı, klavyeyle kullanılabilir kontroller. |
 
 ### Kullanıcı deneyimi detayları
@@ -228,12 +229,14 @@ Ders kapsamında teknoloji seçimi serbesttir. Aşağıdaki tercihler, projenin 
 
 | Katman | Teknoloji | Seçim gerekçesi |
 |---|---|---|
-| **Arayüz** | React 18 | Arayüzün yeniden kullanılabilir bileşenlere ayrılmasını sağlar. Görev durumu, filtre ve arama gibi sürekli değişen veriler bileşen state'i üzerinden yönetildiği için arayüzün veriyle tutarlı kalması garanti altına alınır. Ekip üyelerinin ayrı bileşenler üzerinde eşzamanlı çalışmasına imkân verir. |
-| **Derleme ortamı** | Vite 5 | Hızlı geliştirme sunucusu ve sade yapılandırma sunar. Üretim derlemesi tamamen statik dosyalar ürettiği için uygulama sunucu gerektirmeden yayınlanabilir. |
+| **Arayüz** | React 19 | Arayüzün yeniden kullanılabilir bileşenlere ayrılmasını sağlar. Görev durumu, filtre ve arama gibi sürekli değişen veriler bileşen state'i üzerinden yönetildiği için arayüzün veriyle tutarlı kalması garanti altına alınır. Ekip üyelerinin ayrı bileşenler üzerinde eşzamanlı çalışmasına imkân verir. |
+| **Derleme ortamı** | Vite 8 | Hızlı geliştirme sunucusu ve sade yapılandırma sunar. Üretim derlemesi tamamen statik dosyalar ürettiği için uygulama sunucu gerektirmeden yayınlanabilir. |
 | **Stil** | Saf CSS + CSS Custom Properties | Tema geçişi, renklerin CSS değişkenleri üzerinden tanımlanmasıyla tek bir sınıf değişimiyle çözülür. Hazır bir UI kütüphanesi yerine kendi tasarım kararlarımızı uygulamayı tercih ettik; böylece her stil kararını gerekçelendirebiliyoruz. |
 | **Tipografi** | Outfit (başlık) + Work Sans (gövde), `@fontsource` ile | Geometrik ve karakterli bir başlık yazı tipi ile yüksek okunabilirlikli bir gövde yazı tipi eşleştirildi. Paket olarak kurulduğu için demo ortamında internet bağlantısı gerektirmez. |
 | **Düzen** | CSS Flexbox & Grid + Media Query | Harici bir grid sistemine ihtiyaç duymadan üç kırılım noktasında responsive yerleşim sağlanır. |
 | **Veri** | Statik JSON + `localStorage` | Projede veri tabanı zorunlu değildir. Ders içerikleri sürüm kontrolünde tutulan bir JSON dosyasından okunur; kullanıcıya özel durumlar tarayıcıda saklanır. |
+| **Test** | Playwright (uçtan uca kabul testleri) | Kabul kriterleri doğrudan test olarak yazılır ve altı tarayıcı/cihaz profilinde koşturulur. Her gereksinimin en az bir geçen testi olduğu izlenebilirlik kontrolüyle doğrulanır. |
+| **Sürekli entegrasyon** | GitHub Actions | Her pull request'te lint, derleme, kabul testleri ve izlenebilirlik kontrolü otomatik çalışır; başarısız olursa dal birleştirilemez. |
 | **Sürüm kontrolü** | Git & GitHub | Kaynak kod yönetimi, issue takibi ve bireysel katkıların kayıt altına alınması. |
 | **Yayın** | GitHub Pages | Statik çıktı için ek altyapı gerektirmeyen, ücretsiz ve repoyla bütünleşik yayın ortamı. |
 
@@ -257,18 +260,25 @@ Ders kapsamında teknoloji seçimi serbesttir. Aşağıdaki tercihler, projenin 
 
 ```mermaid
 graph TD
-    A[App<br/><i>state: görevler, aktif hafta, filtre, arama</i>] --> B[Header]
-    A --> C[ThemeToggle]
-    A --> D[ProgressBar]
-    A --> E[FilterBar]
-    A --> F[SearchBar]
-    A --> G[TrailList]
-    G --> H[TrailStop]
-    H --> I[ObjectiveList]
-    H --> J[TaskList]
-    J --> K[TaskItem]
-    A --> L[EmptyState]
+    A["App<br/><i>state: görev durumları, seçili hafta, tema, filtreler</i>"] --> B["Başlık ve tema düğmesi<br/><i>App içinde</i>"]
+    A --> C["İlerleme bandı<br/><i>App içinde</i>"]
+    A --> D[WeekList]
+    D --> E[WeekCard]
+    A --> F["Hafta detayı<br/><i>açıklama + hedefler</i>"]
+    F --> G[TaskList]
+    G --> H["Arama ve filtreler<br/><i>TaskList içinde</i>"]
+    G --> I[TaskItem]
+    G --> J[EmptyState]
 ```
+
+Başlık, tema düğmesi ve ilerleme bandı ayrı bileşenlere bölünmedi; tamamı `App` içinde tutulan durumu doğrudan okudukları ve başka yerde kullanılmadıkları için gereksiz bir katman eklememek tercih edildi. Arama kutusu ve filtreler de `TaskList` içindedir, çünkü yalnızca görev listesini etkilerler.
+
+Özel hook'lar:
+
+| Hook | Görevi |
+|---|---|
+| `useLocalStorage` | Bir değeri tarayıcıda saklar ve yenilemede geri yükler. Okunamayan kayıtta varsayılana döner. |
+| `useMediaQuery` | Ekran genişliğini izler; 1023 px ve altında hafta detayının patika içinde açılmasını sağlar. |
 
 ### Veri akışı
 
@@ -285,46 +295,54 @@ flowchart LR
 
 ### Dizin yapısı
 
+Depo üç ana bölümden oluşur: **uygulama**, **dokümantasyon** ve **testler**. Uygulama deponun kökünde değil, `etkilesimli-ders-panosu/` klasöründedir — kurulum komutları bu klasörde çalıştırılır.
+
 ```
 yazilim-gelistirme-proje1/
-├── src/
-│   ├── components/              # React bileşenleri
-│   │   ├── Header.jsx
-│   │   ├── ThemeToggle.jsx
-│   │   ├── ProgressBar.jsx
-│   │   ├── FilterBar.jsx
-│   │   ├── SearchBar.jsx
-│   │   ├── TrailList.jsx
-│   │   ├── TrailStop.jsx
-│   │   ├── ObjectiveList.jsx
-│   │   ├── TaskList.jsx
-│   │   ├── TaskItem.jsx
-│   │   └── EmptyState.jsx
-│   ├── hooks/
-│   │   ├── useLocalStorage.js   # Kalıcı durum yönetimi
-│   │   └── useTheme.js          # Tema tercihi
-│   ├── utils/
-│   │   ├── filterTasks.js       # Filtre + arama mantığı
-│   │   └── calculateProgress.js # İlerleme hesabı
-│   ├── data/
-│   │   └── courses.json         # Haftalık ders içerikleri
-│   ├── styles/
-│   │   ├── variables.css        # Tema değişkenleri (aydınlık/karanlık)
-│   │   ├── global.css
-│   │   └── responsive.css       # Kırılım noktaları
-│   ├── App.jsx
-│   └── main.jsx
-├── docs/
-│   ├── tasarim/                 # Tasarım belgesi, wireframe ve mockup görselleri
-│   │   ├── Tasarim-ve-Arayuz-Taslagi.pdf
-│   │   ├── img/                 # PNG çıktılar
-│   │   └── mockup/              # Görsellerin kaynak HTML/CSS dosyaları
-│   ├── proje-raporu.pdf
-│   └── kullanici-dokumani.pdf
-├── presentation/                # Sunum dosyası
-├── index.html
-├── vite.config.js
-└── package.json
+│
+├── etkilesimli-ders-panosu/         # ◀ UYGULAMA (npm komutları burada çalışır)
+│   ├── src/
+│   │   ├── components/              # React bileşenleri
+│   │   │   ├── WeekList.jsx         # Hafta patikası
+│   │   │   ├── WeekCard.jsx         # Patikadaki tek hafta durağı
+│   │   │   ├── TaskList.jsx         # Görev listesi + arama + filtreler
+│   │   │   ├── TaskItem.jsx         # Tek görev satırı ve onay kutusu
+│   │   │   └── EmptyState.jsx       # Sonuç yokken gösterilen bilgilendirme
+│   │   ├── hooks/
+│   │   │   ├── useLocalStorage.js   # Kalıcı durum yönetimi
+│   │   │   └── useMediaQuery.js     # Ekran genişliği takibi
+│   │   ├── data/
+│   │   │   └── courses.json         # Haftalık ders içerikleri (tek kaynak)
+│   │   ├── assets/
+│   │   ├── App.jsx                  # Durumun tutulduğu ana bileşen
+│   │   ├── App.css                  # Uygulama stilleri
+│   │   ├── index.css                # Tema değişkenleri ve temel stiller
+│   │   ├── responsive.css           # Kırılım noktaları
+│   │   └── main.jsx                 # Giriş noktası
+│   ├── scripts/
+│   │   └── courses-olustur.mjs      # Ders verisini courses.json'a dönüştürür
+│   ├── index.html
+│   ├── vite.config.js
+│   └── package.json
+│
+├── docs/                            # ◀ DOKÜMANTASYON
+│   └── tasarim/
+│       ├── Tasarim-ve-Arayuz-Taslagi.pdf
+│       ├── iskelet-kurulum-rehberi.md
+│       ├── img/                     # Wireframe ve mockup PNG çıktıları
+│       └── mockup/                  # Görsellerin kaynak HTML dosyaları
+│
+├── tests/                           # ◀ KABUL TESTLERİ
+│   ├── e2e/                         # Playwright test dosyaları
+│   ├── docs/
+│   │   ├── TEST_CONTRACT.md         # Testlerin beklediği arayüz sözleşmesi
+│   │   ├── DECISIONS.md             # Belirsiz davranışlar için alınan kararlar
+│   │   └── TEST_RAPORU.md           # Entegrasyon ve işlev test raporu
+│   ├── scripts/traceability.mjs     # Gereksinim–test eşleşme kontrolü
+│   └── playwright.config.ts
+│
+├── .github/workflows/e2e.yml        # Sürekli entegrasyon tanımı
+└── README.md
 ```
 
 ---
@@ -501,44 +519,89 @@ Toplam görev sayısı `0` olduğunda hesaplama yapılmaz, ilerleme `%0` olarak 
 
 ### Ön koşullar
 
-| Gereksinim | Sürüm | Kontrol |
-|---|---|---|
-| [Node.js](https://nodejs.org/) | **18 veya üzeri** (LTS önerilir) | `node -v` |
-| npm | 9 veya üzeri (Node ile gelir) | `npm -v` |
-| [Git](https://git-scm.com/) | Herhangi bir güncel sürüm | `git --version` |
+| Gereksinim | Sürüm | Kontrol komutu | Nereden |
+|---|---|---|---|
+| [Node.js](https://nodejs.org/) | **20.19 veya üzeri** (LTS önerilir) | `node -v` | nodejs.org üzerinden LTS sürümü indirin |
+| npm | 10 veya üzeri | `npm -v` | Node.js ile birlikte kurulur, ayrıca kurmanıza gerek yok |
+| [Git](https://git-scm.com/) | Herhangi bir güncel sürüm | `git --version` | git-scm.com |
+
+> **Not:** Vite 8, Node 20.19'dan eski sürümlerde çalışmaz. `node -v` komutu daha düşük bir sürüm gösteriyorsa Node.js'i güncelleyin.
 
 ### Adımlar
+
+> ⚠️ **Dikkat:** Uygulama deponun kökünde değil, `etkilesimli-ders-panosu/` klasöründedir. `npm install` komutunu o klasörün içinde çalıştırmanız gerekir.
 
 ```bash
 # 1. Depoyu klonlayın
 git clone https://github.com/senacakmak6161/yazilim-gelistirme-proje1.git
 
-# 2. Proje dizinine girin
-cd yazilim-gelistirme-proje1
+# 2. Uygulama klasörüne girin
+cd yazilim-gelistirme-proje1/etkilesimli-ders-panosu
 
-# 3. Bağımlılıkları yükleyin
+# 3. Bağımlılıkları yükleyin (ilk kurulumda birkaç dakika sürebilir)
 npm install
 
 # 4. Geliştirme sunucusunu başlatın
 npm run dev
 ```
 
-Terminalde görünen adresi (varsayılan: **http://localhost:5173**) tarayıcıda açın. Uygulama ilk açılışta örnek ders verisiyle gelir; ek bir yapılandırma veya ortam değişkeni gerekmez.
+Komut tamamlanınca terminalde şuna benzer bir çıktı görürsünüz:
+
+```
+VITE v8.3.4  ready in 412 ms
+
+➜  Local:   http://localhost:5173/
+```
+
+Bu adresi tarayıcıda açın. Uygulama örnek ders verisiyle gelir; **veri tabanı kurmanıza, hesap açmanıza veya ortam değişkeni tanımlamanıza gerek yoktur.**
+
+Sunucuyu durdurmak için terminalde `Ctrl + C` tuşlayın.
 
 ### Komutlar
 
+Uygulama klasöründe (`etkilesimli-ders-panosu/`):
+
 | Komut | Açıklama |
 |---|---|
-| `npm run dev` | Geliştirme sunucusunu başlatır (hot reload). |
+| `npm run dev` | Geliştirme sunucusunu başlatır. Kodu kaydettiğinizde sayfa kendiliğinden yenilenir. |
 | `npm run build` | Üretim derlemesini `dist/` klasörüne üretir. |
 | `npm run preview` | Üretim derlemesini yerelde önizler. |
+| `npm run lint` | Kod stili kontrolü yapar. |
+
+Test klasöründe (`tests/`) — kabul testlerini çalıştırmak isteyenler için:
+
+```bash
+cd tests
+npm install
+npx playwright install --with-deps chromium
+
+# Testleri koşun (uygulamayı Playwright kendisi başlatır)
+APP_DIR=../etkilesimli-ders-panosu npx playwright test --project=chromium
+```
+
+| Komut | Açıklama |
+|---|---|
+| `npm test` | Tüm testleri altı tarayıcı/cihaz profilinde koşar. |
+| `npm run test:chromium` | Yalnızca masaüstü Chromium'da koşar (daha hızlı). |
+| `npm run report` | Son koşunun ayrıntılı raporunu tarayıcıda açar. |
+| `npm run traceability` | Her gereksinimin testle karşılandığını kontrol eder. |
 
 ### Sorun giderme
 
 <details>
 <summary><b>npm install hata veriyor</b></summary>
 
-Node sürümünüzü kontrol edin (`node -v`); 18'in altındaysa güncelleyin. Sorun sürerse `node_modules` klasörünü ve `package-lock.json` dosyasını silip `npm install` komutunu tekrar çalıştırın.
+Önce doğru klasörde olduğunuzdan emin olun — komut `etkilesimli-ders-panosu/` içinde çalıştırılmalıdır. Deponun kökünde `package.json` bulunmadığı için orada çalıştırırsanız hata alırsınız.
+
+Sonra Node sürümünüzü kontrol edin (`node -v`); 20.19'un altındaysa güncelleyin.
+
+Sorun sürerse `node_modules` klasörünü ve `package-lock.json` dosyasını silip `npm install` komutunu tekrar çalıştırın.
+</details>
+
+<details>
+<summary><b>Sayfa açılıyor ama yazı tipleri farklı görünüyor</b></summary>
+
+Yazı tipleri `@fontsource` paketleriyle birlikte kurulur. Depoyu güncelledikten sonra yeni bir bağımlılık eklenmiş olabilir; `npm install` komutunu tekrar çalıştırın.
 </details>
 
 <details>
@@ -568,20 +631,131 @@ Veriler tarayıcının `localStorage` alanında saklanır. Tarayıcı verilerini
 
 ---
 
-## Kullanım
+## Kullanıcı rehberi
+
+Bu bölüm uygulamayı ilk kez açan bir öğrencinin tüm özellikleri kullanabilmesi için yazılmıştır. Teknik bilgi gerektirmez.
+
+### Hızlı özet
 
 | Yapmak istediğiniz | Nasıl |
 |---|---|
-| Bir haftanın detayını görmek | İlgili hafta kartına tıklayın; öğrenme hedefleri ve görevler açılır. |
-| Görevi tamamlandı işaretlemek | Görevin yanındaki kutuyu işaretleyin. İlerleme göstergesi anında güncellenir. |
-| İşareti geri almak | Aynı kutuyu tekrar tıklayın; görev devam eden duruma döner. |
-| Sadece devam edenleri görmek | Filtre çubuğundan **Devam edenler** seçeneğini seçin. |
-| Belirli bir haftaya odaklanmak | Hafta filtresinden ilgili haftayı seçin. **Tüm haftalar** seçimi filtreyi kaldırır. |
-| Görev aramak | Arama kutusuna anahtar kelime yazın; liste yazdıkça filtrelenir. Kutuyu temizlemek aramayı kaldırır. |
-| Temayı değiştirmek | Sağ üstteki tema düğmesini kullanın; tercihiniz hatırlanır. |
-| İlerlemeyi görmek | Sayfanın üst kısmındaki ilerleme çubuğu tamamlanan/toplam görev sayısını ve yüzdeyi gösterir. |
+| Bir haftanın detayını görmek | Soldaki patikada ilgili hafta durağına tıklayın. |
+| Görevi tamamlandı işaretlemek | Görevin solundaki kutuyu işaretleyin. |
+| İşareti geri almak | Aynı kutuyu tekrar tıklayın. |
+| Sadece devam edenleri görmek | **Görev durumu** altından *Devam edenler* seçeneğini işaretleyin. |
+| Belirli bir haftaya odaklanmak | **Hafta** listesinden ilgili haftayı seçin. |
+| Görev aramak | **Görev ara** kutusuna anahtar kelime yazın. |
+| Temayı değiştirmek | Sağ üstteki **Karanlık tema** düğmesine basın. |
+| İlerlemeyi görmek | Sayfanın üstündeki çubuk ve yüzde her değişiklikte güncellenir. |
 
-Ayrıntılı kullanım anlatımı ve görseller için: [`docs/kullanici-dokumani.pdf`](docs/)
+### 1. Ekranı tanıma
+
+Uygulama tek sayfadan oluşur; ayrı adreslere gitmeniz gerekmez. Ekran üç bölgeye ayrılır:
+
+| Bölge | Nerede | Ne gösterir |
+|---|---|---|
+| **Üst şerit** | Sayfanın en üstü | Uygulama adı, ders adı ve tema düğmesi |
+| **İlerleme bandı** | Üst şeridin altı | Kaç görevi tamamladığınız, yüzde ve dolum çubuğu |
+| **Hafta patikası** | Solda | Haftalar yukarıdan aşağıya bir yol gibi dizilir |
+| **Hafta detayı** | Sağda | Seçtiğiniz haftanın açıklaması, öğrenme hedefleri ve görevleri |
+
+Dar ekranlarda (tablet ve telefon) sağdaki detay bölümü, patikada seçtiğiniz haftanın hemen altında açılır.
+
+### 2. Hafta seçimi
+
+Soldaki patikada her hafta bir **durak** olarak gösterilir. Durakların görünümü size nerede olduğunuzu söyler:
+
+| Görünüm | Anlamı |
+|---|---|
+| Dolu yeşil nokta, düz çizgi | Haftanın bütün görevleri tamamlanmış |
+| Sarı nokta ve **ŞİMDİ** rozeti | Bulunduğunuz hafta — tamamlanmamış ilk hafta |
+| İçi boş nokta, kesikli çizgi | Henüz sıra gelmemiş hafta |
+
+Bir haftaya tıkladığınızda sağ tarafta o haftanın **açıklaması**, **öğrenme hedefleri** ve **görevleri** açılır. Öğrenme hedefleri "Bu haftanın sonunda neyi yapabiliyor olmalıyım?" sorusunun cevabıdır.
+
+Uygulamayı ilk açtığınızda bulunduğunuz hafta kendiliğinden seçili gelir; aramanıza gerek yoktur.
+
+### 3. Görev tamamlama
+
+Her görevin solunda bir onay kutusu vardır.
+
+- **Kutuyu işaretleyin** → görev tamamlandı sayılır, başlığının üstü çizilir ve yanında *Tamamlandı* etiketi belirir.
+- **Tekrar tıklayın** → görev yeniden devam eden duruma döner.
+
+Bir görevi işaretlediğinizde yalnızca o görev etkilenir; diğerleri olduğu gibi kalır. Değişiklik anında kaydedilir, ayrıca bir "kaydet" düğmesine basmanız gerekmez.
+
+Görev başlığına tıklamak da kutuyu işaretler — küçük kutuya nişan almanız gerekmez.
+
+### 4. İlerleme göstergesi
+
+Sayfanın üstündeki band üç bilgi verir:
+
+- **Sayı** — kaç görevi tamamladığınız (örnek: `12 / 30 görev tamamlandı`)
+- **Yüzde** — aynı bilginin oransal hâli (örnek: `%40`)
+- **Çubuk** — yüzdenin görsel karşılığı
+
+**Önemli:** İlerleme her zaman **bütün** görevler üzerinden hesaplanır. Arama yaptığınızda veya filtre uyguladığınızda listede daha az görev görünse bile yüzde değişmez. Böylece ilerlemeniz filtre seçimlerinizden etkilenmiş gibi görünmez.
+
+Yüzde en yakın tam sayıya yuvarlanır (3 görevden 1'i bitmişse `%33`).
+
+### 5. Arama ve filtreleme
+
+Görev listesinin üstünde üç araç vardır. **Üçü aynı anda çalışır** — birbirini iptal etmez, birlikte daraltır.
+
+**Görev ara**
+Yazdığınız kelime hem görev başlıklarında hem de açıklamalarında aranır. Liste siz yazdıkça süzülür, ayrıca bir düğmeye basmanıza gerek yoktur. Kutuyu temizlediğinizde arama kalkar.
+
+Arama büyük/küçük harf ayrımı yapmaz ve **Türkçe harf kurallarını bilir** — "İLERİ" yazarsanız "ileri" içeren görevleri bulur.
+
+**Görev durumu**
+Üç seçenekten biri:
+
+| Seçenek | Gösterir |
+|---|---|
+| *Tümü* | Bütün görevler (varsayılan) |
+| *Devam edenler* | Yalnızca henüz tamamlanmamışlar |
+| *Tamamlanan* | Yalnızca tamamlanmışlar |
+
+*Devam edenler* seçiliyken bir görevi tamamlarsanız, görev listeden hemen çıkar. Bu beklenen davranıştır — görev silinmedi, yalnızca seçtiğiniz filtreye artık uymuyor.
+
+**Hafta**
+Belirli bir haftanın görevlerine odaklanmanızı sağlar. *Tüm haftalar* seçeneği hafta sınırlamasını kaldırır ve bütün görevleri sırayla listeler.
+
+Hafta listesi ile soldaki patika birbirine bağlıdır: patikada bir haftaya tıklarsanız hafta filtresi de o haftaya geçer.
+
+**Hiç sonuç çıkmazsa** listenin yerinde *"Seçilen ölçütlere uygun görev bulunamadı."* yazısı belirir. Bu, bir hata değil; aradığınız ölçütlere uyan görev olmadığı anlamına gelir. Arama kutusunu temizleyip durumu *Tümü* yaparak bütün listeye dönebilirsiniz.
+
+### 6. Tema değiştirme
+
+Sağ üstteki **Karanlık tema** düğmesi aydınlık ve karanlık görünüm arasında geçiş yapar. Düşük ışıkta çalışırken göz yorgunluğunu azaltır.
+
+Tercihiniz saklanır; uygulamayı bir sonraki açışınızda seçtiğiniz tema gelir.
+
+### 7. Kayıtların saklanması
+
+Şu üç tercih tarayıcınızda saklanır ve sayfayı yenilediğinizde korunur:
+
+- İşaretlediğiniz görevler
+- Seçtiğiniz tema
+- Seçtiğiniz durum ve hafta filtresi
+
+Kayıtlar **kullandığınız tarayıcıya özeldir.** Başka bir cihazda veya tarayıcıda açtığınızda görünmezler; hesap sistemi bulunmadığı için senkronizasyon yapılmaz.
+
+Tarayıcı verilerini temizlerseniz veya gizli sekmede çalışırsanız kayıtlar kaybolur. Böyle bir durumda uygulama hata vermez, sıfırdan başlar.
+
+### 8. Klavyeyle kullanım
+
+Fare kullanmadan da tüm işlemler yapılabilir:
+
+| Tuş | İşlev |
+|---|---|
+| `Tab` | Bir sonraki öğeye geçer |
+| `Shift + Tab` | Bir önceki öğeye döner |
+| `Boşluk` | Üzerinde bulunduğunuz onay kutusunu işaretler veya kaldırır |
+| `Enter` | Hafta durağını seçer |
+| `Ok tuşları` | Durum filtresi seçenekleri arasında gezinir |
+
+Odaklandığınız öğenin çevresinde sarı bir çerçeve belirir, nerede olduğunuzu kaybetmezsiniz.
 
 ---
 
@@ -591,18 +765,20 @@ Aşağıdaki tablo, ihtiyaç analizinde belirlenen kullanıcı ihtiyaçlarının
 
 | İhtiyaç | Kullanıcı hikâyesi | Bileşen / modül | Test | Durum |
 |---|---|---|---|:---:|
-| **H-1** Haftalık içeriklere erişim | **US-01** Haftalık ders içeriklerini görüntüleme | `TrailList`, `TrailStop` | — | ⬜ |
-| | **US-02** Öğrenme hedeflerini inceleme | `ObjectiveList` | — | ⬜ |
-| **H-2** Görev takibi | **US-03** Görevleri tamamlandı olarak işaretleme | `TaskItem`, `TaskList` | T1, T2 | ⬜ |
-| **H-3** Görev filtreleme | **US-04** Duruma göre filtreleme | `FilterBar`, `filterTasks` | T3 | ⬜ |
-| | **US-05** Haftaya göre filtreleme | `FilterBar`, `filterTasks` | T3 | ⬜ |
-| **H-4** Görev arama | **US-06** Anahtar kelimeyle arama | `SearchBar`, `filterTasks` | T4 | ⬜ |
-| **H-5** İlerlemeyi görüntüleme | **US-07** Genel ilerlemeyi görüntüleme | `ProgressBar`, `calculateProgress` | T5 | ⬜ |
-| **H-6** Mobil kullanılabilirlik | **US-08** Mobil cihazlardan erişim | `responsive.css` | T7 | ⬜ |
-| **H-7** Kişiselleştirme | **US-09** Tema değiştirme | `ThemeToggle`, `useTheme`, `variables.css` | T8 | ⬜ |
-| **H-8** Verilerin korunması | **US-10** Görev durumlarını koruma | `useLocalStorage` | T6 | ⬜ |
+| **H-1** Haftalık içeriklere erişim | **US-01** Haftalık ders içeriklerini görüntüleme | `WeekList`, `WeekCard` | AC-01.1 – AC-01.6 | ✅ |
+| | **US-02** Öğrenme hedeflerini inceleme | `App` → hafta detayı (`goals-panel`) | AC-02.1 – AC-02.4 | ✅ |
+| **H-2** Görev takibi | **US-03** Görevleri tamamlandı olarak işaretleme | `TaskList`, `TaskItem` | T1, T2 | ✅ |
+| **H-3** Görev filtreleme | **US-04** Duruma göre filtreleme | `TaskList` | T3 | ✅ |
+| | **US-05** Haftaya göre filtreleme | `TaskList`, `App` | T3 | ✅ |
+| **H-4** Görev arama | **US-06** Anahtar kelimeyle arama | `TaskList` | T4 | ✅ |
+| **H-5** İlerlemeyi görüntüleme | **US-07** Genel ilerlemeyi görüntüleme | `App` → ilerleme bandı | T5 | ✅ |
+| **H-6** Mobil kullanılabilirlik | **US-08** Mobil cihazlardan erişim | `responsive.css`, `useMediaQuery` | T7 | ✅ |
+| **H-7** Kişiselleştirme | **US-09** Tema değiştirme | `App`, `useLocalStorage`, `index.css` | T8 | ✅ |
+| **H-8** Verilerin korunması | **US-10** Görev durumlarını koruma | `useLocalStorage` | T6 | ✅ |
 
-<sub>⬜ Beklemede · 🟡 Geliştiriliyor · ✅ Tamamlandı · Durum sütunu geliştirme ilerledikçe güncellenir.</sub>
+<sub>⬜ Beklemede · 🟡 Geliştiriliyor · ✅ Tamamlandı</sub>
+
+Bu eşleşme elle takip edilmez: `npm run traceability` komutu her gereksinimin en az bir geçen testi olduğunu kontrol eder ve eksik madde kalırsa sürekli entegrasyon başarısız olur.
 
 ### Kabul kriterleri — özet
 
@@ -621,22 +797,30 @@ Kriterlerin tam listesi için: [`docs/proje-raporu.pdf`](docs/)
 
 ## Test senaryoları
 
-Kalite doğrulaması, kabul kriterlerinden türetilmiş senaryolarla yapılır. Her senaryo *ön koşul → işlem → beklenen sonuç* yapısındadır ve **Başarılı / Başarısız / Test edilmedi** olarak kaydedilir.
+Kalite doğrulaması, kabul kriterlerinden türetilmiş senaryolarla yapılır. Her senaryo *ön koşul → işlem → beklenen sonuç* yapısındadır. Senaryoların tamamı **Playwright ile otomatik olarak** koşturulur; elle tekrar edilmesi gerekmez.
 
 | # | Test | Ön koşul | İşlem | Beklenen sonuç | Durum |
 |---|---|---|---|---|:---:|
-| **T1** | Görev tamamlama | Tamamlanmamış bir görev var | Kutu işaretlenir | Görev tamamlandı gösterilir, ilerleme güncellenir | ⬜ |
-| **T2** | Durumu geri alma | Tamamlanmış bir görev var | İşaret kaldırılır | Görev devam eden duruma döner, ilerleme doğru güncellenir | ⬜ |
-| **T3** | Filtreleme | Karışık durumda görevler var | "Devam edenler" seçilir | Yalnızca tamamlanmamış görevler listelenir | ⬜ |
-| **T4** | Arama | Farklı başlıklı görevler var | Anahtar kelime girilir | Yalnızca eşleşen görevler görünür | ⬜ |
-| **T5** | İlerleme hesabı | 10 görevin 4'ü tamamlanmış | 1 görev daha tamamlanır | Tamamlanan 5 olur, ilerleme %50 gösterilir | ⬜ |
-| **T6** | Sayfa yenileme | En az bir görev tamamlanmış | Sayfa yenilenir | Kayıtlı durumlar korunur, gösterge tutarlı kalır | ⬜ |
-| **T7** | Mobil görünüm | Uygulama dar ekranda açık | Liste açılır, arama ve işaretleme yapılır | Temel işlevler çalışır, içerikler üst üste binmez | ⬜ |
-| **T8** | Tema değişimi | Varsayılan tema aktif | Diğer tema seçilir | Arayüz temaya geçer, görev durumları değişmez | ⬜ |
+| **T1** | Görev tamamlama | Tamamlanmamış bir görev var | Kutu işaretlenir | Görev tamamlandı gösterilir, ilerleme güncellenir | ✅ |
+| **T2** | Durumu geri alma | Tamamlanmış bir görev var | İşaret kaldırılır | Görev devam eden duruma döner, ilerleme doğru güncellenir | ✅ |
+| **T3** | Filtreleme | Karışık durumda görevler var | "Devam edenler" seçilir | Yalnızca tamamlanmamış görevler listelenir | ✅ |
+| **T4** | Arama | Farklı başlıklı görevler var | Anahtar kelime girilir | Yalnızca eşleşen görevler görünür | ✅ |
+| **T5** | İlerleme hesabı | 10 görevin 4'ü tamamlanmış | 1 görev daha tamamlanır | Tamamlanan 5 olur, ilerleme %50 gösterilir | ✅ |
+| **T6** | Sayfa yenileme | En az bir görev tamamlanmış | Sayfa yenilenir | Kayıtlı durumlar korunur, gösterge tutarlı kalır | ✅ |
+| **T7** | Mobil görünüm | Uygulama dar ekranda açık | Liste açılır, arama ve işaretleme yapılır | Temel işlevler çalışır, içerikler üst üste binmez | ✅ |
+| **T8** | Tema değişimi | Varsayılan tema aktif | Diğer tema seçilir | Arayüz temaya geçer, görev durumları değişmez | ✅ |
 
-**Ek kenar durumu kontrolleri:** boş arama sonucu, görevi olmayan hafta, sıfır toplam görev, bozuk `localStorage` içeriği, çok uzun görev başlığı.
+**Ek kenar durumu kontrolleri:** boş arama sonucu, görevi olmayan hafta, sıfır toplam görev, bozuk `localStorage` içeriği, veride bulunmayan görev kimliği, çok uzun görev başlığı.
 
-Test kayıtları Test/Kalite sorumlusu tarafından tutulur ve proje raporunda sunulur.
+Testler altı tarayıcı/cihaz profilinde (masaüstü Chromium, Firefox, Safari; mobil Chrome, mobil Safari; tablet) koşar. Her pull request'te masaüstü Chromium ve mobil Chrome profilleri otomatik olarak çalıştırılır.
+
+| Belge | İçerik |
+|---|---|
+| [`tests/docs/TEST_RAPORU.md`](tests/docs/TEST_RAPORU.md) | Entegrasyon kontrolü, işlev testleri, bulunan hatalar ve düzeltme kaydı |
+| [`tests/docs/TEST_CONTRACT.md`](tests/docs/TEST_CONTRACT.md) | Testlerin beklediği arayüz sözleşmesi — etiketler, metinler, saklama anahtarları |
+| [`tests/docs/DECISIONS.md`](tests/docs/DECISIONS.md) | Gereksinimlerin tanımlamadığı davranışlar için alınan kararlar |
+
+Testleri kendiniz çalıştırmak için [Kurulum → Komutlar](#komutlar) bölümüne bakın.
 
 ---
 
@@ -646,11 +830,12 @@ Test kayıtları Test/Kalite sorumlusu tarafından tutulur ve proje raporunda su
 
 | Cihaz | Genişlik | Yerleşim |
 |---|---|---|
-| 📱 Mobil | < 640 px | Tek sütun; filtreler alt alta; kartlar tam genişlik |
-| 📲 Tablet | 640 – 1024 px | İki sütunlu kart düzeni; filtre çubuğu yatay |
-| 🖥️ Masaüstü | > 1024 px | Çok sütunlu grid; ilerleme göstergesi üstte sabit |
+| 🖥️ Masaüstü | ≥ 1024 px | İki sütun: solda hafta patikası, sağda hafta detayı. Patika sayfayla birlikte kaymaz, yerinde kalır |
+| 📲 Tablet | 641 – 1023 px | Tek sütun. Hafta detayı, patikada seçilen haftanın hemen altında açılır. Hiçbir yazı 12 px'in altına düşmez |
+| 📱 Mobil | ≤ 640 px | Tek sütun. Ders adı gizlenir, ilerleme bilgisi alt alta dizilir, dokunulabilir alanlar en az 44 px olur |
+| 📱 Dar mobil | ≤ 380 px | Boşluklar ve yazı boyutları bir kademe daraltılır |
 
-Mobil görünümde temel içeriğe ulaşmak için **yatay kaydırma gerekmez**; kartlar, metinler ve düğmeler birbirinin üzerine binmez.
+Mobil görünümde temel içeriğe ulaşmak için **yatay kaydırma gerekmez**; kartlar, metinler ve düğmeler birbirinin üzerine binmez. Bu davranış `mobile-chrome` ve `mobile-safari` test profillerinde her pull request'te doğrulanır.
 
 ### Erişilebilirlik kontrol listesi
 
@@ -766,9 +951,9 @@ Proje dört haftalık bir takvimde yürütülür. Sıralama, ihtiyaç analizinde
 | Hafta | Odak | Kapsam | Durum |
 |:---:|---|---|:---:|
 | **1** | İhtiyaç analizi ve planlama | Kullanıcı ihtiyaçları, kullanıcı hikâyeleri, kabul kriterleri, repo kurulumu, görev dağılımı | ✅ |
-| **2** | Tasarım ve temel işlevler | Tasarım yönü, ekran haritası ve wireframe'ler (✅) · geliştirme ortamı kurulumu · US-01, US-03 | 🟡 |
-| **3** | Kullanım kolaylığı | US-02, US-04, US-05, US-06, US-07, US-10 — öğrenme hedefleri, filtreleme, arama, ilerleme, veri kalıcılığı | ⬜ |
-| **4** | Deneyim, kalite ve teslim | US-08, US-09 — responsive tasarım, tema, erişilebilirlik; test, dokümantasyon, sunum, yayın | ⬜ |
+| **2** | Tasarım ve temel işlevler | Tasarım yönü, ekran haritası ve wireframe'ler · geliştirme ortamı kurulumu · US-01, US-03 | ✅ |
+| **3** | Kullanım kolaylığı | US-02, US-04, US-05, US-06, US-07, US-10 — öğrenme hedefleri, filtreleme, arama, ilerleme, veri kalıcılığı | ✅ |
+| **4** | Deneyim, kalite ve teslim | US-08, US-09 — responsive tasarım, tema, erişilebilirlik (✅) · test (✅) · dokümantasyon, sunum, yayın | 🟡 |
 
 ### Kapsam dışı / gelecek fikirler
 
@@ -792,9 +977,9 @@ Kapsam gereği bilinçli olarak dışarıda bırakılan ve kullanıcıyı etkile
 | **Tarayıcı verisi silinirse kayıt gider** | `localStorage` temizlendiğinde işaretlemeler ve tema tercihi sıfırlanır. | Sunucu tarafı kalıcılık kapsam dışıdır. |
 | **İçerik yönetimi arayüzü yok** | Ders içerikleri `courses.json` üzerinden güncellenir; arayüzden ekleme/düzenleme yapılamaz. | Teknik dokümanda ders sorumlusu için yönetim paneli zorunlu tutulmamıştır. |
 | **Tek dil** | Arayüz yalnızca Türkçedir. | Çoklu dil desteği gereksinimler arasında yer almamaktadır. |
-| **Otomatik test yok** | Doğrulama, tanımlı test senaryolarının elle yürütülmesiyle yapılır. | Proje kapsamında otomatik test altyapısı beklenmemektedir. |
+| **Giriş ve kayıt ekranı yok** | Kullanıcı hesabı oluşturulamaz; uygulama doğrudan panoyla açılır. | Sunucu tarafı olmadan yapılan bir giriş gerçek bir güvenlik sağlamaz. Hesap yönetimi sonraki projeye bırakılmıştır. |
 
-<!-- TODO: Geliştirme tamamlandığında bu liste gerçek durumla ve varsa çözülememiş hatalarla güncellenecek -->
+Kullanılabilirliğe dair öznel maddeler (içeriğin "anlaşılır" sunulması gibi) otomatik olarak ölçülemediği için elle değerlendirilir; ayrıntısı [`tests/docs/TRACEABILITY.md`](tests/docs/) dosyasındadır.
 
 ---
 
@@ -802,27 +987,30 @@ Kapsam gereği bilinçli olarak dışarıda bırakılan ve kullanıcıyı etkile
 
 | İçerik | Konum |
 |---|---|
-| Kaynak kod | [`src/`](src/) |
+| Kaynak kod | [`etkilesimli-ders-panosu/src/`](etkilesimli-ders-panosu/src/) |
 | **Tasarım belgesi** | [`docs/tasarim/Tasarim-ve-Arayuz-Taslagi.pdf`](docs/tasarim/Tasarim-ve-Arayuz-Taslagi.pdf) |
 | Tasarım görselleri | [`docs/tasarim/img/`](docs/tasarim/img/) |
+| Kurulum talimatları ve kullanıcı rehberi | Bu dosya — [Kurulum](#kurulum) ve [Kullanıcı rehberi](#kullanıcı-rehberi) bölümleri |
+| Kabul testleri | [`tests/e2e/`](tests/e2e/) |
+| Test raporu | [`tests/docs/TEST_RAPORU.md`](tests/docs/TEST_RAPORU.md) |
 | Proje raporu | [`docs/proje-raporu.pdf`](docs/) |
-| Kullanıcı dokümantasyonu | [`docs/kullanici-dokumani.pdf`](docs/) |
-| Sunum dosyası | [`presentation/`](presentation/) |
-| Ekran görüntüleri | [`docs/screenshots/`](docs/) |
+| Sunum dosyası | [`docs/`](docs/) |
 | Canlı demo | [Demo](#demo) bölümü |
 | Issue ve commit geçmişi | [Issues](https://github.com/senacakmak6161/yazilim-gelistirme-proje1/issues) · [Commits](https://github.com/senacakmak6161/yazilim-gelistirme-proje1/commits) |
 
 ### Teslim öncesi kontrol listesi
 
-- [ ] Uygulama temiz bir ortamda README adımlarıyla kurulup çalıştırılabiliyor
-- [ ] Tüm zorunlu işlevler çalışıyor ve test senaryoları doğrulandı
-- [ ] Mobil görünüm işlevsel
+- [x] Uygulama temiz bir ortamda README adımlarıyla kurulup çalıştırılabiliyor
+- [x] Tüm zorunlu işlevler çalışıyor ve test senaryoları doğrulandı
+- [x] Mobil görünüm işlevsel
+- [x] Kurulum talimatları ve kullanıcı rehberi README'de eksiksiz
+- [x] Dokümantasyon uygulamanın son sürümüyle uyumlu
 - [ ] Her ekip üyesinin bireysel katkısı commit geçmişinde görülebiliyor
 - [ ] Issue kayıtları iş bölümünü yansıtıyor
-- [ ] Proje raporu, kullanıcı dokümanı ve sunum hazır
+- [ ] Proje raporu ve sunum hazır
 - [ ] Demo senaryoları önceden test edildi
 - [ ] Ekran görüntüleri ve demo bağlantısı README'de güncel
-- [ ] Depoda API anahtarı, parola veya gizli bilgi bulunmuyor
+- [x] Depoda API anahtarı, parola veya gizli bilgi bulunmuyor
 
 ---
 
@@ -835,14 +1023,22 @@ Bu depo bir ders projesi kapsamında geliştirilmektedir ve katkılar ekip üyel
 3. Uygun önekle yeni bir dal açılır: `git checkout -b feature/US-07-progress-bar`
 4. Değişiklikler [commit kuralına](#commit-mesajı-kuralı) uygun şekilde işlenir.
 5. Pull request açılır, en az bir ekip üyesi inceler.
-6. İlgili test senaryosu doğrulandıktan sonra `main` dalına birleştirilir.
+6. Sürekli entegrasyon kontrolleri yeşile dönünce `main` dalına birleştirilir.
 
 **Kod standartları**
 
 - Bileşen dosyaları `PascalCase`, yardımcı fonksiyonlar ve hook'lar `camelCase` adlandırılır.
 - Bir bileşen tek bir sorumluluk taşır; tekrar eden yapı ayrı bileşene çıkarılır.
-- Renk değerleri doğrudan yazılmaz; `variables.css` içindeki CSS değişkenleri kullanılır.
+- Renk değerleri doğrudan yazılmaz; `index.css` içinde tanımlı CSS değişkenleri kullanılır.
+- Arayüzle ilgili değişikliklerde [`tests/docs/TEST_CONTRACT.md`](tests/docs/TEST_CONTRACT.md) gözden geçirilir; testlerin beklediği etiket ve metinler orada tanımlıdır.
 - Dış kaynaklardan alınan kod, anlaşılmadan projeye eklenmez.
+
+**Pull request açmadan önce**
+
+```bash
+cd etkilesimli-ders-panosu && npm run lint && npm run build
+cd ../tests && APP_DIR=../etkilesimli-ders-panosu npx playwright test --project=chromium
+```
 
 ---
 
