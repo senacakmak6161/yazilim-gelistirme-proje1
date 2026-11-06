@@ -41,7 +41,8 @@ Kaynak: tasarım ve arayüz taslağı (`docs/tasarim/`, ekran E0, E1, E8) ve `ma
 | D1 | Başlangıç durumu | Açılışta bulunulan hafta seçilidir; hedef paneli o haftanın hedeflerini gösterir | US-02 |
 | K13 | Bulunulan ve tamamlanan hafta | Tüm görevleri tamamlanan hafta tamamlanmış sayılır. Bulunulan hafta ("Şimdi") tamamlanmamış ilk haftadır; kayıt yokken ilk haftadır | US-01, US-07 |
 | D2 | Hedeflerin yeri | Tek hedef paneli (`goals-panel`), seçilen haftaya göre dolar | US-01, US-02 |
-| A5 | Görev listesi | Tek görev listesi; yalnızca seçili haftanın görevlerini gösterir. Testler bir göreve ulaşmak için önce haftasını seçer | US-01, US-03, US-07, US-10 |
+| A5 | Görev listesi | Tek görev listesi; patikada hafta seçilince hafta filtresi o haftaya geçer ve liste yalnızca o haftanın görevlerini gösterir. Testler bir göreve ulaşmak için önce haftasını seçer | US-01, US-03, US-07, US-10 |
+| A1 ↔ D1 | Açılış | İkisi birlikte geçerli: kayıtlı filtre yokken görev listesi tüm haftaları hafta hafta gruplayarak gösterir (A1); hafta detayı ve hedef paneli bulunulan haftayı gösterir (D1). 06.11.2026'da uygulamada doğrulandı (PR #23, #30) | US-02, US-04, US-05, US-06 |
 | K12 | Hafta kartı içeriği | Kartta iki haneli hafta etiketi (`Hafta 01`), başlık ve görev sayacı bulunur; hafta açıklaması seçilince hafta detayında (`main`) gösterilir. Kartın erişilebilir adı görünen metninden oluşur | US-01, NFR-2 |
 | K14 | Dar ekran yerleşimi | 1023 px ve altında hafta detayı patikada seçilen haftanın altında açılır; 1024 px ve üstünde sağ sütundadır (tasarım §11) | US-08 |
 
@@ -49,7 +50,7 @@ Kaynak: tasarım ve arayüz taslağı (`docs/tasarim/`, ekran E0, E1, E8) ve `ma
 
 | Kod | Konu | Etkilenen testler |
 |---|---|---|
-| A1 ↔ D1 | Hafta filtresi eklendiğinde açılışta tüm görevler mi (A1), yoksa yalnızca bulunulan haftanın görevleri mi (D1) listelenecek | US-04, US-05, US-06, filtre kalıcılığı |
+| K14 | PR #30 ile patika yatay şeride dönüştü; dar ekranda hafta detayı seçilen haftanın değil, patikanın altında açılıyor. Tasarım §11 ve sözleşme güncellenecek mi, yoksa K14 geri mi getirilecek (ekip lideri kararı). Bu davranışı doğrulayan otomatik test yok | Yok (tasarım karşılaştırması) |
 
 ## Onay bekleyen varsayımlar
 
@@ -66,4 +67,4 @@ Testler bu varsayımlarla yazıldı. Ekip farklı karar verirse ilgili testler g
 
 ## Geliştiriciye iletilecek maddeler
 
-Ayrıntı: [TEST_CONTRACT.md](TEST_CONTRACT.md). Durum: iletilmedi.
+Ayrıntı: [TEST_CONTRACT.md](TEST_CONTRACT.md). Durum: iletildi ve uygulandı (PR #20–#31); 06.11.2026 koşusunda sözleşmenin tüm maddeleri geçti.
