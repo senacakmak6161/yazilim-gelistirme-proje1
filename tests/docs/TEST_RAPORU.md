@@ -14,7 +14,7 @@
 - Proje kapsamındaki tüm özellikler kodda: hafta kartları, görev listesi ve durumları, ilerleme göstergesi, arama, hafta/durum filtresi, tema, localStorage kalıcılığı, mobil görünüm.
 - Son koşu: 127 test × 6 profil = 762 koşu; **665 başarılı, 0 başarısız**, 97 profile özgü test bilinçli olarak atlandı. Yerelde yeniden deneme kapalı (`retries=0`), kararsız test yok.
 - İzlenebilirlik kapısı (`npm run traceability:strict`): çıkış kodu 0. 71 otomatik maddenin 70'i Başarılı, NFR-5 (kod okunurluğu) E2E kapsamı dışında; elle yapılacak DS-1…DS-4 bekliyor.
-- 06.11.2026 turunda 6 bulgu kaydedildi (B10–B15): 5'i testlerden, 1'i uygulamadan kaynaklı; hepsi düzeltildi ve tekrar koşularıyla doğrulandı. Test takımı gözden geçirildi: birebir aynı işi yapan 10 test birleştirildi, README'de yazan ama test edilmeyen 7 davranış için kontrol eklendi (B14, B15). Önceki turdaki 9 bulgu (B1–B9) kapalı.
+- 06.11.2026 turunda 7 bulgu kaydedildi (B10–B16): 6'sı testlerden, 1'i uygulamadan kaynaklı; hepsi düzeltildi ve tekrar koşularıyla doğrulandı. Test takımı gözden geçirildi: birebir aynı işi yapan 10 test birleştirildi, README'de yazan ama test edilmeyen 7 davranış için kontrol eklendi (B14, B15). Önceki turdaki 9 bulgu (B1–B9) kapalı.
 - Açık P1/P2 hata yok. Açık kalan konular bölüm 7'de: elle yapılacak kullanılabilirlik kontrolleri (DS-1…DS-4) ve yeni arayüze göre güncellenmesi gereken dokümanlar.
 
 ## 2. Entegrasyon kontrolü
@@ -71,6 +71,7 @@ Atlanan 97 koşu bilinçlidir: axe-core taraması (sonucu motordan bağımsız) 
 | B13 | Bir test hiçbir kabul kriterine bağlı değil | `tests/README.md`: her test doğruladığı kriterin etiketini taşır | "Şimdi etiketi sonraki haftaya geçer" testinde yalnızca hikâye etiketleri vardı; izlenebilirlik raporu "gereksinime bağlı olmayan test" uyarısı veriyordu | Düşük | Test | `npm run traceability` |
 | B14 | Birebir aynı işi yapan testler | Her davranış tek testte doğrulanır; test birden çok kritere bağlanabilir | PDF aynı davranışı hem hikâye kriterlerinde hem T1–T8'de tanımladığı için 10 test, ilgili T senaryosuyla aynı veri, işlem ve kontrolü tekrarlıyordu (ör. AC-03.6, AC-07.3 ve T1) | Düşük | Test | Test takımı incelemesi |
 | B15 | README'de tanımlı 7 davranış test edilmiyordu | README'deki her kullanıcı davranışının bir testi vardır | Başlığa tıklayarak işaretleme, üstü çizili başlık, arama + durum + hafta filtresinin üçü birlikte, patika ile hafta filtresinin bağı, hafta kutlaması, depolama kullanılamazken çalışma, özel çizilmiş görev kutusu ve durum filtresinde odak göstergesi | Orta | Test | README ile test eşleştirmesi |
+| B16 | CI'da erişilebilirlik kontrast testi karanlık temaya geçişte düştü (PR #32, ikinci koşu) | Tarama ekranın son hâlini ölçer | axe, tema değişimindeki 620 ms'lik dairesel geçiş ve renk geçişleri sürerken çalışıyordu; geçişin ilk yarısında "Şimdi" kartı ve durum filtresi etiketleri ara renkleriyle ölçülüp kontrast ihlali sayılıyordu. Yerelde makine hızlı olduğu için görünmüyordu | Düşük | Test | CI |
 
 | Hata | Dosya | Düzeltme | Doğrulama |
 |---|---|---|---|
@@ -86,6 +87,7 @@ Atlanan 97 koşu bilinçlidir: axe-core taraması (sonucu motordan bağımsız) 
 | B13 | `tests/e2e/specs/us01-weekly-content.spec.ts` | Teste doğruladığı kriter olan `@AC-07.3` etiketi eklendi; testin adımları değişmedi | İzlenebilirlik uyarısı kalktı |
 | B14 | `acceptance-scenarios`, `us03`, `us04`, `us06`, `us07`, `us09`, `us10` | 10 tekrar silindi; T1, T2, T3, T4, T5, T6, T8 silinenlerin kriter etiketlerini aldı. T6 silinenlerin tüm kontrollerini kapsıyor ve yenileme sonrası çubuğu da denetliyor; T8 tema değişince kayıtlı görev durumlarının korunduğunu da denetliyor | Silinen hiçbir testin kriteri karşılıksız kalmadı |
 | B15 | `us01`, `us03`, `us05`, `resilience`, `keyboard`, `fixtures`, `DashboardPage.ts`, `contract.ts`, `requirements.json` | 7 yeni test, 2 testte ek kontrol (üstü çizili başlık, kutlama). Depolama durumu `storageAccess` fixture seçeneğiyle veriliyor (`blocked`, `read-only`); README §7 için gereksinim listesine VM-3 eklendi. Odak, özel çizilmiş kontrollerin çevresinde görüntü karşılaştırmasıyla denetleniyor. 130 test 127'ye indi | Yeni ve güçlendirilen her kontrol, tarayıcıya giden kod bilerek bozulduğunda düşüyor (14 mutasyonun 14'ü). Yeni testler 6 profilde 3–5 tekrarda kararsızlık göstermedi |
+| B16 | `tests/e2e/support/accessibility.ts` | Her axe taramasından önce sonlu animasyonların bitmesi bekleniyor; sonsuz dekoratif ve kaydırmaya bağlı animasyonlar beklenmiyor. Uygulamanın son hâldeki renkleri değişmedi | Animasyonlar 10 kat yavaşlatılınca eski yöntem CI'daki ihlali aynı öğelerde üretiyor, yeni yöntem temiz. Erişilebilirlik 10 tekrar: 50 / 50. CI ayarlarıyla (2 işçi, chromium + mobile-chrome): 228 / 228, izlenebilirlik geçti |
 
 ## 6. Keşif testi (TEST_PLAN Ek B)
 
@@ -125,7 +127,7 @@ Atlanan 97 koşu bilinçlidir: axe-core taraması (sonucu motordan bağımsız) 
 | Arama, filtreleme ve tema | ✅ |
 | localStorage ile veri kalıcılığı | ✅ |
 | Mobil görünüm | ✅ |
-| Tespit edilen hataların giderilmesi | ✅ B10–B15 düzeltildi; dokümantasyon konuları bölüm 7'de |
+| Tespit edilen hataların giderilmesi | ✅ B10–B16 düzeltildi; dokümantasyon konuları bölüm 7'de |
 
 ## 9. Çalıştırma
 
