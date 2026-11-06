@@ -12,6 +12,7 @@ type Options = {
   seededCompleted: string[];            // Test başında tamamlanmış sayılacak görev id'leri
   seededTheme: Theme | null;            // Test başında kayıtlı tema
   rawStorage: Partial<Record<StorageKey, string>>;
+  storageAccess: 'normal' | 'blocked' | 'read-only';
   allowPageErrors: boolean;             // Hata beklenen testlerde true
   allowConsoleErrors: boolean;
   mockCourseData: boolean;
@@ -32,6 +33,7 @@ export const test = base.extend<Options & Fixtures>({
   seededCompleted: [[], { option: true }],
   seededTheme: [null, { option: true }],
   rawStorage: [{}, { option: true }],
+  storageAccess: ['normal', { option: true }],
   allowPageErrors: [false, { option: true }],
   allowConsoleErrors: [false, { option: true }],
   mockCourseData: [true, { option: true }],
@@ -60,7 +62,7 @@ export const test = base.extend<Options & Fixtures>({
   ],
 
   dashboard: async (
-    { page, headless, courseData, seededCompleted, seededTheme, rawStorage, mockCourseData },
+    { page, headless, courseData, seededCompleted, seededTheme, rawStorage, storageAccess, mockCourseData },
     use,
   ) => {
     // 1) İçerik isteğini yakala ve test verisini döndür (gerçek dosyaya gidilmez).
@@ -96,6 +98,23 @@ export const test = base.extend<Options & Fixtures>({
         }
         sessionStorage.setItem(seededFlag, '1');
       }, initial);
+    }
+
+    if (storageAccess !== 'normal') {
+      await page.addInitScript((mode: 'blocked' | 'read-only') => {
+        if (mode === 'blocked') {
+          Object.defineProperty(window, 'localStorage', {
+            configurable: true,
+            get() {
+              throw new DOMException('Depolama erişimi engellendi', 'SecurityError');
+            },
+          });
+          return;
+        }
+        Storage.prototype.setItem = () => {
+          throw new DOMException('Depolama kotası dolu', 'QuotaExceededError');
+        };
+      }, storageAccess);
     }
 
     // 3) Sayfayı aç ve testi çalıştır.

@@ -7,7 +7,7 @@ const course = loadCourse('course.default.json');
 
 test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
   test('T1 Görev tamamlama: görev tamamlandı gösterilir ve ilerleme güncellenir',
-    { tag: ['@T1', '@US-03', '@P1'] },
+    { tag: ['@T1', '@US-03', '@US-07', '@AC-03.2', '@AC-03.6', '@AC-07.3', '@P1'] },
     async ({ dashboard }) => {
       const title = titleOf(course, 'w1-t1');
 
@@ -32,7 +32,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
     test.use({ seededCompleted: ['w1-t1'] });
 
     test('T2 Görev durumunu geri alma: görev tamamlanmamış duruma döner ve ilerleme güncellenir',
-      { tag: ['@T2', '@US-03', '@P1'] },
+      { tag: ['@T2', '@US-03', '@AC-03.4', '@AC-03.6', '@P1'] },
       async ({ dashboard }) => {
         const title = titleOf(course, 'w1-t1');
 
@@ -59,7 +59,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
     test.use({ seededCompleted: ['w1-t1', 'w2-t2', 'w3-t3'] });
 
     test('T3 Görev filtreleme: devam eden filtresinde yalnızca tamamlanmamış görevler gösterilir',
-      { tag: ['@T3', '@US-04', '@P2'] },
+      { tag: ['@T3', '@US-04', '@AC-04.3', '@P2'] },
       async ({ dashboard }) => {
         await test.step('Ön koşul: tamamlanmış ve tamamlanmamış görevler bulunur', async () => {
           await expect(dashboard.taskItems).toHaveCount(10);
@@ -79,7 +79,10 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
   });
 
   test('T4 Görev arama: eşleşen görevler görüntülenir, eşleşmeyenler sonuçlarda yer almaz',
-    { tag: ['@T4', '@US-06', '@P2'] },
+    {
+      tag: ['@T4', '@US-06', '@AC-06.2', '@P2'],
+      annotation: { type: 'kaynak', description: 'A2 (README): arama başlık ve açıklamada yapılır' },
+    },
     async ({ dashboard }) => {
       await test.step('Ön koşul: farklı başlıklara sahip görevler bulunur', async () => {
         await expect(dashboard.taskItems).toHaveCount(10);
@@ -101,7 +104,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
     test.use({ seededCompleted: ['w1-t1', 'w1-t2', 'w1-t3', 'w2-t1'] });
 
     test('T5 İlerleme hesaplama: bir görev daha tamamlanınca 5 ve %50 gösterilir',
-      { tag: ['@T5', '@US-07', '@P1'] },
+      { tag: ['@T5', '@US-07', '@AC-07.5', '@P1'] },
       async ({ dashboard }) => {
         await test.step('Ön koşul: 10 görevden 4\'ü tamamlanmıştır', async () => {
           await expect(dashboard.progressText).toHaveText(fmt.progressText(4, 10));
@@ -122,7 +125,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
   });
 
   test('T6 Sayfa yenileme: kaydedilen görev durumları korunur, liste ve ilerleme tutarlıdır',
-    { tag: ['@T6', '@US-10', '@P2'] },
+    { tag: ['@T6', '@US-10', '@AC-10.3', '@AC-10.4', '@P2'] },
     async ({ dashboard }) => {
       await test.step('Ön koşul: bir veya daha fazla görev tamamlanmıştır', async () => {
         await dashboard.openWeekOf(titleOf(course, 'w1-t2'));
@@ -130,7 +133,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
         await dashboard.openWeekOf(titleOf(course, 'w3-t1'));
         await dashboard.toggleTask(titleOf(course, 'w3-t1'));
         await expect(dashboard.progressText).toHaveText(fmt.progressText(2, 10));
-        await expect.poll(async () => (await dashboard.storedCompletedIds()).length).toBe(2);
+        await expect.poll(async () => (await dashboard.storedCompletedIds()).sort()).toEqual(['w1-t2', 'w3-t1']);
       });
 
       await test.step('İşlem: kullanıcı sayfayı yeniler', async () => {
@@ -139,6 +142,9 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
 
       await test.step('Beklenen: görev durumları korunur, liste ve ilerleme kayıtlı durumla tutarlıdır', async () => {
         await expect(dashboard.progressText).toHaveText(fmt.progressText(2, 10));
+        await expect(dashboard.progressPercent).toHaveText(fmt.progressPercent(20));
+        await expect(dashboard.progressBar).toHaveAttribute('aria-valuenow', '20');
+        await expect.poll(() => dashboard.progressFillRatio()).toBeCloseTo(0.2, 1);
         expect(await dashboard.allCheckedStates()).toEqual(completionMap(course, ['w1-t2', 'w3-t1']));
       });
     });
@@ -181,7 +187,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
     test.use({ seededCompleted: ['w1-t1', 'w2-t2'] });
 
     test('T8 Tema değiştirme: arayüz seçilen temaya geçer, görev durumları değişmez',
-      { tag: ['@T8', '@US-09', '@P3'] },
+      { tag: ['@T8', '@US-09', '@AC-09.4', '@P3'] },
       async ({ dashboard }) => {
         const before = await test.step('Ön koşul: uygulama varsayılan temada açıktır', async () => {
           await expect(dashboard.themeToggle).toHaveAttribute('aria-pressed', 'false');
@@ -200,6 +206,7 @@ test.describe('Kabul test senaryoları (PDF Tablo 3)', () => {
             .toBeLessThan(relativeLuminance(before.colors.background));
           await expect.poll(() => dashboard.checkedStates()).toEqual(before.states);
           await expect(dashboard.progressText).toHaveText(fmt.progressText(2, 10));
+          await expect.poll(async () => (await dashboard.storedCompletedIds()).sort()).toEqual(['w1-t1', 'w2-t2']);
         });
       });
   });

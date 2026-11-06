@@ -12,6 +12,21 @@ const focusTargets = [
   { name: 'tema düğmesi', pick: (d: DashboardPage) => d.themeToggle },
 ] as const;
 
+const drawnControlTargets = [
+  {
+    name: 'görev kutusu',
+    control: (d: DashboardPage) => d.taskCheckbox(titleOf(course, 'w1-t1')),
+    area: (d: DashboardPage) => d.taskCheckbox(titleOf(course, 'w1-t1')),
+    padding: 6,
+  },
+  {
+    name: 'durum filtresi',
+    control: (d: DashboardPage) => d.statusRadio(STATUS.all),
+    area: (d: DashboardPage) => d.statusGroup,
+    padding: 4,
+  },
+] as const;
+
 test.describe('Klavye ile kullanım', () => {
   test.skip(({ isMobile }) => isMobile, 'Dokunmatik cihaz profillerinde fiziksel klavye varsayılmaz');
 
@@ -105,6 +120,18 @@ test.describe('Klavye ile kullanım', () => {
         await expect(element).toBeFocused();
 
         await expect.poll(() => dashboard.focusStyle(element)).not.toBe(unfocused);
+      });
+  }
+
+  for (const target of drawnControlTargets) {
+    test(`${target.name} klavyeyle odaklanınca çevresinde görünür bir odak göstergesi belirir`,
+      {
+        tag: ['@NFR-3', '@P2'],
+        annotation: { type: 'kaynak', description: 'README Kullanıcı rehberi §8: odaklanılan öğenin çevresinde çerçeve belirir; kontrol özel çizildiği için görüntü karşılaştırılır' },
+      },
+      async ({ dashboard }) => {
+        const changed = await dashboard.focusIndicatorChanges(target.control(dashboard), target.area(dashboard), target.padding);
+        expect(changed, 'kontrolün çevresinde odaklıyken ve odaksızken görüntü aynı').toBe(true);
       });
   }
 });

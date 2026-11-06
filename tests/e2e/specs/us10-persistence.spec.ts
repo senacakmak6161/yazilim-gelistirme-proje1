@@ -28,22 +28,6 @@ test.describe('US-10 Görev durumlarını koruma', () => {
       await expect(dashboard.taskCheckbox(titleOf(course, 'w1-t3'))).toBeChecked();
     });
 
-  test('birden fazla görevin işaretlemesi ayrı ayrı korunur',
-    { tag: ['@US-10', '@AC-10.3', '@P2'] },
-    async ({ dashboard }) => {
-      await dashboard.openWeekOf(titleOf(course, 'w1-t2'));
-      await dashboard.toggleTask(titleOf(course, 'w1-t2'));
-      await dashboard.openWeekOf(titleOf(course, 'w3-t1'));
-      await dashboard.toggleTask(titleOf(course, 'w3-t1'));
-      await expect.poll(async () => (await dashboard.storedCompletedIds()).sort()).toEqual(['w1-t2', 'w3-t1']);
-
-      await dashboard.reload();
-
-      await dashboard.openWeekOf(titleOf(course, 'w3-t1'));
-      await expect(dashboard.taskCheckbox(titleOf(course, 'w3-t1'))).toBeChecked();
-      expect(await dashboard.allCheckedStates()).toEqual(completionMap(course, ['w1-t2', 'w3-t1']));
-    });
-
   test.describe('önceden kaydedilmiş görevler varken', () => {
     test.use({ seededCompleted: ['w1-t1', 'w2-t1'] });
 
@@ -70,23 +54,6 @@ test.describe('US-10 Görev durumlarını koruma', () => {
         await expect(dashboard.progressText).toHaveText(fmt.progressText(2, 10));
       });
   });
-
-  test('sayfa yenilendiğinde ilerleme göstergesi kayıtlı durumla tutarlıdır',
-    { tag: ['@US-10', '@AC-10.4', '@P2'] },
-    async ({ dashboard }) => {
-      await dashboard.openWeekOf(titleOf(course, 'w1-t2'));
-      await dashboard.toggleTask(titleOf(course, 'w1-t2'));
-      await dashboard.openWeekOf(titleOf(course, 'w3-t1'));
-      await dashboard.toggleTask(titleOf(course, 'w3-t1'));
-      await expect(dashboard.progressText).toHaveText(fmt.progressText(2, 10));
-      await expect.poll(async () => (await dashboard.storedCompletedIds()).length).toBe(2);
-
-      await dashboard.reload();
-
-      await expect(dashboard.progressText).toHaveText(fmt.progressText(2, 10));
-      await expect(dashboard.progressPercent).toHaveText(fmt.progressPercent(20));
-      await expect(dashboard.progressBar).toHaveAttribute('aria-valuenow', '20');
-    });
 
   test.describe('kayıt bozuksa', () => {
     test.use({ rawStorage: { tasks: '{bozuk-json' } });

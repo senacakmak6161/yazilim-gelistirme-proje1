@@ -4,6 +4,7 @@ import { loadCourse, tasksOfWeek, weekByNumber } from '../support/data';
 
 // Beklenen değerler, fixture'ın uygulamaya verdiği veriyle aynı dosyadan okunur.
 const course = loadCourse('course.default.json');
+const CELEBRATION_SCENE_MS = 10_000;
 
 test.describe('US-01 Haftalık ders içeriklerini görüntüleme', () => {
   test('uygulama açılınca tüm hafta kartları görüntülenir',
@@ -81,10 +82,13 @@ test.describe('US-01 Haftalık ders içeriklerini görüntüleme', () => {
       await expect(dashboard.weekCard(1)).toContainText('0 / 3 görev');
     });
 
-  test('bir haftanın tüm görevleri tamamlanınca "şimdi" etiketi sonraki haftaya geçer',
+  test('bir haftanın tüm görevleri tamamlanınca "şimdi" etiketi sonraki haftaya geçer ve hafta kutlaması açılır',
     {
       tag: ['@US-01', '@US-07', '@AC-07.3', '@P1'],
-      annotation: { type: 'karar', description: 'K13: bulunulan hafta tamamlanmamış ilk haftadır' },
+      annotation: [
+        { type: 'karar', description: 'K13: bulunulan hafta tamamlanmamış ilk haftadır' },
+        { type: 'kaynak', description: 'README Hafta tamamlama: haftanın son görevi işaretlenince kutlama açılır' },
+      ],
     },
     async ({ dashboard }) => {
       for (const task of tasksOfWeek(course, 1)) {
@@ -94,6 +98,14 @@ test.describe('US-01 Haftalık ders içeriklerini görüntüleme', () => {
       await expect(dashboard.weekCard(1)).toContainText('3 / 3 görev');
       await expect(dashboard.nowBadge(1)).toBeHidden();
       await expect(dashboard.nowBadge(2)).toBeVisible();
+
+      await test.step('kutlama açılır, ilerleme yerine oturur, kapat düğmesiyle kapanır', async () => {
+        await expect(dashboard.celebration(1)).toBeVisible({ timeout: CELEBRATION_SCENE_MS });
+        await expect(dashboard.progressText).toHaveText(fmt.progressText(3, 10));
+        await dashboard.closeCelebration(1);
+        await expect(dashboard.celebration(1)).toBeHidden();
+        await expect(dashboard.progressText).toHaveText(fmt.progressText(3, 10));
+      });
     });
 
   test('içerik bulunmayan hafta için bilgilendirme gösterilir',

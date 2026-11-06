@@ -82,7 +82,7 @@ tests/
 │   ├── fixtures/     dashboard fixture'ı ve test seçenekleri
 │   ├── support/      Sözleşme, veri yükleyici, yerleşim/renk/erişilebilirlik yardımcıları
 │   └── data/         Test verisi (uygulama verisinden bağımsız)
-├── traceability/     Gereksinim listesi (74 madde) ve elle kontrol kayıtları
+├── traceability/     Gereksinim listesi (75 madde) ve elle kontrol kayıtları
 ├── scripts/          İzlenebilirlik raporu
 ├── docs/             Test planı, sözleşme, kararlar
 └── playwright.config.ts
@@ -98,6 +98,7 @@ tests/
 | `seededCompleted` | Başlangıçta tamamlanmış görev kimlikleri |
 | `seededTheme` | Başlangıçta kayıtlı tema |
 | `rawStorage` | Ham localStorage değerleri, ör. `{ tasks: '{bozuk' }` (`tasks`, `theme`, `filters`) |
+| `storageAccess` | `normal` (varsayılan), `blocked` (localStorage'a erişim hata verir) veya `read-only` (okunur, yazma hata verir) |
 | `mockCourseData` | `false` ise uygulamanın kendi verisi kullanılır |
 | `allowConsoleErrors` | Konsol hatası beklenen testlerde `true`; yakalanmamış JS hatası yine testi düşürür (gerekçe `annotation` ile yazılır) |
 | `allowPageErrors` | Tüm sayfa hatası denetimini kapatır; yalnızca zorunlu durumlarda ve gerekçesiyle |

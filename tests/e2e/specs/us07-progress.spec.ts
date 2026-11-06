@@ -40,17 +40,6 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
         await expect(dashboard.progressBar).toHaveAttribute('aria-valuenow', '60');
         await expect.poll(() => dashboard.progressFillRatio()).toBeCloseTo(0.6, 1);
       });
-
-    test('görev tamamlanınca çubuk sayısal göstergeyle birlikte güncellenir',
-      { tag: ['@US-07', '@AC-07.5', '@P1'] },
-      async ({ dashboard }) => {
-        await dashboard.openWeekOf(titleOf(course, 'w3-t1'));
-        await dashboard.toggleTask(titleOf(course, 'w3-t1'));
-
-        await expect(dashboard.progressPercent).toHaveText(fmt.progressPercent(70));
-        await expect(dashboard.progressBar).toHaveAttribute('aria-valuenow', '70');
-        await expect.poll(() => dashboard.progressFillRatio()).toBeCloseTo(0.7, 1);
-      });
   });
 
   test.describe('tüm görevler tamamlanmışken', () => {
@@ -95,18 +84,6 @@ test.describe('US-07 Genel ilerlemeyi görüntüleme', () => {
         });
     });
   });
-
-  test('yeni görev tamamlanınca ilerleme göstergesi güncellenir',
-    { tag: ['@US-07', '@AC-07.3', '@P1'] },
-    async ({ dashboard }) => {
-      await expect(dashboard.progressText).toHaveText(fmt.progressText(0, 10));
-
-      await dashboard.openWeekOf(titleOf(course, 'w1-t1'));
-      await dashboard.toggleTask(titleOf(course, 'w1-t1'));
-
-      await expect(dashboard.progressText).toHaveText(fmt.progressText(1, 10));
-      await expect(dashboard.progressPercent).toHaveText(fmt.progressPercent(10));
-    });
 
   test.describe('iki görev tamamlanmışken', () => {
     test.use({ seededCompleted: ['w1-t1', 'w1-t2'] });

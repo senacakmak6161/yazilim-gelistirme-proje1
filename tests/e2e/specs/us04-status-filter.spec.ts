@@ -30,14 +30,6 @@ test.describe('US-04 Görevleri durumlarına göre filtreleme', () => {
         await expect(dashboard.taskTitles).toHaveText(titlesOf(course, completedIds));
       });
 
-    test('devam eden filtresinde yalnızca tamamlanmamış görevler görünür',
-      { tag: ['@US-04', '@AC-04.3', '@P2'] },
-      async ({ dashboard }) => {
-        await dashboard.setStatusFilter(STATUS.pending);
-
-        await expect(dashboard.taskTitles).toHaveText(titlesOf(course, pendingIds));
-      });
-
     test('devam eden filtresindeyken tamamlanan görev listeden çıkar',
       { tag: ['@US-04', '@AC-04.3', '@P2'] },
       async ({ dashboard }) => {

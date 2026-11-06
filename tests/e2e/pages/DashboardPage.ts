@@ -141,6 +141,26 @@ export class DashboardPage {
     return this.task(title).getByText(LABELS.completedBadge, { exact: true });
   }
 
+  taskTitle(title: string): Locator {
+    return this.task(title).getByTestId('task-title');
+  }
+
+  async clickTaskTitle(title: string) {
+    await this.taskTitle(title).click();
+  }
+
+  async titleDecoration(title: string): Promise<string> {
+    return this.taskTitle(title).evaluate((el) => getComputedStyle(el).textDecorationLine);
+  }
+
+  celebration(weekNo: number): Locator {
+    return this.page.getByRole('status').filter({ hasText: fmt.weekCelebration(weekNo) });
+  }
+
+  async closeCelebration(weekNo: number) {
+    await this.celebration(weekNo).getByRole('button', { name: LABELS.celebrationClose }).click();
+  }
+
   /** Durumu tersine çevirir (tıklama). */
   async toggleTask(title: string) {
     await this.taskCheckbox(title).click();
@@ -319,6 +339,19 @@ export class DashboardPage {
       await this.page.keyboard.press(tabKey);
       if (await target.evaluate((el) => el === document.activeElement)) return;
     }
+  }
+
+  async focusIndicatorChanges(control: Locator, area: Locator, padding: number): Promise<boolean> {
+    await this.tabTo(control);
+    await expect(control).toBeFocused();
+    const box = await area.boundingBox();
+    if (!box) throw new Error('Odak karşılaştırması için alan bulunamadı');
+    const clip = { x: box.x - padding, y: box.y - padding, width: box.width + padding * 2, height: box.height + padding * 2 };
+    const focused = await this.page.screenshot({ clip, animations: 'disabled' });
+    await control.evaluate((el) => (el as HTMLElement).blur());
+    await expect(control).not.toBeFocused();
+    const unfocused = await this.page.screenshot({ clip, animations: 'disabled' });
+    return !focused.equals(unfocused);
   }
 
   async focusStyle(target: Locator): Promise<string> {
