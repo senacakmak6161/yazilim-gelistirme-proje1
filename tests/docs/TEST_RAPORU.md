@@ -12,9 +12,9 @@
 ## 1. Özet
 
 - Proje kapsamındaki tüm özellikler kodda: hafta kartları, görev listesi ve durumları, ilerleme göstergesi, arama, hafta/durum filtresi, tema, localStorage kalıcılığı, mobil görünüm.
-- Son koşu: 130 test × 6 profil = 780 koşu; **689 başarılı, 0 başarısız**, 91 profile özgü test bilinçli olarak atlandı. Yerelde yeniden deneme kapalı (`retries=0`), kararsız test yok.
-- İzlenebilirlik kapısı (`npm run traceability:strict`): çıkış kodu 0. 70 otomatik maddenin 69'u Başarılı, NFR-5 (kod okunurluğu) E2E kapsamı dışında; elle yapılacak DS-1…DS-4 bekliyor.
-- 06.11.2026 turunda 4 bulgu kaydedildi (B10–B13): 3'ü testlerden, 1'i uygulamadan kaynaklı; hepsi düzeltildi ve tekrar koşularıyla doğrulandı. Önceki turdaki 9 bulgu (B1–B9) kapalı.
+- Son koşu: 127 test × 6 profil = 762 koşu; **665 başarılı, 0 başarısız**, 97 profile özgü test bilinçli olarak atlandı. Yerelde yeniden deneme kapalı (`retries=0`), kararsız test yok.
+- İzlenebilirlik kapısı (`npm run traceability:strict`): çıkış kodu 0. 71 otomatik maddenin 70'i Başarılı, NFR-5 (kod okunurluğu) E2E kapsamı dışında; elle yapılacak DS-1…DS-4 bekliyor.
+- 06.11.2026 turunda 6 bulgu kaydedildi (B10–B15): 5'i testlerden, 1'i uygulamadan kaynaklı; hepsi düzeltildi ve tekrar koşularıyla doğrulandı. Test takımı gözden geçirildi: birebir aynı işi yapan 10 test birleştirildi, README'de yazan ama test edilmeyen 7 davranış için kontrol eklendi (B14, B15). Önceki turdaki 9 bulgu (B1–B9) kapalı.
 - Açık P1/P2 hata yok. Açık kalan konular bölüm 7'de: elle yapılacak kullanılabilirlik kontrolleri (DS-1…DS-4) ve yeni arayüze göre güncellenmesi gereken dokümanlar.
 
 ## 2. Entegrasyon kontrolü
@@ -23,7 +23,7 @@
 |---|---|
 | PR #20, #22 (tema), `2bb0cef` (arama ve filtre), #23 (ilerleme, kalıcılık), #29 (README), #30–#31 (arayüz yeniden tasarımı) | Test sözleşmesiyle uyumlu; sözleşme değişikliği gerekmedi. Yeniden tasarım sonrası tüm locator'lar ve metinler geçerli |
 | `npm ci`, `npm run lint`, `npm run build` (temiz kurulum) | Hatasız |
-| Testlerin doğrulaması (`npm run verify`: tip denetimi, lint, test listesi) | Hatasız, 130 test × 6 profil = 780 |
+| Testlerin doğrulaması (`npm run verify`: tip denetimi, lint, test listesi) | Hatasız, 127 test × 6 profil = 762 |
 | CI (`.github/workflows/e2e.yml`) | README "her pull request'te lint ve derleme çalışır" diyordu, iş akışı uygulamayı yalnızca kuruyordu. Uygulamanın lint ve derleme adımları eklendi |
 
 ## 3. Kabul kriterlerine göre sonuçlar (#24)
@@ -31,25 +31,25 @@
 | #24 maddesi | Gereksinimler | Sonuç (6 profil) |
 |---|---|---|
 | Hafta kartları ve görev listesi | US-01, US-02 | ✅ 126 / 126 (`us01`, `us02`) |
-| Görev durumları ve ilerleme göstergesi | US-03, US-07 | ✅ 108 / 108 (`us03`, `us07`) |
-| Arama, filtreleme ve tema | US-04, US-05, US-06, US-09 | ✅ 240 / 240 (`us04`, `us05`, `us06`, `us09`) |
-| localStorage ile veri kalıcılığı | US-10, VM-1 (filtre tercihi), bozuk/eksik kayıt dayanıklılığı | ✅ 78 / 78 (`us10`, `filter-persistence`, `resilience`) |
+| Görev durumları ve ilerleme göstergesi | US-03, US-07 | ✅ 84 / 84 (`us03`, `us07`) |
+| Arama, filtreleme ve tema | US-04, US-05, US-06, US-09 | ✅ 234 / 234 (`us04`, `us05`, `us06`, `us09`) |
+| localStorage ile veri kalıcılığı | US-10, VM-1 (filtre tercihi), VM-3 (depolama kullanılamazken), bozuk/eksik kayıt dayanıklılığı | ✅ 78 / 78 (`us10`, `filter-persistence`, `resilience`) |
 | Mobil görünüm | US-08, NFR-1: 3 mobil/tablet profili ve 320–1280 px arası 4 ekran boyutu, dokunarak kullanım, uzun Türkçe metin | ✅ 45 / 45 (`us08`; mobil profile özgü 9 test masaüstünde atlandı) |
 | Kabul test senaryoları | T1–T8 (PDF Tablo 3) | ✅ 44 / 44 (`acceptance-scenarios`) |
-| Erişilebilirlik, klavye, performans | NFR-2 (axe-core WCAG 2.1 AA, iki tema), klavye ile kullanım, NFR-4 (100 görevlik veride 300 ms) | ✅ erişilebilirlik 5 / 5, klavye 33 / 33, performans 4 / 4, duman testi (NFR-6) 6 / 6 |
+| Erişilebilirlik, klavye, performans | NFR-2 (axe-core WCAG 2.1 AA, iki tema), klavye ile kullanım, NFR-4 (100 görevlik veride 300 ms) | ✅ erişilebilirlik 5 / 5, klavye 39 / 39, performans 4 / 4, duman testi (NFR-6) 6 / 6 |
 
-Atlanan 91 koşu bilinçlidir: axe-core taraması (sonucu motordan bağımsız) ve süre ölçümü (karşılaştırılabilir olsun diye) yalnızca masaüstü Chromium'da; klavye testleri dokunmatik profillerde değil; mobil kriterler (AC-08.2, AC-08.3, T7) yalnızca mobil profillerde koşar.
+Atlanan 97 koşu bilinçlidir: axe-core taraması (sonucu motordan bağımsız) ve süre ölçümü (karşılaştırılabilir olsun diye) yalnızca masaüstü Chromium'da; klavye testleri dokunmatik profillerde değil; mobil kriterler (AC-08.2, AC-08.3, T7) yalnızca mobil profillerde koşar.
 
 ## 4. Üçüncü hafta test senaryoları ve sonuçları (#17)
 
 | Özellik | Senaryolar | Sonuç |
 |---|---|---|
 | Arama | Başlıkta ve açıklamada eşleşme; büyük/küçük harf farkı; Türkçe İ/i ve I/ı; baştaki/sondaki boşluk; harf harf yazarken daralma; eşleşme yokken M2 mesajı; temizleyince tüm görevlerin dönmesi; aramanın görev durumunu değiştirmemesi (US-06, T4) | ✅ |
-| Hafta filtresi | Seçenek biçimi (`Hafta N – başlık`); seçilen haftanın görevleri; görevi olmayan haftada mesaj; durum filtresi ve aramayla birlikte (VE) uygulanması (US-05) | ✅ |
+| Hafta filtresi | Seçenek biçimi (`Hafta N – başlık`); seçilen haftanın görevleri; görevi olmayan haftada mesaj; patika ile hafta filtresinin iki yönlü bağı; durum filtresi ve aramayla ikili ve üçlü birlikte (VE) uygulanması (US-05) | ✅ |
 | Durum filtresi | Tümü / Devam edenler / Tamamlanan; filtre açıkken tamamlanan görevin listeden çıkması; boş sonuçta mesaj (US-04, T3) | ✅ |
 | Filtre tercihinin korunması | Son filtrenin yenilemede geri yüklenmesi; bozuk veya veride olmayan hafta kaydında varsayılana dönülmesi (VM-1) | ✅ |
 | Açık/koyu tema | Geçiş, `aria-pressed`, arka planın koyulaşması, iki temada kontrast, tema değişince görev durumlarının korunması, tercihin yenilemede korunması, kayıtlı karanlık temayla açılış (US-09, T8) | ✅ |
-| Görev durumu ve localStorage | İşaretleme ve geri alma kaydı, yenilemede geri yükleme, birden çok görevin ayrı ayrı korunması, bozuk kayıt, bilinmeyen görev kimliği, `false` değerli kayıt (US-10, T6) | ✅ |
+| Görev durumu ve localStorage | İşaretleme ve geri alma kaydı, yenilemede geri yükleme, birden çok görevin ayrı ayrı korunması, bozuk kayıt, bilinmeyen görev kimliği, `false` değerli kayıt, depolamaya erişilemezken veya yazılamazken (gizli sekme) hatasız çalışma (US-10, T6, VM-3) | ✅ |
 | İlerleme göstergesi | Sayı, yüzde ve çubuğun tutarlılığı; tamamlama ve geri almada yeniden hesaplama; %33/%67 yuvarlama; filtre ve aramadan etkilenmemesi; görev yokken `0 / 0` ve %0 (US-07, T5) | ✅ |
 
 ## 5. Hata listesi ve düzeltme kaydı
@@ -69,6 +69,8 @@ Atlanan 91 koşu bilinçlidir: axe-core taraması (sonucu motordan bağımsız) 
 | B11 | WebKit'te "kartlar ve kontroller üst üste binmez" testi ara sıra düşüyor (3 tekrarda 1) | Gerçek yerleşim çakışması yoksa test geçer | `tema düğmesi ↔ ilerleme çubuğu` çakışması bildiriliyor. Yapışkan üst şerit kaydırmayla birlikte hareket ettiği için, motor hafta kartına tıklarken sayfayı daha çok kaydırdığında altından geçen ilerleme çubuğuyla çakışmış sayılıyordu | Düşük | Test | US-08 (AC-08.5) |
 | B12 | İlerleme sayıları yapışkan üst şeridin arkasında kaldığında üst şeritteki küçük ilerleme göstergesi görünmüyor | Sayılar ekranda görünmediğinde küçük gösterge belirir | Yaklaşık 64 px'lik kaydırma aralığında ilerleme ekranın hiçbir yerinde görünmüyor (masaüstü, üç motorda) | Düşük | Uygulama | Keşif testi |
 | B13 | Bir test hiçbir kabul kriterine bağlı değil | `tests/README.md`: her test doğruladığı kriterin etiketini taşır | "Şimdi etiketi sonraki haftaya geçer" testinde yalnızca hikâye etiketleri vardı; izlenebilirlik raporu "gereksinime bağlı olmayan test" uyarısı veriyordu | Düşük | Test | `npm run traceability` |
+| B14 | Birebir aynı işi yapan testler | Her davranış tek testte doğrulanır; test birden çok kritere bağlanabilir | PDF aynı davranışı hem hikâye kriterlerinde hem T1–T8'de tanımladığı için 10 test, ilgili T senaryosuyla aynı veri, işlem ve kontrolü tekrarlıyordu (ör. AC-03.6, AC-07.3 ve T1) | Düşük | Test | Test takımı incelemesi |
+| B15 | README'de tanımlı 7 davranış test edilmiyordu | README'deki her kullanıcı davranışının bir testi vardır | Başlığa tıklayarak işaretleme, üstü çizili başlık, arama + durum + hafta filtresinin üçü birlikte, patika ile hafta filtresinin bağı, hafta kutlaması, depolama kullanılamazken çalışma, özel çizilmiş görev kutusu ve durum filtresinde odak göstergesi | Orta | Test | README ile test eşleştirmesi |
 
 | Hata | Dosya | Düzeltme | Doğrulama |
 |---|---|---|---|
@@ -82,6 +84,8 @@ Atlanan 91 koşu bilinçlidir: axe-core taraması (sonucu motordan bağımsız) 
 | B11 | `tests/e2e/support/layout.ts` | Kutular sayfa en üstteyken (yapışkan öğeler normal akıştaki yerindeyken) ölçülüyor, kaydırma konumu geri yükleniyor | 6 profil × 5 tekrar: 225/225. Bilerek oluşturulan çakışma 6 profilde yakalanıyor; ölçüm kaydırma konumunu değiştirmiyor |
 | B12 | `App.jsx` | Kesişim gözlemcisi görünür alanın üstünden üst şerit yüksekliği kadar payı düşüyor. Mobilde küçük gösterge zaten gizli; başka davranış değişmedi | Chromium, Firefox, WebKit × 3 tekrar: sayfa başında gizli, sayılar kısmen görünürken gizli, şeridin arkasında ve aşağıda görünür. Düzeltme öncesi üç motorda da görünmüyordu |
 | B13 | `tests/e2e/specs/us01-weekly-content.spec.ts` | Teste doğruladığı kriter olan `@AC-07.3` etiketi eklendi; testin adımları değişmedi | İzlenebilirlik uyarısı kalktı |
+| B14 | `acceptance-scenarios`, `us03`, `us04`, `us06`, `us07`, `us09`, `us10` | 10 tekrar silindi; T1, T2, T3, T4, T5, T6, T8 silinenlerin kriter etiketlerini aldı. T6 silinenlerin tüm kontrollerini kapsıyor ve yenileme sonrası çubuğu da denetliyor; T8 tema değişince kayıtlı görev durumlarının korunduğunu da denetliyor | Silinen hiçbir testin kriteri karşılıksız kalmadı |
+| B15 | `us01`, `us03`, `us05`, `resilience`, `keyboard`, `fixtures`, `DashboardPage.ts`, `contract.ts`, `requirements.json` | 7 yeni test, 2 testte ek kontrol (üstü çizili başlık, kutlama). Depolama durumu `storageAccess` fixture seçeneğiyle veriliyor (`blocked`, `read-only`); README §7 için gereksinim listesine VM-3 eklendi. Odak, özel çizilmiş kontrollerin çevresinde görüntü karşılaştırmasıyla denetleniyor. 130 test 127'ye indi | Yeni ve güçlendirilen her kontrol, tarayıcıya giden kod bilerek bozulduğunda düşüyor (14 mutasyonun 14'ü). Yeni testler 6 profilde 3–5 tekrarda kararsızlık göstermedi |
 
 ## 6. Keşif testi (TEST_PLAN Ek B)
 
@@ -121,7 +125,7 @@ Atlanan 91 koşu bilinçlidir: axe-core taraması (sonucu motordan bağımsız) 
 | Arama, filtreleme ve tema | ✅ |
 | localStorage ile veri kalıcılığı | ✅ |
 | Mobil görünüm | ✅ |
-| Tespit edilen hataların giderilmesi | ✅ B10–B13 düzeltildi; dokümantasyon konuları bölüm 7'de |
+| Tespit edilen hataların giderilmesi | ✅ B10–B15 düzeltildi; dokümantasyon konuları bölüm 7'de |
 
 ## 9. Çalıştırma
 
