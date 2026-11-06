@@ -83,7 +83,7 @@ test.describe('US-01 Haftalık ders içeriklerini görüntüleme', () => {
 
   test('bir haftanın tüm görevleri tamamlanınca "şimdi" etiketi sonraki haftaya geçer',
     {
-      tag: ['@US-01', '@US-07', '@P1'],
+      tag: ['@US-01', '@US-07', '@AC-07.3', '@P1'],
       annotation: { type: 'karar', description: 'K13: bulunulan hafta tamamlanmamış ilk haftadır' },
     },
     async ({ dashboard }) => {

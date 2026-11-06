@@ -25,6 +25,8 @@ type Fixtures = {
 // Her sayfada çıkan ve uygulamayla ilgisi olmayan gürültü (ör. eksik favicon).
 const IGNORED_ERROR_URLS = [/favicon\.ico/];
 
+const WATCH_HOLD_MS = Math.max(0, Number(process.env.HOLD_MS ?? 1500) || 0);
+
 export const test = base.extend<Options & Fixtures>({
   courseData: [loadCourse('course.default.json'), { option: true }],
   seededCompleted: [[], { option: true }],
@@ -58,7 +60,7 @@ export const test = base.extend<Options & Fixtures>({
   ],
 
   dashboard: async (
-    { page, courseData, seededCompleted, seededTheme, rawStorage, mockCourseData },
+    { page, headless, courseData, seededCompleted, seededTheme, rawStorage, mockCourseData },
     use,
   ) => {
     // 1) İçerik isteğini yakala ve test verisini döndür (gerçek dosyaya gidilmez).
@@ -100,6 +102,10 @@ export const test = base.extend<Options & Fixtures>({
     const dashboard = new DashboardPage(page, courseData);
     await dashboard.goto();
     await use(dashboard);
+
+    if (!headless && WATCH_HOLD_MS > 0 && !page.isClosed()) {
+      await new Promise((resolve) => setTimeout(resolve, WATCH_HOLD_MS));
+    }
   },
 });
 

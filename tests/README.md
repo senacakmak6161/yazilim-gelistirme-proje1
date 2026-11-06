@@ -37,10 +37,18 @@ BASE_URL=http://localhost:3000 npx playwright test       # uygulama zaten açık
 | `npm run verify` | Tip denetimi, lint ve test listesi (uygulama gerektirmez) |
 | `npm test` | Tüm testler, 6 projede |
 | `npm run test:chromium` | Yalnızca masaüstü Chromium |
+| `npm run test:headed` | Masaüstü Chromium'da tarayıcı görünür, tek pencere, yavaş çekim (izleme modu) |
 | `npm run test:ui` | Playwright UI modu |
 | `npm run report` | Son koşunun HTML raporu |
 | `npm run traceability` | `docs/TRACEABILITY.md` üretir |
 | `npm run traceability:strict` | Karşılanmayan otomatik madde varsa çıkış kodu 1 (CI kapısı) |
+
+İzleme modu: `--headed` ile koşulduğunda her tıklama, yazma ve tuş basımından sonra 500 ms beklenir ve test bitince son ekran 1,5 sn açık kalır; test süresi sınırı 180 sn'ye çıkar. Son ekrandaki bekleme tarayıcının görünür olduğu her koşuda (`--debug` dahil) uygulanır. Headless koşular (CI dahil) etkilenmez; yalnızca `SLOW_MO` elle verilirse headless koşu da yavaşlar. `SLOW_MO=0` ve `HOLD_MS=0` beklemeleri kapatır. Süreler ortam değişkeniyle değiştirilir:
+
+```bash
+APP_DIR=../etkilesimli-ders-panosu npm run test:headed -- --grep @US-03   # tek hikâyeyi izle
+SLOW_MO=1000 HOLD_MS=3000 APP_DIR=../etkilesimli-ders-panosu npm run test:headed
+```
 
 Seçerek çalıştırma:
 

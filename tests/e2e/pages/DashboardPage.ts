@@ -343,15 +343,22 @@ export class DashboardPage {
       const perf = { start: 0, last: 0 };
       w.__e2ePerf = perf;
       new MutationObserver(() => {
-        perf.last = performance.now();
+        if (perf.start > 0) perf.last = performance.now();
       }).observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true });
-      perf.start = performance.now();
+      const markInput = (event: Event) => {
+        if (perf.start !== 0) return;
+        const now = performance.now();
+        perf.start = event.timeStamp > 0 && event.timeStamp <= now ? event.timeStamp : now;
+      };
+      for (const type of ['pointerdown', 'mousedown', 'keydown', 'beforeinput', 'input', 'change', 'click']) {
+        window.addEventListener(type, markInput, { capture: true, once: true });
+      }
     });
     await action();
     await settled();
     return this.page.evaluate(() => {
       const perf = (window as unknown as { __e2ePerf: { start: number; last: number } }).__e2ePerf;
-      return perf.last === 0 ? Number.POSITIVE_INFINITY : perf.last - perf.start;
+      return perf.start === 0 || perf.last === 0 ? Number.POSITIVE_INFINITY : perf.last - perf.start;
     });
   }
 
