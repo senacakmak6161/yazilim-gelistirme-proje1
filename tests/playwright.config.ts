@@ -8,6 +8,11 @@ const isCI = !!process.env.CI;
 const BASE_URL = process.env.BASE_URL ?? 'http://localhost:5173';
 const APP_DIR = process.env.APP_DIR;
 
+if (process.argv.includes('--headed') && process.env.SLOW_MO === undefined) {
+  process.env.SLOW_MO = '500';
+}
+const SLOW_MO = Math.max(0, Number(process.env.SLOW_MO) || 0);
+
 const reporters: ReporterDescription[] = [
   ['list'],
   ['html', { open: 'never', outputFolder: 'playwright-report' }],
@@ -21,7 +26,7 @@ if (isCI) {
 export default defineConfig({
   testDir: './e2e/specs',
   outputDir: './test-results',
-  timeout: 30_000,
+  timeout: SLOW_MO > 0 ? 180_000 : 30_000,
   expect: { timeout: 5_000 },
 
   // Testler birbirinden bağımsız olduğu için paralel çalışabilir.
@@ -47,6 +52,7 @@ export default defineConfig({
     trace: isCI ? 'on-first-retry' : 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    ...(SLOW_MO > 0 && { launchOptions: { slowMo: SLOW_MO } }),
   },
 
   // Aynı testler farklı tarayıcı motorlarında ve cihazlarda çalışır (US-08, NFR-1).

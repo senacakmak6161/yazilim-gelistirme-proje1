@@ -83,7 +83,7 @@ Yerel ayar `tr-TR`, saat dilimi `Europe/Istanbul`, renk şeması `light`. Erişi
 | Testler gerçek uygulamaya karşı henüz çalışmadı | Yanlış pozitif/negatif | Test kodu sözleşmeye uyan geçici bir sayfayla 6 projede çalıştırıldı; 17 kasıtlı hatanın tamamı ilgili testlerce yakalandı, 3 tekrarda kararsız test çıkmadı (22.10.2026). README veri modeline geçişten sonra README'ye uyan geçici bir Vite + React uygulamasıyla 6 projede yeniden çalıştırıldı; 2 tekrarda tümü geçti, kararsız test çıkmadı (22.10.2026). İlk entegrasyonda kritik testler beklenen değer bozularak yeniden doğrulanır |
 | Sözleşme uygulanmazsa toplu kırmızı | Gürültülü ilk koşu | Sözleşme geliştiriciyle önceden paylaşılır |
 | Onay bekleyen varsayımlar değişebilir | Test güncellemesi | Varsayımlar kodla etiketli (`annotation`), etkilenen testler listeli |
-| Süre ölçümü makineye duyarlı | Kararsız NFR-4 | Tek motor, yumuşak doğrulama (`expect.soft`) |
+| Süre ölçümü makineye duyarlı | Kararsız NFR-4 | Tek motor, yumuşak doğrulama (`expect.soft`); süre kullanıcı girdisinin sayfaya ulaştığı andan ölçülür, Playwright'ın eylem öncesi beklemeleri sayılmaz |
 | WebKit'te Tab davranışı platforma göre değişebilir | Klavye testi kararsızlığı | İlk koşuda gözlenir, gerekirse proje bazında ayarlanır |
 
 ## 9. Otomasyonun doğrulayamadıkları

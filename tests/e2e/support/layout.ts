@@ -9,29 +9,35 @@ export async function collectBoxes(groups: Record<string, Locator>): Promise<Box
       const registry = window as unknown as { __e2eIds?: WeakMap<Element, string>; __e2eNextId?: number };
       registry.__e2eIds ??= new WeakMap();
       registry.__e2eNextId ??= 0;
-      return elements
-        .filter((el) => {
-          const style = getComputedStyle(el);
-          const rect = el.getBoundingClientRect();
-          return style.visibility !== 'hidden' && style.display !== 'none' && rect.width > 0 && rect.height > 0;
-        })
-        .map((el) => {
-          let id = registry.__e2eIds!.get(el);
-          if (!id) {
-            registry.__e2eNextId = (registry.__e2eNextId ?? 0) + 1;
-            id = String(registry.__e2eNextId);
-            registry.__e2eIds!.set(el, id);
-          }
-          const rect = el.getBoundingClientRect();
-          return {
-            id,
-            label: `${groupName}: ${(el.textContent ?? el.getAttribute('aria-label') ?? '').trim().slice(0, 40)}`,
-            x: rect.x + window.scrollX,
-            y: rect.y + window.scrollY,
-            width: rect.width,
-            height: rect.height,
-          };
-        });
+      const scrolled = { left: window.scrollX, top: window.scrollY };
+      window.scrollTo({ left: 0, top: 0, behavior: 'instant' });
+      try {
+        return elements
+          .filter((el) => {
+            const style = getComputedStyle(el);
+            const rect = el.getBoundingClientRect();
+            return style.visibility !== 'hidden' && style.display !== 'none' && rect.width > 0 && rect.height > 0;
+          })
+          .map((el) => {
+            let id = registry.__e2eIds!.get(el);
+            if (!id) {
+              registry.__e2eNextId = (registry.__e2eNextId ?? 0) + 1;
+              id = String(registry.__e2eNextId);
+              registry.__e2eIds!.set(el, id);
+            }
+            const rect = el.getBoundingClientRect();
+            return {
+              id,
+              label: `${groupName}: ${(el.textContent ?? el.getAttribute('aria-label') ?? '').trim().slice(0, 40)}`,
+              x: rect.x + window.scrollX,
+              y: rect.y + window.scrollY,
+              width: rect.width,
+              height: rect.height,
+            };
+          });
+      } finally {
+        window.scrollTo({ ...scrolled, behavior: 'instant' });
+      }
     }, group);
     boxes.push(...found);
   }

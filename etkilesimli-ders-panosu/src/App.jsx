@@ -141,15 +141,17 @@ function App() {
    * kaydırma karesinde hesap yapmıyor.
    */
   const bandRef = useRef(null)
+  const ustSeritRef = useRef(null)
   const [bandGorunur, setBandGorunur] = useState(true)
 
   useEffect(() => {
     const oge = bandRef.current
     if (!oge || typeof IntersectionObserver === 'undefined') return undefined
 
+    const ustSeritYuksekligi = ustSeritRef.current?.offsetHeight ?? 0
     const gozlemci = new IntersectionObserver(
       ([giris]) => setBandGorunur(giris.isIntersecting),
-      { threshold: 0 },
+      { threshold: 0, rootMargin: `-${ustSeritYuksekligi}px 0px 0px 0px` },
     )
     gozlemci.observe(oge)
     return () => gozlemci.disconnect()
@@ -455,7 +457,7 @@ function App() {
         />
       ) : null}
 
-      <div className="topbar-wrap">
+      <div className="topbar-wrap" ref={ustSeritRef}>
         <header className={`topbar ${bandGorunur ? '' : 'is-compact'}`}>
           <div className="brand">
             <Logo />

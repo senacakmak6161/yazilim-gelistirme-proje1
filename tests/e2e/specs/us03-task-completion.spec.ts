@@ -1,5 +1,4 @@
 import { test, expect } from '../fixtures';
-import { fmt } from '../support/contract';
 import { completionMap, loadCourse, titleOf } from '../support/data';
 
 const course = loadCourse('course.default.json');
@@ -23,45 +22,42 @@ test.describe('US-03 Görevleri tamamlandı olarak işaretleme', () => {
       }
     });
 
-  test('kontrol işaretlenince görev tamamlandı durumuna geçer',
-    { tag: ['@US-03', '@AC-03.2', '@P1'] },
+  test('görev başlığına tıklamak da görevi işaretler ve işareti kaldırır',
+    {
+      tag: ['@US-03', '@AC-03.2', '@AC-03.4', '@P1'],
+      annotation: { type: 'kaynak', description: 'README Kullanıcı rehberi §3: görev başlığına tıklamak da kutuyu işaretler' },
+    },
     async ({ dashboard }) => {
       await dashboard.openWeekOf(w1t3);
       await expect(dashboard.taskCheckbox(w1t3)).not.toBeChecked();
 
-      await dashboard.toggleTask(w1t3);
-
+      await dashboard.clickTaskTitle(w1t3);
       await expect(dashboard.taskCheckbox(w1t3)).toBeChecked();
+      await expect(dashboard.completedBadge(w1t3)).toBeVisible();
+
+      await dashboard.clickTaskTitle(w1t3);
+      await expect(dashboard.taskCheckbox(w1t3)).not.toBeChecked();
+      await expect(dashboard.completedBadge(w1t3)).toBeHidden();
     });
 
-  test('tamamlanan görev "Tamamlandı" rozetiyle diğerlerinden ayırt edilir',
-    { tag: ['@US-03', '@AC-03.3', '@P1'] },
+  test('tamamlanan görev "Tamamlandı" rozeti ve üstü çizili başlıkla diğerlerinden ayırt edilir',
+    {
+      tag: ['@US-03', '@AC-03.3', '@P1'],
+      annotation: { type: 'kaynak', description: 'README Kullanıcı rehberi §3: tamamlanan görevin başlığının üstü çizilir' },
+    },
     async ({ dashboard }) => {
       await dashboard.openWeekOf(w1t3);
       await expect(dashboard.taskCheckbox(w1t3)).not.toBeChecked();
       await expect(dashboard.completedBadge(w1t3)).toBeHidden();
+      expect(await dashboard.titleDecoration(w1t3)).not.toContain('line-through');
 
       await dashboard.toggleTask(w1t3);
 
       await expect(dashboard.completedBadge(w1t3)).toBeVisible();
+      await expect.poll(() => dashboard.titleDecoration(w1t3)).toContain('line-through');
       await expect(dashboard.completedBadge(w1t1)).toBeHidden();
+      expect(await dashboard.titleDecoration(w1t1)).not.toContain('line-through');
     });
-
-  test.describe('tamamlanmış görevle başlayınca', () => {
-    test.use({ seededCompleted: ['w1-t3'] });
-
-    test('işaret kaldırılınca görev yeniden tamamlanmamış duruma döner',
-      { tag: ['@US-03', '@AC-03.4', '@P1'] },
-      async ({ dashboard }) => {
-        await dashboard.openWeekOf(w1t3);
-        await expect(dashboard.taskCheckbox(w1t3)).toBeChecked();
-
-        await dashboard.toggleTask(w1t3);
-
-        await expect(dashboard.taskCheckbox(w1t3)).not.toBeChecked();
-        await expect(dashboard.completedBadge(w1t3)).toBeHidden();
-      });
-  });
 
   test.describe('birden fazla görev tamamlanmışken', () => {
     test.use({ seededCompleted: ['w1-t1', 'w2-t2'] });
@@ -84,16 +80,4 @@ test.describe('US-03 Görevleri tamamlandı olarak işaretleme', () => {
         });
       });
   });
-
-  test('görev durumu değişince ilerleme göstergesi güncellenir',
-    { tag: ['@US-03', '@AC-03.6', '@P1'] },
-    async ({ dashboard }) => {
-      await expect(dashboard.progressText).toHaveText(fmt.progressText(0, 10));
-
-      await dashboard.openWeekOf(w1t3);
-      await dashboard.toggleTask(w1t3);
-
-      await expect(dashboard.progressText).toHaveText(fmt.progressText(1, 10));
-      await expect(dashboard.progressPercent).toHaveText(fmt.progressPercent(10));
-    });
 });

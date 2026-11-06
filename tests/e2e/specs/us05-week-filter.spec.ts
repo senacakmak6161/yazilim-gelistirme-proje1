@@ -53,6 +53,26 @@ test.describe('US-05 Görevleri haftaya göre filtreleme', () => {
       await expect(dashboard.emptyState).toHaveText(MESSAGES.weekNoTasks);
       await expect(dashboard.taskItems).toHaveCount(0);
     });
+
+  test('patika ile hafta filtresi birbirine bağlıdır: biri değişince diğeri de değişir',
+    {
+      tag: ['@US-05', '@AC-05.1', '@P2'],
+      annotation: { type: 'kaynak', description: 'README Kullanıcı rehberi §5: hafta listesi ile patika birbirine bağlıdır' },
+    },
+    async ({ dashboard }) => {
+      await expect.poll(() => dashboard.selectedWeekLabel()).toBe(LABELS.allWeeks);
+
+      await dashboard.selectWeekCard(2);
+
+      await expect.poll(() => dashboard.selectedWeekLabel()).toBe(weekOption(2));
+      await expect(dashboard.taskTitles).toHaveText(tasksOfWeek(course, 2).map((t) => t.title));
+
+      await dashboard.selectWeekFilter(weekOption(3));
+
+      await expect(dashboard.weekCard(3)).toHaveAttribute('aria-pressed', 'true');
+      await expect(dashboard.weekCard(2)).toHaveAttribute('aria-pressed', 'false');
+      await expect(dashboard.goalsHeading).toHaveText(fmt.goalsHeading(3));
+    });
 });
 
 test.describe('US-05 Hafta filtresi diğer ölçütlerle birlikte (karar K3)', () => {
@@ -93,5 +113,22 @@ test.describe('US-05 Hafta filtresi diğer ölçütlerle birlikte (karar K3)', (
 
       await expect(dashboard.emptyState).toHaveText(MESSAGES.noMatch);
       await expect(dashboard.taskItems).toHaveCount(0);
+    });
+
+  test('arama, durum ve hafta filtresi üçü birlikte uygulanır',
+    {
+      tag: ['@US-05', '@AC-05.2', '@AC-04.3', '@AC-06.2', '@P2'],
+      annotation: { type: 'karar', description: 'K3: ölçütler VE ile birleşir; README Kullanıcı rehberi §5: üç araç aynı anda çalışır' },
+    },
+    async ({ dashboard }) => {
+      await dashboard.search('ile');
+      await dashboard.setStatusFilter(STATUS.pending);
+      await dashboard.selectWeekFilter(weekOption(3));
+
+      await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['w3-t2']));
+
+      await dashboard.selectWeekFilter(LABELS.allWeeks);
+
+      await expect(dashboard.taskTitles).toHaveText(titlesOf(course, ['w1-t3', 'w2-t2', 'w3-t2']));
     });
 });

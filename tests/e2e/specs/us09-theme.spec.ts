@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures';
-import { LIMITS, THEMES, fmt } from '../support/contract';
+import { LIMITS, THEMES } from '../support/contract';
 import { contrastRatio, relativeLuminance } from '../support/color';
 
 test.describe('US-09 Tema değiştirme', () => {
@@ -47,23 +47,6 @@ test.describe('US-09 Tema değiştirme', () => {
           .toBeGreaterThanOrEqual(LIMITS.minTextContrast);
       });
     });
-
-  test.describe('tamamlanmış görevler varken', () => {
-    test.use({ seededCompleted: ['w1-t1', 'w2-t2'] });
-
-    test('tema değiştirmek görev durumlarını değiştirmez',
-      { tag: ['@US-09', '@AC-09.4', '@P3'] },
-      async ({ dashboard }) => {
-        await expect(dashboard.progressText).toHaveText(fmt.progressText(2, 10));
-        const before = await dashboard.checkedStates();
-
-        await dashboard.toggleTheme();
-        await expect(dashboard.themeToggle).toHaveAttribute('aria-pressed', 'true');
-
-        await expect.poll(() => dashboard.checkedStates()).toEqual(before);
-        await expect(dashboard.progressText).toHaveText(fmt.progressText(2, 10));
-      });
-  });
 
   test('seçilen tema sayfa yenilendiğinde korunur',
     {

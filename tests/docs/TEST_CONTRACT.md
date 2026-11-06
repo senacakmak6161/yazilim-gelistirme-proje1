@@ -24,13 +24,14 @@ Bir ad veya metin değişecekse önce test ekibiyle konuşulur; değişiklik yal
 | Durum filtresi | `fieldset/legend` veya `role=radiogroup`, ad `Görev durumu` | Sırasıyla `Tümü`, `Devam edenler`, `Tamamlanan` (veya `Tamamlananlar`) radyo düğmeleri. |
 | Arama | `role=searchbox` (`input type="search"`), ad `Görev ara` | Yazdıkça sonuç güncellenir. |
 | Görev satırı | `data-testid="task-item"`, `data-task-id="<id>"` | |
-| Görev başlığı | `data-testid="task-title"` | Satırın içinde. |
+| Görev başlığı | `data-testid="task-title"` | Satırın içinde. Görev kutusunun etiketidir; başlığa tıklamak kutuyu işaretler veya işareti kaldırır. Tamamlanan görevde üstü çizilidir (`text-decoration: line-through`). |
 | Görev kutusu | `role=checkbox` | Erişilebilir adı görev başlığının kendisidir (`<label for>`). |
 | Tamamlandı rozeti | Görev satırında `Tamamlandı` metni | Yalnızca tamamlanan görevde görünür. |
 | Boş liste mesajı | `data-testid="empty-state"` | Yalnızca görev listesinde kullanılır. Hedef panelindeki mesajlar düz metindir. |
 | İlerleme metni | `data-testid="progress-text"` | `X / Y görev tamamlandı` |
 | İlerleme yüzdesi | `data-testid="progress-percent"` | `%N` |
 | İlerleme çubuğu | `role=progressbar`, ad `Genel ilerleme` | `aria-valuenow` yüzde ile aynı tam sayı. Dolgu öğesi `data-testid="progress-fill"`, genişliği yüzdeyle orantılı. |
+| Hafta kutlaması | `role=status` | Bir haftanın son görevi tamamlanınca `Hafta N tamam` başlığıyla açılır; `Teşekkürler` düğmesiyle veya Escape ile kapanır. |
 | Tema düğmesi | `role=button`, ad `Karanlık tema` | Karanlık temada `aria-pressed="true"`. Tema rengi `html` veya `body` arka planına uygulanır. |
 
 ## 3. Mesajlar

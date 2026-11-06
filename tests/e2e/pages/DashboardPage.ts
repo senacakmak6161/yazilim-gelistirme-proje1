@@ -141,6 +141,26 @@ export class DashboardPage {
     return this.task(title).getByText(LABELS.completedBadge, { exact: true });
   }
 
+  taskTitle(title: string): Locator {
+    return this.task(title).getByTestId('task-title');
+  }
+
+  async clickTaskTitle(title: string) {
+    await this.taskTitle(title).click();
+  }
+
+  async titleDecoration(title: string): Promise<string> {
+    return this.taskTitle(title).evaluate((el) => getComputedStyle(el).textDecorationLine);
+  }
+
+  celebration(weekNo: number): Locator {
+    return this.page.getByRole('status').filter({ hasText: fmt.weekCelebration(weekNo) });
+  }
+
+  async closeCelebration(weekNo: number) {
+    await this.celebration(weekNo).getByRole('button', { name: LABELS.celebrationClose }).click();
+  }
+
   /** Durumu tersine çevirir (tıklama). */
   async toggleTask(title: string) {
     await this.taskCheckbox(title).click();
@@ -321,6 +341,19 @@ export class DashboardPage {
     }
   }
 
+  async focusIndicatorChanges(control: Locator, area: Locator, padding: number): Promise<boolean> {
+    await this.tabTo(control);
+    await expect(control).toBeFocused();
+    const box = await area.boundingBox();
+    if (!box) throw new Error('Odak karşılaştırması için alan bulunamadı');
+    const clip = { x: box.x - padding, y: box.y - padding, width: box.width + padding * 2, height: box.height + padding * 2 };
+    const focused = await this.page.screenshot({ clip, animations: 'disabled' });
+    await control.evaluate((el) => (el as HTMLElement).blur());
+    await expect(control).not.toBeFocused();
+    const unfocused = await this.page.screenshot({ clip, animations: 'disabled' });
+    return !focused.equals(unfocused);
+  }
+
   async focusStyle(target: Locator): Promise<string> {
     return target.evaluate((el) => {
       const style = getComputedStyle(el);
@@ -343,15 +376,22 @@ export class DashboardPage {
       const perf = { start: 0, last: 0 };
       w.__e2ePerf = perf;
       new MutationObserver(() => {
-        perf.last = performance.now();
+        if (perf.start > 0) perf.last = performance.now();
       }).observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true });
-      perf.start = performance.now();
+      const markInput = (event: Event) => {
+        if (perf.start !== 0) return;
+        const now = performance.now();
+        perf.start = event.timeStamp > 0 && event.timeStamp <= now ? event.timeStamp : now;
+      };
+      for (const type of ['pointerdown', 'mousedown', 'keydown', 'beforeinput', 'input', 'change', 'click']) {
+        window.addEventListener(type, markInput, { capture: true, once: true });
+      }
     });
     await action();
     await settled();
     return this.page.evaluate(() => {
       const perf = (window as unknown as { __e2ePerf: { start: number; last: number } }).__e2ePerf;
-      return perf.last === 0 ? Number.POSITIVE_INFINITY : perf.last - perf.start;
+      return perf.start === 0 || perf.last === 0 ? Number.POSITIVE_INFINITY : perf.last - perf.start;
     });
   }
 
