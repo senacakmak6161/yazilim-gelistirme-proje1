@@ -35,6 +35,24 @@ jobs:
       - run: npm ci
       - run: npm run verify
 
+  app:
+    name: Application lint and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: ${{ env.APP_PATH }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: ${{ env.APP_PATH }}/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+
   e2e:
     name: Acceptance tests
     needs: quality
