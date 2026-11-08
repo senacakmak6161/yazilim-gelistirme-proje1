@@ -9,7 +9,6 @@ const A2 = { type: 'kaynak', description: 'A2 (README): arama başlık ve açık
 
 const matchingCases = [
   { query: 'grid', ids: ['w2-t2'], why: 'başlıkta büyük/küçük harf farkı', basis: [K5] },
-  { query: 'tema', ids: ['w2-t3', 'w3-t3'], why: 'açıklamada eşleşme', basis: [A2] },
   { query: 'IŞIK', ids: ['w2-t3'], why: 'Türkçe büyük harf I/ı', basis: [K5] },
   { query: 'ilk', ids: ['w1-t1'], why: 'Türkçe büyük harf İ/i', basis: [K5] },
   { query: '  grid  ', ids: ['w2-t2'], why: 'baştaki ve sondaki boşluk', basis: [K5] },

@@ -32,6 +32,7 @@ export const LABELS = {
   statusGroup: 'Görev durumu',
   completedBadge: 'Tamamlandı',
   nowBadge: 'Şimdi',
+  celebrationClose: 'Teşekkürler',
 } as const;
 
 export const STATUS = { all: 'Tümü', pending: 'Devam edenler', completed: /^Tamamlanan(lar)?$/ } as const;
@@ -48,6 +49,7 @@ export const fmt = {
   goalsHeading: (weekNo: number) => `Hafta ${weekNo} Öğrenme Hedefleri`,
   weekOption: (weekNo: number, title: string) => `Hafta ${weekNo} – ${title}`,
   weekTag: (weekNo: number) => `Hafta ${String(weekNo).padStart(2, '0')}`,
+  weekCelebration: (weekNo: number) => `Hafta ${weekNo} tamam`,
 };
 
 export const THEMES = { light: 'light', dark: 'dark' } as const;

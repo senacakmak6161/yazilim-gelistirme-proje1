@@ -524,6 +524,13 @@
       "yontem": "otomatik",
       "metin": "Filtre kaydı bozuksa uygulama çökmez, varsayılan filtrelerle açılır.",
       "not": "Kaynak: README, Veri modeli → Dayanıklılık kuralı."
+    },
+    {
+      "kod": "VM-3",
+      "grup": "VM",
+      "yontem": "otomatik",
+      "metin": "Tarayıcı depolaması kullanılamadığında (erişim engeli, gizli sekme, yazma hatası) uygulama hata vermez ve oturum içinde çalışır.",
+      "not": "Kaynak: README, Kullanıcı rehberi §7 Kayıtların saklanması."
     }
   ]
 }

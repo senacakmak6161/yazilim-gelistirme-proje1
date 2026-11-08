@@ -12,6 +12,7 @@
     "verify": "npm run typecheck && npm run lint && npm run test:list",
     "test": "playwright test",
     "test:chromium": "playwright test --project=chromium",
+    "test:headed": "playwright test --project=chromium --headed --workers=1",
     "test:ui": "playwright test --ui",
     "test:list": "playwright test --list",
     "report": "playwright show-report",

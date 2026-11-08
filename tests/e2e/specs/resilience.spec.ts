@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures';
 import { MESSAGES, STATUS, LABELS, fmt } from '../support/contract';
-import { allTitles, loadCourse } from '../support/data';
+import { allTitles, loadCourse, titleOf } from '../support/data';
 
 const course = loadCourse('course.default.json');
 const README_RULE = { type: 'kaynak', description: 'README Veri modeli: bozuk veya beklenmeyen localStorage içeriğinde varsayılan değerlere dönülür' };
@@ -29,4 +29,28 @@ test.describe('Dayanıklılık', () => {
         await expect(dashboard.progressText).toHaveText(fmt.progressText(0, 10));
       });
   });
+
+  for (const mode of [
+    { access: 'blocked', why: 'hiç erişilemiyorsa' },
+    { access: 'read-only', why: 'okunuyor ama yazılamıyorsa' },
+  ] as const) {
+    test.describe(`tarayıcı depolamasına ${mode.why}`, () => {
+      test.use({ storageAccess: mode.access });
+
+      test('uygulama hatasız açılır ve oturum içinde çalışır',
+        {
+          tag: ['@US-10', '@VM-3', '@P2'],
+          annotation: { type: 'kaynak', description: 'README Kullanıcı rehberi §7: gizli sekmede veya kayıtlar silindiğinde uygulama hata vermez, sıfırdan başlar' },
+        },
+        async ({ dashboard }) => {
+          await expect(dashboard.progressText).toHaveText(fmt.progressText(0, 10));
+          await dashboard.toggleTask(titleOf(course, 'w1-t1'));
+          await expect(dashboard.progressText).toHaveText(fmt.progressText(1, 10));
+          await dashboard.toggleTheme();
+          await expect(dashboard.themeToggle).toHaveAttribute('aria-pressed', 'true');
+          await dashboard.setStatusFilter(STATUS.completed);
+          await expect(dashboard.taskTitles).toHaveText([titleOf(course, 'w1-t1')]);
+        });
+    });
+  }
 });
